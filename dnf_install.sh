@@ -10,7 +10,7 @@ dnf install \
 	grim \
 	neovim \
 	python3 \
-    ripgrep \
+	ripgrep \
 	slurp \
 	sway \
 	swaybg \

@@ -18,7 +18,8 @@ export MANPATH="/usr/local/man:$MANPATH"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/home/eeroh/.cache/activestate/bin:$PATH"
+export PATH="$HOME/.cache/activestate/bin:$PATH"
+export PATH="$HOME/Telegram:$PATH"
 
 # You may need to manually set your language environment
 export LANG=en_GB.UTF-8

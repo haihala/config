@@ -14,7 +14,8 @@ set $cl_light 		cccccc
 
 set $mod Mod4
 set $term alacritty
-set $menu wofi --show drun -G -i -I -m
+#set $menu wofi --show drun -G -i -I -m
+set $menu exec wofi --show=drun -G -i -I -m | xargs swaymsg exec --
 set $lock swaylock \
 	--screenshots \
 	--clock \
@@ -78,6 +79,26 @@ mode "$mode_system" {
 		bindsym r exec --no-startup-id systemctl reboot, mode "default"
 		bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 		bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+		# return to default mode
+		bindsym Return mode "default"
+		bindsym Escape mode "default"
+}
+
+### Google meets mode
+set $meets exec chromium-browser https://meet.google.com/
+set $daily exec chromium-browser https://meet.google.com/wip-rnnc-gck
+set $sprint exec chromium-browser https://meet.google.com/osw-frrz-aps
+set $oral exec chromium-browser https://meet.google.com/veh-sqau-avb
+set $viikkohavainnot exec chromium-browser https://meet.google.com/qey-ipny-ijq
+
+set $mode_meets Meets: (g) generic, (d) daily(cdg), (s) sprint planning(cdg), (o) oral-cdg, (v) viikkohavainnot
+mode "$mode_meets" {
+		bindsym g $meets, mode "default"
+		bindsym d $daily, mode "default"
+		bindsym s $sprint, mode "default"
+		bindsym o $oral, mode "default"
+		bindsym v $viikkohavainnot, mode "default"
 
 		# return to default mode
 		bindsym Return mode "default"
@@ -204,6 +225,9 @@ bindsym $mod+Shift+F12 move container to workspace $wsF12
 
 ### resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
+
+### Google meets
+bindsym $mod+m mode "$mode_meets"
 
 # Pulse Audio controls
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
