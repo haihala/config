@@ -38,7 +38,7 @@ alias arandr="wdisplays"
 alias reload='source ~/.zshrc'
 alias zshconfig='$EDITOR $HOME/.zshrc'
 alias swayconfig='$EDITOR $HOME/.config/sway/config'
-alias battery_percent="acpi -b | head -n 1 | grep -P -o '[0-9]+(?=%)'"
+alias battery_percent="acpi -b | tail -n 1 | grep -P -o '[0-9]+(?=%)'"
 alias cargo='nocorrect cargo'
 alias cap='copy-abs-path'
 
@@ -49,3 +49,8 @@ alias cap='copy-abs-path'
 
 eval "$(direnv hook zsh)"
 
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/eeroh/gsutil/google-cloud-sdk/path.zsh.inc' ]; then . '/home/eeroh/gsutil/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/eeroh/gsutil/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/eeroh/gsutil/google-cloud-sdk/completion.zsh.inc'; fi
