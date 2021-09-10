@@ -4,6 +4,7 @@ dnf install \
 	autojump-zsh \
 	chromium \
 	durst \
+	fzf \
 	git \
 	grim \
 	neovim \
