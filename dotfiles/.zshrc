@@ -38,7 +38,7 @@ alias arandr="wdisplays"
 alias reload='source ~/.zshrc'
 alias zshconfig='$EDITOR $HOME/.zshrc'
 alias swayconfig='$EDITOR $HOME/.config/sway/config'
-alias battery_percent="acpi -b | tail -n 1 | grep -P -o '[0-9]+(?=%)'"
+alias battery_percent="acpi -b | head -n 1 | grep -P -o '[0-9]+(?=%)'"
 alias cargo='nocorrect cargo'
 alias cap='copy-abs-path'
 
