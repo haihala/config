@@ -41,6 +41,8 @@ alias swayconfig='$EDITOR $HOME/.config/sway/config'
 alias battery_percent="acpi -b | head -n 1 | grep -P -o '[0-9]+(?=%)'"
 alias cargo='nocorrect cargo'
 alias cap='copy-abs-path'
+alias cat=bat
+alias less=bat --paging=always
 
 ## Run .bashrc
 [ -n ] && [ -f ~/.bashrc ] && . ~/.bashrc

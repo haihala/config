@@ -2,6 +2,7 @@ dnf install \
 	acpi \
 	alacritty \
 	autojump-zsh \
+	bat \
 	chromium \
 	durst \
 	fzf \
