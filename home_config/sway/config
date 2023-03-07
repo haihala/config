@@ -56,15 +56,24 @@ set $wsF11 "F11"
 set $wsF12 "F12"
 
 ### Resizing mode
+set $grow-width "resize grow width 10 px or 10 ppt"
+set $shrink-width "resize shrink width 10 px or 10 ppt"
+
+set $grow-height "resize grow height 10 px or 10 ppt"
+set $shrink-height "resize shrink height 10 px or 10 ppt"
+
 mode "resize" {
-        # Pressing left will shrink the window’s width.
-        bindsym Left resize shrink width 10 px or 10 ppt
-        # Pressing right will grow the window’s width.
-        bindsym Right resize grow width 10 px or 10 ppt
-        # Pressing up will shrink the window’s height.
-        bindsym Up resize shrink height 10 px or 10 ppt
-        # Pressing down will grow the window’s height.
-        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Left $shrink-width
+        bindsym h $shrink-width
+		
+        bindsym Right $grow-width 
+        bindsym l $grow-width 
+
+        bindsym Down $shrink-height
+        bindsym j $shrink-height
+
+        bindsym Up $grow-height
+        bindsym k $grow-height
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -81,26 +90,6 @@ mode "$mode_system" {
 		bindsym r exec --no-startup-id systemctl reboot, mode "default"
 		bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 		bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
-
-		# return to default mode
-		bindsym Return mode "default"
-		bindsym Escape mode "default"
-}
-
-### Google meets mode
-set $meets exec chromium-browser https://meet.google.com/
-set $daily exec chromium-browser https://meet.google.com/wip-rnnc-gck
-set $sprint exec chromium-browser https://meet.google.com/osw-frrz-aps
-set $oral exec chromium-browser https://meet.google.com/veh-sqau-avb
-set $viikkohavainnot exec chromium-browser https://meet.google.com/qey-ipny-ijq
-
-set $mode_meets Meets: (g) generic, (d) daily(cdg), (s) sprint planning(cdg), (o) oral-cdg, (v) viikkohavainnot
-mode "$mode_meets" {
-		bindsym g $meets, mode "default"
-		bindsym d $daily, mode "default"
-		bindsym s $sprint, mode "default"
-		bindsym o $oral, mode "default"
-		bindsym v $viikkohavainnot, mode "default"
 
 		# return to default mode
 		bindsym Return mode "default"
@@ -127,19 +116,30 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 
 ### Lock screen
-bindsym $mod+l exec $lock
+# This currently overlaps with moving windowsaround with vim binds
+# bindsym $mod+shift+l exec $lock
 
-### Cursor keys to move focus:
+### Keys to move focus:
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-### Cursor keys to move windows:
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+### Keys to move windows:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 ### Screenshot (Area) to clipboard
 bindsym $mod+p exec grim -g "$(slurp -d)" - | wl-copy
@@ -150,6 +150,7 @@ bindsym $mod+Shift+p exec grim -g "$(slurp -o -d)" - | wl-copy
 ### Quick launchers
 bindsym $mod+f exec firefox
 bindsym $mod+c exec code
+bindsym $mod+m exec google-chrome https://meet.google.com/
 
 ### split in horizontal orientation
 bindsym $mod+b split h
@@ -216,9 +217,6 @@ bindsym $mod+Shift+F12 move container to workspace $wsF12
 ### resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 
-### Google meets
-bindsym $mod+m mode "$mode_meets"
-
 # Pulse Audio controls
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
 bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
@@ -251,11 +249,6 @@ client.focused_inactive	$cl_dark	$cl_exfocused	$cl_light	$cl_light	$cl_exfocused
 client.unfocused		$cl_dark	$cl_unfocused	$cl_light	$cl_light	$cl_dark
 client.urgent			$cl_dark	$cl_urgent		$cl_dark	$cl_light	$cl_dark
 
-### Display positions, maybe think of a better solution for undocking
-#output DP-3 pos 0 0
-#output DP-1 pos 2560 0
-#output eDP-1 pos 5120 700
-
 ### Font 
 font '/usr/share/fonts/jetbrains-mono/JetBrains Mono Medium Nerd Font Complete Mono.ttf' 8
 
@@ -272,6 +265,6 @@ show_marks yes
 exec nm-applet --indicator
 
 # Automatic lock screen
-exec swayidle -w timeout 300 '$lock'
+exec swayidle -w timeout 3600 '$lock'
 
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway

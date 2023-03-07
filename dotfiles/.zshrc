@@ -33,16 +33,13 @@ alias v="vi"
 alias vi="vim"
 alias vim="nvim"
 
-alias python="python3"
 alias arandr="wdisplays"
 alias reload='source ~/.zshrc'
 alias zshconfig='$EDITOR $HOME/.zshrc'
 alias swayconfig='$EDITOR $HOME/.config/sway/config'
-alias battery_percent="acpi -b | head -n 1 | grep -P -o '[0-9]+(?=%)'"
+alias battery_percent="acpi -b | sed -r 's/[^,]*, ([0-9]+)%.*/\1/' | sort -rn | head -n 1"
 alias cargo='nocorrect cargo'
 alias cap='copy-abs-path'
-alias cat=bat
-alias less=bat --paging=always
 
 ## Run .bashrc
 [ -n ] && [ -f ~/.bashrc ] && . ~/.bashrc
@@ -51,8 +48,9 @@ alias less=bat --paging=always
 
 eval "$(direnv hook zsh)"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/eeroh/gsutil/google-cloud-sdk/path.zsh.inc' ]; then . '/home/eeroh/gsutil/google-cloud-sdk/path.zsh.inc'; fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/eeroh/gsutil/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/eeroh/gsutil/google-cloud-sdk/completion.zsh.inc'; fi
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

@@ -5,3 +5,5 @@ fi
 
 XDG_CURRENT_DESKTOP="sway"
 . "$HOME/.cargo/env"
+
+complete -C /usr/bin/terraform terraform
