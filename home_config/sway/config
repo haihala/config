@@ -56,24 +56,12 @@ set $wsF11 "F11"
 set $wsF12 "F12"
 
 ### Resizing mode
-set $grow-width "resize grow width 10 px or 10 ppt"
-set $shrink-width "resize shrink width 10 px or 10 ppt"
-
-set $grow-height "resize grow height 10 px or 10 ppt"
-set $shrink-height "resize shrink height 10 px or 10 ppt"
 
 mode "resize" {
-        bindsym Left $shrink-width
-        bindsym h $shrink-width
-		
-        bindsym Right $grow-width 
-        bindsym l $grow-width 
-
-        bindsym Down $shrink-height
-        bindsym j $shrink-height
-
-        bindsym Up $grow-height
-        bindsym k $grow-height
+        bindsym l resize grow width 10 px
+        bindsym h resize shrink width 10 px
+        bindsym k resize grow height 10 px
+        bindsym j resize shrink height 10 px
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -242,6 +230,9 @@ bar {
 input "*" {
 	xkb_layout fi
 }
+
+### Gaps between windows
+gaps inner 2
 
 ### Colors				border		bg				text		indi     	childborder
 client.focused			$cl_dark	$cl_focused 	$cl_light	$cl_light	$cl_dark
