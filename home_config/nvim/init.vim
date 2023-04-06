@@ -22,6 +22,7 @@ set ttyfast                 " Speed up scrolling in Vim
 " set spell                 " enable spell check (may need to download language package)
 " set noswapfile            " disable creating swap file
 " set backupdir=~/.cache/vim " Directory to store backup files.
+set foldmethod=indent       " Lets you toggle fold with za, close with zc, open with zo
 
 call plug#begin('~/.local/share/nvim/site/plugged')
     " Theme
@@ -45,7 +46,7 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     " <leader>c<space> to toggle
     Plug 'preservim/nerdcommenter'
 
-    " Completions, C-y to accept, C-n for next, C-p for previous
+    " Completions, C-y/enter to accept, C-n for next, C-p for previous
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     " Fuzzy file search, f4 to open
@@ -53,13 +54,17 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     Plug 'junegunn/fzf.vim'
 call plug#end()
 
+" Coc
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
 " color schemes
 if (has("termguicolors"))
     set termguicolors
 endif
 syntax enable
 " colorscheme evening
-colorscheme dracula" open new split panes to right and below
+colorscheme dracula
+" open new split panes to right and below
 set splitright
 set splitbelow
 
