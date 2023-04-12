@@ -32,13 +32,10 @@ nnoremap <silent> gr <Plug>(coc-references)
 inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nnoremap <silent> gy <Plug>(coc-type-definition)
 nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap gn <Plug>(coc-git-nextchunk)
-nnoremap gp <Plug>(coc-git-prevchunk)
-
-" LSP diagnostics
-nnoremap Dl :<C-u>CocList diagnostics<CR>
-nnoremap <silent> Dn <Plug>(coc-diagnostic-next)
-nnoremap <silent> Dp <Plug>(coc-diagnostic-prev)
+nnoremap gc <Plug>(coc-git-nextchunk)
+nnoremap gC <Plug>(coc-git-prevchunk)
+nnoremap <silent> gp <Plug>(coc-diagnostic-next)
+nnoremap <silent> gP <Plug>(coc-diagnostic-prev)
 
 " LSP actions
 nnoremap <leader>r <Plug>(coc-rename)
@@ -46,8 +43,8 @@ nnoremap <leader>R <Plug>(coc-codeaction-refactor)
 nnoremap <leader>a <Plug>(coc-codeaction-cursor)
 nnoremap <leader>A <Plug>(coc-fix-current)
 command! -nargs=0 OrganizeImports :call CocActionAsync('runCommand', 'editor.action.organizeImport')
-nnoremap <leader>d :call <SID>show_documentation()<CR>
 
+" Info
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
@@ -56,8 +53,16 @@ function! s:show_documentation()
     endif
 endfunction
 
-" Git diff
-nnoremap <leader>gd <Plug>(coc-git-chunkinfo)
+nnoremap <leader>d :call <SID>show_documentation()<CR>
+nnoremap <leader>c <Plug>(coc-git-chunkinfo)
+nnoremap <leader>l <Nop>
+nnoremap <leader>ld :CocList diagnostics<CR>
+nnoremap <leader>lo :CocList outline<CR>
+nnoremap <leader>ls :CocList -I symbols<CR>
+nnoremap <leader>lp :CocListResume<CR>
+" These need some more thought, basically you can cycle through list items
+nnoremap <silent> <leader>j :CocNext<CR>
+nnoremap <silent> <leader>k :CocPrev<CR>
 
 " Searching
 " c[ontent], f[iles], g[it changes]
@@ -65,5 +70,5 @@ nnoremap <leader>fc :Rg<CR>
 nnoremap <leader>ff :GFiles<CR>
 nnoremap <leader>fF :Files<CR>
 nnoremap <leader>fg :GFiles?<CR>
-nnoremap <leader>ft :NERDTreeFind<CR>
+nnoremap <leader>t :NERDTreeFind<CR>
 

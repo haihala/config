@@ -52,10 +52,10 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     " Fuzzy file search, f4 to open
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-call plug#end()
 
-" Coc
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+    " Status bar
+    Plug 'nvim-lualine/lualine.nvim'
+call plug#end()
 
 " color schemes
 if (has("termguicolors"))
@@ -73,5 +73,7 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
+lua require('custom-lualine')
 
 source $HOME/.config/nvim/binds.vim
