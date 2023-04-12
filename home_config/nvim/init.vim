@@ -57,6 +57,22 @@ call plug#begin('~/.local/share/nvim/site/plugged')
     Plug 'nvim-lualine/lualine.nvim'
 call plug#end()
 
+" Language servers
+let g:coc_global_extensions = [
+            \ 'coc-css', 
+            \ 'coc-git', 
+            \ 'coc-java', 
+            \ 'coc-json', 
+            \ 'coc-prettier', 
+            \ 'coc-pyright', 
+            \ 'coc-rust-analyzer',
+            \ 'coc-sh',
+            \ 'coc-toml',
+            \ 'coc-tsserver',
+            \ 'coc-vimlsp',
+            \ 'coc-yaml',
+            \]
+
 " color schemes
 if (has("termguicolors"))
     set termguicolors
@@ -70,8 +86,8 @@ set splitbelow
 
 " Vim jump to the last position when reopening a file
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-    \| exe "normal! g'\"" | endif
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal! g'\"" | endif
 endif
 
 lua require('custom-lualine')
