@@ -17,6 +17,8 @@ vim.opt.backup = false
 -- Search
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true -- Searching with upper case character is case sensitive
 
 -- TODO:
 -- Go back when reopening a file (from old config)

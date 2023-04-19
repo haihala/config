@@ -42,6 +42,7 @@ lsp.on_attach(function(client, bufnum)
     vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts)
 
+    -- Automatic format on save
     vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
 end)
 
