@@ -16,7 +16,7 @@ set $mod Mod4
 set $term alacritty
 #set $menu wofi --show drun -G -i -I -m
 set $menu exec wofi --show=drun -G -i -I -m | xargs swaymsg exec --
-set $lock swaylock \
+set $lock systemctl suspend & swaylock \
 	--screenshots \
 	--clock \
 	--datestr "%A, %d. %m. %Y." \
@@ -30,8 +30,6 @@ set $lock swaylock \
 	--line-color 00000000 \
 	--inside-color 00000088 \
 	--separator-color 00000088 \
-	--grace 10 \
-	--fade-in 0.2
 
 set $ws0 "0"
 set $ws1 "1"
@@ -75,35 +73,15 @@ set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shut
 mode "$mode_system" {
 		bindsym l exec $lock, mode "default"
 		bindsym e exit
-		bindsym s exec --no-startup-id systemctl suspend, mode "default"
-		bindsym r exec --no-startup-id systemctl reboot, mode "default"
-		bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
-		bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+		bindsym s exec systemctl suspend, mode "default"
+		bindsym r exec systemctl reboot, mode "default"
+		bindsym Shift+s exec systemctl poweroff -i, mode "default"
 
 		# return to default mode
 		bindsym Return mode "default"
 		bindsym Escape mode "default"
 }
 
-### Google meets mode
-set $meets exec chromium-browser https://meet.google.com/
-set $daily exec chromium-browser https://meet.google.com/wip-rnnc-gck
-set $sprint exec chromium-browser https://meet.google.com/osw-frrz-aps
-set $oral exec chromium-browser https://meet.google.com/veh-sqau-avb
-set $viikkohavainnot exec chromium-browser https://meet.google.com/qey-ipny-ijq
-
-set $mode_meets Meets: (g) generic, (d) daily(cdg), (s) sprint planning(cdg), (o) oral-cdg, (v) viikkohavainnot
-mode "$mode_meets" {
-		bindsym g $meets, mode "default"
-		bindsym d $daily, mode "default"
-		bindsym s $sprint, mode "default"
-		bindsym o $oral, mode "default"
-		bindsym v $viikkohavainnot, mode "default"
-
-		# return to default mode
-		bindsym Return mode "default"
-		bindsym Escape mode "default"
-}
 
 ## Bindings
 ### Use Mouse+$mod to drag floating windows to their wanted position
@@ -123,10 +101,6 @@ bindsym $mod+Shift+q kill
 
 ### start dmenu (a program launcher)
 bindsym $mod+d exec $menu
-
-### Lock screen
-# This currently overlaps with moving windowsaround with vim binds
-# bindsym $mod+shift+l exec $lock
 
 ### Keys to move focus:
 bindsym $mod+Left focus left
@@ -225,9 +199,6 @@ bindsym $mod+Shift+F12 move container to workspace $wsF12
 
 ### resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
-
-### Google meets
-bindsym $mod+m mode "$mode_meets"
 
 # Pulse Audio controls
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
