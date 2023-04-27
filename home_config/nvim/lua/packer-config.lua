@@ -9,6 +9,11 @@ return require('packer').startup(function(use)
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
 
+    use {
+        'nvim-telescope/telescope-file-browser.nvim',
+        requires = { { 'nvim-lua/plenary.nvim' } }
+    }
+
     use({ 'dracula/vim', as = 'dracula' })
     vim.cmd('colorscheme dracula')
 
@@ -51,4 +56,5 @@ return require('packer').startup(function(use)
         }
     })
     use 'jwalton512/vim-blade'
+    use 'github/copilot.vim'
 end)
