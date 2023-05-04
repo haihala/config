@@ -28,7 +28,7 @@ lsp.on_attach(function(client, bufnum)
     local opts = { buffer = bufnum, remap = false }
 
     -- Show
-    vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, opts)
+    vim.keymap.set("n", "H", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>ws", function() vim.lsp.buf.workspace_symbol() end, opts)

@@ -14,3 +14,9 @@ vim.keymap.set("n", "<A-7>", function() ui.nav_file(7) end)
 vim.keymap.set("n", "<A-8>", function() ui.nav_file(8) end)
 vim.keymap.set("n", "<A-9>", function() ui.nav_file(9) end)
 vim.keymap.set("n", "<A-0>", function() ui.nav_file(10) end)
+
+require("harpoon").setup({
+    menu = {
+        width = vim.api.nvim_win_get_width(0) - 4,
+    }
+})
