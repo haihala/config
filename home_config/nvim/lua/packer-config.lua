@@ -23,6 +23,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
+    use 'APZelos/blamer.nvim'
 
     use {
         'nvim-lualine/lualine.nvim',
