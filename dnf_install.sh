@@ -1,6 +1,5 @@
 dnf install \
 	acpi \
-	alacritty \
 	autojump-zsh \
 	bat \
 	chromium \
@@ -8,6 +7,7 @@ dnf install \
 	fzf \
 	git \
 	grim \
+    kitty \
 	neovim \
 	python3 \
 	ripgrep \
