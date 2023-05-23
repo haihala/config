@@ -40,6 +40,9 @@ vim.keymap.set("n", "<A-J>", "<C-w>J")
 vim.keymap.set("n", "<A-K>", "<C-w>K")
 vim.keymap.set("n", "<A-L>", "<C-w>L")
 
+-- Execute current file
+vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
+
 -- TODO: Pane resizing
 -- TODO: Reload
 -- TODO: Import ordering
