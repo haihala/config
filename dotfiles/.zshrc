@@ -29,6 +29,8 @@ export EDITOR='nvim'
 
 # Aliases
 alias ll="sl"	# 'l' is enough
+alias lt="ls -laht --color"
+alias ls="ls -lahS --color"
 
 alias v="vi"
 alias vi="vim"
