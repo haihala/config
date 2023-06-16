@@ -17,3 +17,5 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 -- Find content
 vim.keymap.set('n', '<leader>fc', function() builtin.grep_string({ search = vim.fn.input("Grep> ") }); end)
+
+vim.keymap.set('n', '<leader>fr', builtin.resume, {})

@@ -58,5 +58,14 @@ return require('packer').startup(function(use)
     })
     use 'jose-elias-alvarez/null-ls.nvim'
     use 'jwalton512/vim-blade'
-    use 'github/copilot.vim'
+    -- use 'github/copilot.vim'
+
+    use {
+        "ahmedkhalf/project.nvim",
+        config = function()
+            require("project_nvim").setup {
+                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile" }
+            }
+        end
+    }
 end)
