@@ -56,8 +56,13 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' },     -- Required
         }
     })
-    use 'jose-elias-alvarez/null-ls.nvim'
+
     use 'jwalton512/vim-blade'
+
+    -- Null-ls was mostly used for prettier, which now comes from neoformat
+    -- use 'jose-elias-alvarez/null-ls.nvim'
+
+    -- Copilot slows down editing a lot if not logged in
     -- use 'github/copilot.vim'
 
     use {
@@ -68,4 +73,6 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    use 'sbdchd/neoformat'
 end)
