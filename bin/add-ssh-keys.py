@@ -4,10 +4,12 @@ import subprocess
 import sys
 import pexpect
 
+
 def main():
     try:
         gpg_process = subprocess.run(
-            ('gpg', '--decrypt', os.path.join(os.environ['HOME'], '.ssh', 'key_password_vault.asc')),
+            ('gpg', '--decrypt',
+             os.path.join(os.environ['HOME'], '.ssh', 'key_password_vault.asc')),
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -16,6 +18,7 @@ def main():
         print(err)
         print(err.stderr.decode())
         sys.exit(1)
+
     entries = (
         line.split(' ', 1)
         for line in (
@@ -24,6 +27,7 @@ def main():
         )
         if line
     )
+
     for identity_file_path, password in entries:
         print(f'{identity_file_path}')
         child = pexpect.spawn(
@@ -33,5 +37,7 @@ def main():
         child.expect(f'Enter passphrase for {identity_file_path}:')
         child.sendline(password)
         child.expect(pexpect.EOF)
+
+
 if __name__ == '__main__':
     main()
