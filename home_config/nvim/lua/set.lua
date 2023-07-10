@@ -27,6 +27,11 @@ vim.opt.smartcase = true -- Searching with upper case character is case sensitiv
 --                 \| exe "normal! g'\"" | endif
 -- endif
 
+-- Neovide
+if vim.g.neovide then
+    vim.o.guifont = "Source Code Pro:h10"
+end
+
 -- Misc
 vim.opt.termguicolors = true
 vim.opt.scrolloff = 8

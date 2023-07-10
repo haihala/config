@@ -2,14 +2,16 @@
 [user]
 	name = Eero Häihälä
 	email = eero.haihala@gmail.com
+	email = eero.haihala@vincit.fi
 [color]
 	diff = auto
 	branch = auto
 	status = auto
 [core]
-	editor = vim
+	editor = nvim
 	autocrlf = off
 	safecrlf = off
+	excludeFiles = pyrightconfig.json
 [cola]
 	spellcheck = false
 [rebase]
@@ -23,3 +25,5 @@
 	clean = git-lfs clean -- %f
 [pull]
 	rebase = true
+[push]
+	autoSetupRemote = true

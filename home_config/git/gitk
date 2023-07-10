@@ -1,5 +1,5 @@
-set mainfont {sans 9}
-set textfont {monospace 9}
+set mainfont {sans 12}
+set textfont {monospace 12}
 set uifont {sans 9 bold}
 set tabstop 8
 set findmergefiles 0
@@ -53,12 +53,12 @@ set linkfgcolor blue
 set circleoutlinecolor black
 set diffbgcolors {"#fff3f3" "#f0fff0"}
 set web_browser xdg-open
-set geometry(main) 2560x1326+2560+84
+set geometry(main) 2560x1384+2560+24
 set geometry(state) normal
 set geometry(topwidth) 2560
-set geometry(topheight) 701
-set geometry(pwsash0) "815 1"
-set geometry(pwsash1) "896 1"
-set geometry(botwidth) 1106
-set geometry(botheight) 620
+set geometry(topheight) 709
+set geometry(pwsash0) "1249 1"
+set geometry(pwsash1) "1329 1"
+set geometry(botwidth) 1344
+set geometry(botheight) 670
 set permviews {}
