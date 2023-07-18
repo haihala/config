@@ -20,8 +20,12 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache/activestate/bin:$PATH"
 export PATH="$HOME/Telegram:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
+
 
 # You may need to manually set your language environment
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export LANG=en_GB.UTF-8
 
 # Preferred editor for local and remote sessions
@@ -57,3 +61,7 @@ export NVM_DIR="$HOME/.nvm"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

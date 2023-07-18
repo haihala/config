@@ -20,7 +20,8 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 4. Run `./link.sh` from the repository root
 5. Check git email with `git config user.email`
 6. Edit crontab to run `bin/cron_battery.sh` (for laptops)
-7. Handle ssh keys (make gpg key, encrypt the vault)
+7. Handle ssh keys (See [#Setting up SSH key magic])
+8. Install pyenv
 
 ## What goes where
 
