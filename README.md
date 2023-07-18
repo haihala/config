@@ -40,7 +40,7 @@ Requirements:
 1. Generate an ssh key with a passphrase
 2. Generate a gpg key with `gpg --generate-full-key`
 3. Put `<path to ssh key> <ssh key passphrase>` in a file
-4. Encrypt previous file with `gpg --output ~/.ssh/key_password_vault.asc --recipient <email> <path of file from previous step>`
+4. Encrypt previous file with `gpg --output ~/.ssh/key_password_vault.asc --encrypt --recipient <email> <path of file from previous step>`
 5. Remove `~/.sshagentenv` if it exists
 6. `reload`
 7. **Remove the file you temporarily had your password in written in plain text**
