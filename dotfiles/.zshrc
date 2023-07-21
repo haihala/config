@@ -26,7 +26,8 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 # You may need to manually set your language environment
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export LANG=en_GB.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US
 
 # Preferred editor for local and remote sessions
 export EDITOR='nvim'
