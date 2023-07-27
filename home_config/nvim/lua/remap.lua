@@ -25,8 +25,10 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 
 
--- Go back
-vim.keymap.set("n", "jp", ":e#<CR>")
+-- Jumps
+vim.keymap.set("n", "<leader>jp", ":e#<CR>") -- to Previous
+vim.keymap.set("n", "<leader>jf", "gf")      -- to File
+vim.keymap.set("n", "gf", "<Nop>")           -- to File
 
 -- Movement between panes
 vim.keymap.set("n", "<C-h>", "<C-w>h")

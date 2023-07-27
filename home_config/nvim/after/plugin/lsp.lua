@@ -31,9 +31,9 @@ lsp.on_attach(function(client, bufnum)
     vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
     -- Jump
-    vim.keymap.set("n", "jd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "jr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "js", function() vim.lsp.buf.workspace_symbol() end, opts)
+    vim.keymap.set("n", "<leader>jd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "<leader>jr", function() vim.lsp.buf.references() end, opts)
+    vim.keymap.set("n", "<leader>js", function() vim.lsp.buf.workspace_symbol() end, opts)
 
     -- Diagnostics
     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
