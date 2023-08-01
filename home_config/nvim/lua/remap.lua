@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 
--- File Explorer
-vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
+-- File Browser (telescope uses fe for it's file explorer)
+vim.keymap.set("n", "<leader>fb", vim.cmd.Ex)
 
 -- Move through search terms in a way where they remain at the center
 vim.keymap.set("n", "n", "nzzzv")
@@ -24,17 +24,16 @@ vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi")
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 
-
 -- Jumps
 vim.keymap.set("n", "<leader>jp", ":e#<CR>") -- to Previous
 vim.keymap.set("n", "<leader>jf", "gf")      -- to File
 vim.keymap.set("n", "gf", "<Nop>")           -- to File
 
 -- Movement between panes
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<A-h>", "<C-w>h")
+vim.keymap.set("n", "<A-j>", "<C-w>j")
+vim.keymap.set("n", "<A-k>", "<C-w>k")
+vim.keymap.set("n", "<A-l>", "<C-w>l")
 
 -- Movement of panes
 -- vim.keymap.set("n", "<C-H>", "<C-w>H")
