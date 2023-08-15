@@ -10,10 +10,10 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- Paste over text without losing p buffer
 vim.keymap.set("x", "<leader>p", "\"_dP")
 
--- Explicitly copy to system clipboard with leader + y
-vim.keymap.set("n", "<leader>y", "\"+y")
+-- Copy to system clipboard with leader + y in visual mode
 vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>Y", "\"+Y")
+-- Copy the buffer path to system clipboard
+vim.keymap.set("n", "<leader>Y", ":let @+=@%<CR>")
 
 -- Paste from system clipboard
 vim.keymap.set("i", "<C-v>", "<C-p>+")

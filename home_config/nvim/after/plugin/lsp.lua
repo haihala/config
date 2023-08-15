@@ -28,7 +28,7 @@ lsp.on_attach(function(client, bufnum)
     local opts = { buffer = bufnum, remap = false }
 
     -- Popups
-    vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, opts)
+    vim.keymap.set("n", "<leader>i", function() vim.lsp.buf.hover() end, opts) -- Inspect, h is for harpoon
     vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
     -- Jump
     vim.keymap.set("n", "<leader>jd", function() vim.lsp.buf.definition() end, opts)
