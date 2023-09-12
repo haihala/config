@@ -66,3 +66,5 @@ complete -o nospace -C /usr/bin/terraform terraform
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+[ -f "/home/hajhawa/.ghcup/env" ] && source "/home/hajhawa/.ghcup/env" # ghcup-env
