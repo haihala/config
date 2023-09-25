@@ -21,6 +21,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cache/activestate/bin:$PATH"
 export PATH="$HOME/Telegram:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
 
 
 # You may need to manually set your language environment
