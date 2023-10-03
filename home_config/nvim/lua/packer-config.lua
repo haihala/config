@@ -76,4 +76,6 @@ return require('packer').startup(function(use)
     }
 
     use 'sbdchd/neoformat'
+
+    use 'christoomey/vim-tmux-navigator'
 end)

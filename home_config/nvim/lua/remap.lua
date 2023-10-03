@@ -29,18 +29,6 @@ vim.keymap.set("n", "<leader>jp", "``") -- to Previous jump
 vim.keymap.set("n", "<leader>jf", "gf") -- to File
 vim.keymap.set("n", "gf", "<Nop>")      -- to File
 
--- Movement between panes
-vim.keymap.set("n", "<A-h>", "<C-w>h")
-vim.keymap.set("n", "<A-j>", "<C-w>j")
-vim.keymap.set("n", "<A-k>", "<C-w>k")
-vim.keymap.set("n", "<A-l>", "<C-w>l")
-
--- Movement of panes
--- vim.keymap.set("n", "<C-H>", "<C-w>H")
--- vim.keymap.set("n", "<C-J>", "<C-w>J")
--- vim.keymap.set("n", "<C-K>", "<C-w>K")
--- vim.keymap.set("n", "<C-L>", "<C-w>L")
-
 -- Execute current file
 vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
 
