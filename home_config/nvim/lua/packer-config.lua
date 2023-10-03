@@ -69,8 +69,8 @@ return require('packer').startup(function(use)
         "ahmedkhalf/project.nvim",
         config = function()
             require("project_nvim").setup {
-                detection_methods = { ">Repos" },
-                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile" }
+                detection_methods = { "pattern" },
+                patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", ">projects" }
             }
         end
     }
