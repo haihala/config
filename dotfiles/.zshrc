@@ -38,6 +38,8 @@ alias ll="sl"	# 'l' is enough
 alias lt="ls -laht --color"
 alias ls="ls -lahS --color"
 
+alias fe='$EDITOR $(fzf)'    # Fuzzy (fzf) Edit
+
 alias python="python3"
 alias arandr="wdisplays"    # I use wayland btw
 alias battery_percent="acpi -b | sed -r 's/[^,]*, ([0-9]+)%.*/\1/' | sort -rn | head -n 1"
