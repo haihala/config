@@ -20,13 +20,6 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true -- Searching with upper case character is case sensitive
 
--- TODO:
--- Go back when reopening a file (from old config)
--- if has("autocmd")
---     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
---                 \| exe "normal! g'\"" | endif
--- endif
-
 -- Neovide
 if vim.g.neovide then
     vim.o.guifont = "Source Code Pro:h10"
