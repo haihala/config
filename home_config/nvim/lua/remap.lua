@@ -32,7 +32,14 @@ vim.keymap.set("n", "gf", "<Nop>")      -- to File
 -- Execute current file
 vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
 
+-- While not a remap, I'm putting this here
+vim.api.nvim_create_user_command("Upgrade", function()
+    -- The order here doesn't seem to matter
+    vim.cmd(":MasonUpdate") -- This may not work correctly
+    vim.cmd(":TSUpdate")
+    vim.cmd(":PackerSync")
+end, {})
+
 -- TODO: Pane resizing
 -- TODO: Reload
 -- TODO: Import ordering
--- TODO: Git diff and change jumps
