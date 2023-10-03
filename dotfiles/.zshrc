@@ -43,6 +43,7 @@ alias v="vi"
 alias vi="vim"
 alias vim="nvim"
 
+alias python="python3"
 alias arandr="wdisplays"
 alias reload='source ~/.zshrc'
 alias zshconfig='$EDITOR $HOME/.zshrc'
@@ -55,8 +56,6 @@ alias cap='copy-abs-path'
 [ -n ] && [ -f ~/.bashrc ] && . ~/.bashrc
 
 . $HOME/bin/start-agent.sh
-
-eval "$(direnv hook zsh)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
