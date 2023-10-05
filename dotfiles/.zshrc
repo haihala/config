@@ -34,22 +34,22 @@ export LANGUAGE=en_US
 export EDITOR='nvim'
 
 # Aliases
-alias ll="sl"	# 'l' is enough
+alias ll="sl" # 'l' is enough
 alias lt="ls -laht --color"
 alias ls="ls -lahS --color"
 
-alias fe='$EDITOR $(fzf)'    # Fuzzy (fzf) Edit
-alias e='$EDITOR'    # Edit
+alias fe='$EDITOR $(fzf)' # Fuzzy (fzf) Edit
+alias e='$EDITOR'         # Edit
 
 alias python="python3"
-alias arandr="wdisplays"    # I use wayland btw
+alias arandr="wdisplays" # I use wayland btw
 alias battery_percent="acpi -b | sed -r 's/[^,]*, ([0-9]+)%.*/\1/' | sort -rn | head -n 1"
 alias cap='copy-abs-path'
 
 # Conf development
 alias reload='source ~/.zshrc'
 # These use readlink to edit the file within the repo (fugitive recognizes it as a git repo)
-alias zshconfig='$EDITOR $(readlink $HOME/.zshrc)' 
+alias zshconfig='$EDITOR $(readlink $HOME/.zshrc)'
 alias swayconfig='$EDITOR $(readlink $HOME/.config/sway/config)'
 
 # SSH agent magic
@@ -57,8 +57,8 @@ alias swayconfig='$EDITOR $(readlink $HOME/.config/sway/config)'
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Terraform
 autoload -U +X bashcompinit && bashcompinit
@@ -72,6 +72,12 @@ eval "$(pyenv init -)"
 # Haskell
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 
+# bun completions
+[ -s "/home/eeroh/.bun/_bun" ] && source "/home/eeroh/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 ## Run .bashrc
 [ -n ] && [ -f ~/.bashrc ] && . ~/.bashrc
-
