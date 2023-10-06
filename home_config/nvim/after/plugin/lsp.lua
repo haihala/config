@@ -1,50 +1,56 @@
-local lsp = require('lsp-zero').preset({
+local lsp_zero = require("lsp-zero").preset({
     set_basic_mappings = false,
     set_extra_mappings = false,
 })
-
-lsp.ensure_installed({
-    'tsserver',
-    'eslint',
-    'pylsp',
-    'lua_ls',
-    'rust_analyzer',
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = {
+        'tsserver',
+        'eslint',
+        'pylsp',
+        'lua_ls',
+        'rust_analyzer',
+    },
+    handlers = {
+        lsp_zero.default_setup,
+        lua_ls = function()
+            local lua_opts = lsp_zero.nvim_lua_ls()
+            require("lspconfig").lua_ls.setup(lua_opts)
+        end
+    }
 })
-
--- Configure lua language server for neovim
-require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
-local cmp = require('cmp')
-
+local cmp = require("cmp")
 cmp.setup({
+    formatting = lsp_zero.cmp_format(),
     mapping = {
         ['<CR>'] = cmp.mapping.confirm({ select = false }),
     }
 })
 
-lsp.on_attach(function(client, bufnum)
-    lsp.default_keymaps({ buffer = bufnum })
+local picker = require("telescope.builtin")
 
+lsp_zero.on_attach(function(client, bufnum)
     local opts = { buffer = bufnum, remap = false }
 
-    -- Popups
-    vim.keymap.set("n", "<leader>i", function() vim.lsp.buf.hover() end, opts) -- Inspect, h is for harpoon
-    vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
+    -- Info popup
+    vim.keymap.set("n", "<leader>i", vim.lsp.buf.hover, opts) -- Inspect
+
     -- Jump
-    vim.keymap.set("n", "<leader>jd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "<leader>jr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "<leader>js", function() vim.lsp.buf.workspace_symbol() end, opts)
+    vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>jr", picker.lsp_references, opts)
 
     -- Diagnostics
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "<leader>D", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "<leader>d", picker.diagnostics, opts)
+    vim.keymap.set("n", "<leader>[d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "<leader>]d", vim.diagnostic.goto_prev, opts)
 
     -- Actions
-    vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("n", "<leader>a", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
 
     -- Automatic format on save
-    vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+    vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="tsserver" end})]]
 end)
 
-lsp.setup()
+lsp_zero.setup()

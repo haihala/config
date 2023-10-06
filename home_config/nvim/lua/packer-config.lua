@@ -8,11 +8,11 @@ require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
-
     use {
         'nvim-telescope/telescope-file-browser.nvim',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
+    use { 'nvim-telescope/telescope-ui-select.nvim' }
 
     use({ 'dracula/vim', as = 'dracula' })
     vim.cmd('colorscheme dracula')
@@ -36,31 +36,24 @@ require('packer').startup(function(use)
         config = function() require("todo-comments").setup {} end
     }
 
-    use({
+    use {
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
+        branch = 'v3.x',
         requires = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },   -- Required
-            {
-                'williamboman/mason.nvim', -- Optional
-                run = function()
-                    pcall(vim.cmd, 'MasonUpdate')
-                end,
-            },
-            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+            --- Uncomment these if you want to manage LSP servers from neovim
+            { 'williamboman/mason.nvim' },
+            { 'williamboman/mason-lspconfig.nvim' },
 
+            -- LSP Support
+            { 'neovim/nvim-lspconfig' },
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },     -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'L3MON4D3/LuaSnip' },     -- Required
+            { 'hrsh7th/nvim-cmp' },
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'L3MON4D3/LuaSnip' },
         }
-    })
+    }
 
     use 'jwalton512/vim-blade'
-
-    -- Null-ls was mostly used for prettier, which now comes from neoformat
-    -- use 'jose-elias-alvarez/null-ls.nvim'
 
     -- Copilot slows down editing a lot if not logged in
     -- use 'github/copilot.vim'

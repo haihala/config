@@ -1,8 +1,5 @@
 vim.g.mapleader = " "
 
--- File Browser (telescope uses fe for it's file explorer)
-vim.keymap.set("n", "<leader>fb", vim.cmd.Ex)
-
 -- Move through search terms in a way where they remain at the center
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
@@ -27,7 +24,7 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 -- Jumps
 vim.keymap.set("n", "<leader>jp", "``") -- to Previous jump
 vim.keymap.set("n", "<leader>jf", "gf") -- to File
-vim.keymap.set("n", "gf", "<Nop>")      -- to File
+vim.keymap.set("n", "gf", "<Nop>")      -- Unbind default
 
 -- Execute current file
 vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
