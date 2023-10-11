@@ -13,7 +13,6 @@ telescope.setup {
     extensions = {
         file_browser = {
             hidden = true,
-            collapse_dirs = true
         },
     }
 }
