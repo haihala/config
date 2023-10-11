@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+if [ "$#" -ne 0 ]; then
+    # All arguments are passed directly to the editor, so e is short for $EDITOR
+    # Only if no arguments are passed, does it start to do stuff
+    $EDITOR $@
+    exit 0
+fi
+
+OPTIONS=("Just open the editor" "Search by file name" "Search by content")
+
+SELECTION=$(for I in ${!OPTIONS[@]}; do
+    echo "$I: ${OPTIONS[$I]}"
+done | fzf --print0| cut -d ":" -f 1)
+
+case $SELECTION in
+    0)
+        $EDITOR
+        ;;
+    1)
+        fzf --print0 | xargs -0 -o $EDITOR
+        ;;
+    2)
+        # Fuzzy find against current folder contents, match file name, line and column
+        TARGET=$(rg . --no-heading --line-number --column | fzf --print0 | cut -d ':' -f 1-3)
+        PARTS=(${TARGET//:/ })
+        FILE=${PARTS[0]}
+        LINE=${PARTS[1]}
+        COLUMN=${PARTS[2]}
+        $EDITOR $FILE "+call cursor($LINE, $COLUMN)"
+        ;;
+esac
