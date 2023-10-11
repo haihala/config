@@ -38,7 +38,7 @@ alias ll="sl" # 'l' is enough
 alias lt="ls -laht --color"
 alias ls="ls -lahS --color"
 
-alias fe='$EDITOR $(fzf)' # Fuzzy (fzf) Edit
+alias fe='fzf --print0 | xargs -0 -o $EDITOR' # Fuzzy (fzf) Edit
 alias e='$EDITOR'         # Edit
 
 alias python="python3"
