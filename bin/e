@@ -5,7 +5,7 @@ set -euxo pipefail
 if [ "$#" -ne 0 ]; then
     # All arguments are passed directly to the editor, so e is short for $EDITOR
     # Only if no arguments are passed, does it start to do stuff
-    $EDITOR $@
+    exec $EDITOR $@
     exit 0
 fi
 
@@ -17,10 +17,11 @@ done | fzf --print0| cut -d ":" -f 1)
 
 case $SELECTION in
     0)
-        $EDITOR
+        exec $EDITOR
         ;;
     1)
-        fzf --print0 | xargs -0 -o $EDITOR
+        TARGET=$(fzf --print0 | xargs -0 -o)
+        exec $EDITOR $TARGET
         ;;
     2)
         # Fuzzy find against current folder contents, match file name, line and column
@@ -29,11 +30,11 @@ case $SELECTION in
         FILE=${PARTS[0]}
         LINE=${PARTS[1]}
         COLUMN=${PARTS[2]}
-        $EDITOR $FILE "+call cursor($LINE, $COLUMN)"
+        exec $EDITOR $FILE "+call cursor($LINE, $COLUMN)"
         ;;
     3)
         TARGET=($(git status -s | fzf --print0))
-        $EDITOR ${TARGET[1]}
+        exec $EDITOR ${TARGET[1]}
         ;;
 
 esac
