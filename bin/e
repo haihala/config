@@ -9,7 +9,7 @@ if [ "$#" -ne 0 ]; then
     exit 0
 fi
 
-OPTIONS=("Just open the editor" "Search by file name" "Search by content")
+OPTIONS=("Just open the editor" "Search by file name" "Search by content" "Search git status")
 
 SELECTION=$(for I in ${!OPTIONS[@]}; do
     echo "$I: ${OPTIONS[$I]}"
@@ -31,4 +31,9 @@ case $SELECTION in
         COLUMN=${PARTS[2]}
         $EDITOR $FILE "+call cursor($LINE, $COLUMN)"
         ;;
+    3)
+        TARGET=$(git status -s | fzf --print0 | cut -d " " -f 3)
+        $EDITOR $TARGET
+        ;;
+
 esac
