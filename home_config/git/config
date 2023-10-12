@@ -27,3 +27,5 @@
 	rebase = true
 [push]
 	autoSetupRemote = true
+[include]
+    path = secret-config
