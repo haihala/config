@@ -32,8 +32,8 @@ case $SELECTION in
         $EDITOR $FILE "+call cursor($LINE, $COLUMN)"
         ;;
     3)
-        TARGET=$(git status -s | fzf --print0 | cut -d " " -f 3)
-        $EDITOR $TARGET
+        TARGET=($(git status -s | fzf --print0))
+        $EDITOR ${TARGET[1]}
         ;;
 
 esac
