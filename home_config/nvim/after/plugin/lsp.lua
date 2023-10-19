@@ -36,14 +36,14 @@ lsp_zero.on_attach(function(client, bufnum)
     vim.keymap.set("n", "<leader>i", vim.lsp.buf.hover, opts) -- Inspect
 
     -- Jump
-    vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>jd", picker.lsp_definitions, opts)
     vim.keymap.set("n", "<leader>jr", picker.lsp_references, opts)
 
     -- Diagnostics
-    vim.keymap.set("n", "<leader>D", vim.diagnostic.open_float, opts)
-    vim.keymap.set("n", "<leader>d", picker.diagnostics, opts)
-    vim.keymap.set("n", "<leader>[d", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "<leader>]d", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "<leader>di", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "<leader>dl", picker.diagnostics, opts)
+    vim.keymap.set("n", "<leader>d[", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "<leader>d]", vim.diagnostic.goto_prev, opts)
 
     -- Actions
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
