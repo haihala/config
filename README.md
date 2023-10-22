@@ -9,7 +9,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 1. Run a new-ish fedora workstation
 2. `sudo dnf_install.sh`
 3. Install the following (not found in dnf by default)
-   1. VScode - [link](https://code.visualstudio.com/docs/setup/linux)
+   1. nvim - A bit of a mystery, may require a c-compiler like `clang` and several restart -> `:PackerSync` cycles.
    2. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
       1. Compile by hand to avoid a bug on the lock screen
    3. mpv - [link](https://forums.fedoraforum.org/showthread.php?324163-install-mpv-player-on-fedora32&p=1835826#post1835826)
