@@ -47,7 +47,7 @@ alias cap='copy-abs-path'
 alias reload='source ~/.zshrc'
 # These use readlink to edit the file within the repo (fugitive recognizes it as a git repo)
 alias zshconfig='$EDITOR $(readlink $HOME/.zshrc)'
-alias swayconfig='$EDITOR $(readlink $HOME/.config/sway/config)'
+alias swayconfig='$EDITOR $(readlink $HOME/.config/sway)/config'
 
 # SSH agent magic
 . $HOME/bin/start-agent.sh
