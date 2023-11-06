@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -e
+
+# Prep
+output=/tmp/recordings/$(date +%Y-%m-%dT%T).mp4
+mkdir -p $(dirname $output)
+
+prompt() {
+    options=("$@")
+    selection=$(for I in ${!options[@]}; do
+        echo "$((I + 1)): ${options[$I]}"
+    done | fzf --print0 | cut -d ":" -f 1)
+    if [[ -z $selection ]]; then
+        exit 1
+    else
+        echo $((selection - 1))
+    fi
+}
+
+# Select capture mode (screen or area)
+mode=$1
+# Maybe support window selection in the future
+legal_modes=("screen" "area")
+mode_options=("Record selected screen" "Record selected area")
+
+if [[ -z "$mode" ]]; then
+    mode=${legal_modes[$(prompt "${mode_options[@]}")]}
+    echo $mode
+fi
+
+# Select source
+case $mode in
+"screen")
+    # For some reason, slurp format flag doesn't output
+    # So instead of using a proper display capture, capture the whole window as an area
+    area=$(slurp -o)
+    ;;
+"area")
+    area=$(slurp)
+    if [[ $? != 0 ]]; then
+        echo "No area selected, not recording"
+        exit
+    fi
+    ;;
+*)
+    echo "Invalid mode \"$mode\""
+    exit
+    ;;
+esac
+
+# Record
+wf-recorder -g "$area" -f "$output"
+echo
+
+# Select output
+while true; do
+    output_options=("Copy to clipboard and exit" "Print path and exit" "Exit without output" "(pre)view in mpv")
+
+    case $(prompt "${output_options[@]}") in
+    0)
+        wl-copy "file://${output}" -t text/uri-list
+        exit
+        ;;
+    1)
+        echo $output
+        exit
+        ;;
+    2)
+        echo "You can also exit with ctrl-c"
+        exit
+        ;;
+    3)
+        mpv $output
+        ;;
+
+    esac
+done
