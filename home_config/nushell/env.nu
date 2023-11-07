@@ -97,6 +97,47 @@ $env.NU_PLUGIN_DIRS = [
     ($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
 ]
 
-# To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-# $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
+# TODO: This is lacking, add things t o path as needed.
+$env.PATH = ($env.PATH | split row (char esep))
+let linked_bins = ( $nu.home-path | path join "bin" )
+$env.PATH = ( if $linked_bins in $env.PATH { $env.PATH } else { $env.PATH | prepend $linked_bins } )
+
 zoxide init nushell | save -f ~/.config/nushell/zoxide.nu
+
+# Env vars are generated basically automatically from zsh, all of these are probably not necessary
+$env.BUN_INSTALL = '/home/hajhawa/.bun'
+$env.DISPLAY = ':0'
+$env.EDITOR = 'nvim'
+$env.HOME = '/home/hajhawa'
+$env.HOSTTYPE = 'x86_64'
+$env.LANG = 'en_US.UTF-8'
+$env.LANGUAGE = 'en_US'
+$env.LAST_EXIT_CODE = '0'
+$env.LC_ALL = 'en_US.UTF-8'
+$env.LC_CTYPE = 'en_US.UTF-8'
+$env.LESS = '-R'
+$env.LOGNAME = 'hajhawa'
+$env.LOG_ANSI = '{CRITICAL: [1;31m, ERROR: [31m, WARNING: [33m, INFO: [39m, DEBUG: [2;39m}'
+$env.LOG_LEVEL = '{CRITICAL: 50, ERROR: 40, WARNING: 30, INFO: 20, DEBUG: 10}'
+$env.LOG_PREFIX = '{CRITICAL: CRT, ERROR: ERR, WARNING: WRN, INFO: INF, DEBUG: DBG}'
+$env.LOG_SHORT_PREFIX = '{CRITICAL: C, ERROR: E, WARNING: W, INFO: I, DEBUG: D}'
+$env.NAME = 'DESKTOP-URBIK4S'
+$env.PAGER = 'bat'
+$env.PULSE_SERVER = 'unix:/mnt/wslg/PulseServer'
+$env.SSH_AGENT_PID = '333'
+$env.SSH_AUTH_SOCK = '/tmp/ssh-XXXXXX8ykykj/agent.331'
+$env.TERM = 'xterm-256color'
+$env.TERM_PROGRAM = 'tmux'
+$env.TERM_PROGRAM_VERSION = '3.2a'
+$env.TMUX = '/tmp/tmux-1000/default,7067,0'
+$env.TMUX_PANE = '%4'
+$env.USER = 'hajhawa'
+$env.VIRTUAL_ENV_DISABLE_PROMPT = '1'
+$env.WAYLAND_DISPLAY = 'wayland-0'
+$env.WSL2_GUI_APPS_ENABLED = '1'
+$env.WSLENV = 'WT_SESSION:WT_PROFILE_ID:'
+$env.WSL_DISTRO_NAME = 'Ubuntu'
+$env.WSL_INTEROP = '/run/WSL/8_interop'
+$env.WT_PROFILE_ID = '{2c4de342-38b7-51cf-b940-2309a097f518}'
+$env.WT_SESSION = '3ef39f10-60a8-4793-a3e2-c3a0793493e6'
+$env.XDG_RUNTIME_DIR = '/mnt/wslg/runtime-dir'
