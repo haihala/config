@@ -1,16 +1,15 @@
 dnf install \
     acpi \
+    autojump \
     autojump-zsh \
-    bat \
     chromium \
-    durst \
+    dunst \
     fzf \
     git \
     grim \
     kitty \
     neovim \
     python3 \
-    ripgrep \
     slurp \
     sway \
     swaybg \
