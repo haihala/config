@@ -32,7 +32,7 @@ Tooling for and by rust.
 
 - Install rust with rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Install sccache to speed up compiles: `cargo install sccache`
-- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli`
+- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli zoxide`
 - Set rtx completions: `rtx completion zsh | sudo tee /usr/local/share/zsh/site-functions/_rtx`
 
 ## What goes where

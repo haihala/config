@@ -755,3 +755,5 @@ $env.config = {
         }
     ]
 }
+
+source ~/.config/nushell/zoxide.nu
