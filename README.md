@@ -8,24 +8,32 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 
 1. Run a new-ish fedora workstation
 2. `sudo dnf_install.sh`
-3. Install the following (not found in dnf by default)
-   1. nvm - [link](https://github.com/nvm-sh/nvm)
-   2. pyenv - [link](https://github.com/pyenv/pyenv)
-   3. oh-my-zsh - [link](https://ohmyz.sh/)
-   4. nvim - [link](https://github.com/neovim/neovim), A bit of a mystery, may require:
+3. Install [Rust tools](#rust-tools)
+4. Install the following (not found in dnf by default)
+   1. oh-my-zsh - [link](https://ohmyz.sh/)
+   2. nvim - [link](https://github.com/neovim/neovim), A bit of a mystery, may require:
       1. a c-compiler like `clang`
-      2. `npm` (via nvm)
+      2. `npm` (via `rtx` from [Rust tools](#rust-tools))
       3. Several cycles of `:PackerSync` and restart
-   5. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
+   3. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
       1. Compile by hand to avoid a bug on the lock screen
-   6. mpv - [link](https://forums.fedoraforum.org/showthread.php?324163-install-mpv-player-on-fedora32&p=1835826#post1835826)
-   7. zsh-autosuggestions - [link](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
-   8. obsidian - [link](https://obsidian.md/download)
-5. Run `./link.sh` from the repository root
+   4. mpv - [link](https://forums.fedoraforum.org/showthread.php?324163-install-mpv-player-on-fedora32&p=1835826#post1835826)
+   5. zsh-autosuggestions - [link](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
+   5. obsidian - [link](https://obsidian.md/download)
+6. Run `./link.sh` from the repository root
    1. You may have to create the `.config` folder in home.
-6. Check git email with `git config user.email`
-7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
-8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
+7. Check git email with `git config user.email`
+8. Edit crontab to run `bin/cron_battery.sh` (for laptops)
+9. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
+
+### Rust tools
+
+Tooling for and by rust.
+
+- Install rust with rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+- Install sccache to speed up compiles: `cargo install sccache`
+- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli`
+- Set rtx completions: `rtx completion zsh  > /usr/local/share/zsh/site-functions/_rtx`
 
 ## What goes where
 

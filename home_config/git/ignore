@@ -35,3 +35,6 @@ tags
 
 # direnv
 .envrc
+
+# rtx
+.rtx.toml
