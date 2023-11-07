@@ -139,7 +139,7 @@ let light_theme = {
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
-    show_banner: true # true or false to enable or disable the welcome banner at startup
+    show_banner: false # true or false to enable or disable the welcome banner at startup
 
     ls: {
         use_ls_colors: true # use the LS_COLORS environment variable to colorize output
@@ -755,5 +755,37 @@ $env.config = {
         }
     ]
 }
+
+# Aliases from zsh
+alias l = ls -lah
+
+# As for git aliases, I added a few I thought may be useful
+alias g = git
+alias ga = git add
+alias gaa = git add --all
+alias gau = git add --update
+alias gc = git commit
+alias gca = git commit --amend
+alias gss = git status -s
+alias gst = git status
+alias gd = git diff
+alias gds = git diff --stat
+alias glo = git log --oneline --decorate
+alias gls = git log --stat
+alias gco = git checkout
+alias gp = git push
+alias gl = git pull
+alias grb = git rebase
+alias grbi = git rebase -i
+alias grbc = git rebase --continue
+alias grba = git rebase --abort
+alias gsta = git stash
+alias gstp = git stash pop
+alias grs = git reset
+alias grsh = git reset --hard
+alias grm = git rm
+alias grmc = git rm --cached
+alias gre = git remote
+
 
 source ~/.config/nushell/zoxide.nu
