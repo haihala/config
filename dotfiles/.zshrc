@@ -31,6 +31,7 @@ export LANGUAGE=en_US
 
 # Preferred editor for local and remote sessions
 export EDITOR='nvim'
+export PAGER='bat'
 
 # Aliases
 alias ll="sl" # 'l' is enough
