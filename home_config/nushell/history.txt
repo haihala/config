@@ -1,0 +1,11 @@
+l
+ls
+mv README.md README.md2
+mv README.md2 README.md
+ln
+man ln
+PAGER=bat man ln
+e dotfiles/.zshrc
+j proj
+j
+z
