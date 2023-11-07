@@ -19,12 +19,12 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
       1. Compile by hand to avoid a bug on the lock screen
    4. mpv - [link](https://forums.fedoraforum.org/showthread.php?324163-install-mpv-player-on-fedora32&p=1835826#post1835826)
    5. zsh-autosuggestions - [link](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
-   5. obsidian - [link](https://obsidian.md/download)
-6. Run `./link.sh` from the repository root
+   6. obsidian - [link](https://obsidian.md/download)
+5. Run `./link.sh` from the repository root
    1. You may have to create the `.config` folder in home.
-7. Check git email with `git config user.email`
-8. Edit crontab to run `bin/cron_battery.sh` (for laptops)
-9. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
+6. Check git email with `git config user.email`
+7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
+8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
 
 ### Rust tools
 
@@ -33,7 +33,7 @@ Tooling for and by rust.
 - Install rust with rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Install sccache to speed up compiles: `cargo install sccache`
 - Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli`
-- Set rtx completions: `rtx completion zsh  > /usr/local/share/zsh/site-functions/_rtx`
+- Set rtx completions: `rtx completion zsh | sudo tee /usr/local/share/zsh/site-functions/_rtx`
 
 ## What goes where
 
