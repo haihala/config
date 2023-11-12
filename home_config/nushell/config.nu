@@ -757,7 +757,7 @@ $env.config = {
 }
 
 # Aliases from zsh
-alias l = ls -lah
+alias l = ls -la
 
 # As for git aliases, I added a few I thought may be useful
 alias g = git
@@ -787,5 +787,5 @@ alias grm = git rm
 alias grmc = git rm --cached
 alias gre = git remote
 
-
 source ~/.config/nushell/zoxide.nu
+source ~/bin/start-agent.nu

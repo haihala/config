@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 SshAgentEnvVarsFile=~/.sshagentenv
 function startSshAgent()
 {

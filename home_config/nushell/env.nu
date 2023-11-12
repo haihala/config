@@ -98,9 +98,11 @@ $env.NU_PLUGIN_DIRS = [
 ]
 
 # TODO: This is lacking, add things t o path as needed.
-$env.PATH = ($env.PATH | split row (char esep))
-let linked_bins = ( $nu.home-path | path join "bin" )
-$env.PATH = ( if $linked_bins in $env.PATH { $env.PATH } else { $env.PATH | prepend $linked_bins } )
+$env.PATH = ($env.PATH |
+    split row (char esep) |
+    prepend ( $nu.home-path | path join "bin" ) |
+    prepend ( $nu.home-path | path join ".cargo/bin" )
+)
 
 zoxide init nushell | save -f ~/.config/nushell/zoxide.nu
 
@@ -116,21 +118,10 @@ $env.LAST_EXIT_CODE = '0'
 $env.LC_ALL = 'en_US.UTF-8'
 $env.LC_CTYPE = 'en_US.UTF-8'
 $env.LESS = '-R'
-$env.LOGNAME = 'hajhawa'
-$env.LOG_ANSI = '{CRITICAL: [1;31m, ERROR: [31m, WARNING: [33m, INFO: [39m, DEBUG: [2;39m}'
-$env.LOG_LEVEL = '{CRITICAL: 50, ERROR: 40, WARNING: 30, INFO: 20, DEBUG: 10}'
-$env.LOG_PREFIX = '{CRITICAL: CRT, ERROR: ERR, WARNING: WRN, INFO: INF, DEBUG: DBG}'
-$env.LOG_SHORT_PREFIX = '{CRITICAL: C, ERROR: E, WARNING: W, INFO: I, DEBUG: D}'
 $env.NAME = 'DESKTOP-URBIK4S'
 $env.PAGER = 'bat'
 $env.PULSE_SERVER = 'unix:/mnt/wslg/PulseServer'
-$env.SSH_AGENT_PID = '333'
-$env.SSH_AUTH_SOCK = '/tmp/ssh-XXXXXX8ykykj/agent.331'
 $env.TERM = 'xterm-256color'
-$env.TERM_PROGRAM = 'tmux'
-$env.TERM_PROGRAM_VERSION = '3.2a'
-$env.TMUX = '/tmp/tmux-1000/default,7067,0'
-$env.TMUX_PANE = '%4'
 $env.USER = 'hajhawa'
 $env.VIRTUAL_ENV_DISABLE_PROMPT = '1'
 $env.WAYLAND_DISPLAY = 'wayland-0'
