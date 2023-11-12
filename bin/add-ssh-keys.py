@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import os
 import subprocess
 import sys
@@ -8,8 +9,15 @@ import pexpect
 def main():
     try:
         gpg_process = subprocess.run(
-            ('gpg', '--decrypt',
-             os.path.join(os.environ['HOME'], '.ssh', 'key_password_vault.asc')),
+            (
+                'gpg',
+                '--decrypt',
+                os.path.join(
+                    os.environ['HOME'],
+                    '.ssh',
+                    'key_password_vault.asc',
+                )
+            ),
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
