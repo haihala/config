@@ -42,6 +42,7 @@ alias python="python3"
 alias arandr="wdisplays" # I use wayland btw
 alias battery_percent="acpi -b | sed -r 's/[^,]*, ([0-9]+)%.*/\1/' | sort -rn | head -n 1"
 alias cap='copy-abs-path'
+alias gcan="git commit --amend --no-edit" # Runs hooks again
 
 # Conf development
 alias reload='source ~/.zshrc'
