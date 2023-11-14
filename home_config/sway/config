@@ -29,7 +29,8 @@ set $lock swaylock \
 	--key-hl-color $cl_exfocused \
 	--line-color 00000000 \
 	--inside-color 00000088 \
-	--separator-color 00000088 & systemctl suspend
+	--separator-color 00000088 \
+    -f && systemctl suspend
 
 set $ws0 "0"
 set $ws1 "1"
