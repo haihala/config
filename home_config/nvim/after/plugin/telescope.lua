@@ -40,7 +40,7 @@ vim.keymap.set('n', '<leader>fj', builtin.jumplist, {})
 
 -- Old (recently opened) files
 vim.keymap.set('n', '<leader>fo', builtin.oldfiles, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 
 -- Help
 vim.keymap.set('n', '<leader>fvm', builtin.help_tags, {}) -- Find vim manual
