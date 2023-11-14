@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+prompt() {
+    options=("$@")
+    selection=$(for I in ${!options[@]}; do
+        echo "$((I + 1)): ${options[$I]}"
+    done | fzf --print0 | cut -d ":" -f 1)
+    if [[ -z $selection ]]; then
+        exit 1
+    else
+        echo $((selection - 1))
+    fi
+}
+
+legal_targets=("zsh" "sway" "nvim" "tmux")
+
+if [ $# -eq 0 ]; then
+    target=${legal_targets[$(prompt "${legal_targets[@]}")]}
+else
+    target=$1
+fi
+
+case $target in
+"zsh" | "shell")
+    exec $EDITOR $(readlink $HOME/.zshrc)
+    ;;
+"sway")
+    exec $EDITOR $(readlink $HOME/.config/sway)/config
+    ;;
+"nvim" | "vim")
+    exec $EDITOR $(readlink $HOME/.config/nvim)/init.lua
+    ;;
+"tmux")
+    exec $EDITOR $(readlink $HOME/.tmux.conf)
+    ;;
+*)
+    echo "Invalid target '$target'"
+    ;;
+esac
