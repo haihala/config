@@ -13,7 +13,7 @@ prompt() {
     fi
 }
 
-legal_targets=("zsh" "sway" "nvim" "tmux")
+legal_targets=("zsh" "sway" "nvim" "tmux" "zellij" "cfg")
 
 if [ $# -eq 0 ]; then
     target=${legal_targets[$(prompt "${legal_targets[@]}")]}
@@ -33,6 +33,12 @@ case $target in
     ;;
 "tmux")
     exec $EDITOR $(readlink $HOME/.tmux.conf)
+    ;;
+"zellij")
+    exec $EDITOR $(readlink $HOME/.config/zellij)/config.kdl
+    ;;
+"cfg")
+    exec $EDITOR $(which cfg)
     ;;
 *)
     echo "Invalid target '$target'"
