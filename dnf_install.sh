@@ -4,6 +4,7 @@ dnf install \
     autojump-zsh \
     chromium \
     dunst \
+    fish \
     fzf \
     git \
     grim \
