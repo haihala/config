@@ -3,7 +3,7 @@
 set SshAgentEnvVarsFile ~/.sshagentenv
 
 function startSshAgent
-    set -l orig_umask $(umask)
+    set -l orig_umask (umask)
     umask 0077
     ssh-agent -c | sed /echo/d >$SshAgentEnvVarsFile
     . $SshAgentEnvVarsFile
@@ -13,7 +13,7 @@ end
 
 if [ -e $SshAgentEnvVarsFile ]
     . $SshAgentEnvVarsFile
-    if [ "$(cat /proc/$SSH_AGENT_PID/cmdline 2>/dev/null | sed 's:\x00::g')" != ssh-agent-c ]
+    if [ (cat /proc/$SSH_AGENT_PID/cmdline 2>/dev/null | sed 's:\x00::g') != ssh-agent-c ]
         startSshAgent
     end
 else
