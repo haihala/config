@@ -8,8 +8,8 @@ keybinds clear-defaults=true {
             };
         }
         bind "Ctrl a" { SwitchToMode "Tmux"; }
-        // One down from "tab", hard to pick a key as ctrl-p won't work because nvim
-        bind "Ctrl g" { SwitchToMode "Pane"; }
+        // There is no logic to this, it's just a nice to reach button that's unused
+        bind "Ctrl q" { SwitchToMode "Pane"; }
         bind "Ctrl t" { SwitchToMode "Tab"; }
         // Buffer?
         bind "Ctrl b" { SwitchToMode "Scroll"; }
@@ -41,10 +41,10 @@ keybinds clear-defaults=true {
 
         bind "n" { NewPane; SwitchToMode "Normal"; }
 
-        bind "h" { NewPane "Left"; SwitchToMode "Normal"; }
-        bind "j" { NewPane "Down"; SwitchToMode "Normal"; }
-        bind "k" { NewPane "Up"; SwitchToMode "Normal"; }
-        bind "l" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "h" { NewPane "Left"; }
+        bind "j" { NewPane "Down"; }
+        bind "k" { NewPane "Up"; }
+        bind "l" { NewPane "Right"; }
 
         // Shift moves
         bind "H" "Left" { MovePane "Left"; }
