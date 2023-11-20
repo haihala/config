@@ -7,19 +7,22 @@ keybinds clear-defaults=true {
                 move_to_focused_tab true
             };
         }
+        // Ctrl tab is not a legal bind according to
+        // https://zellij.dev/old-documentation/keybindings-keys.html
+        bind "Alt t" { ToggleTab; }
         bind "Ctrl a" { SwitchToMode "Tmux"; }
-        // There is no logic to this, it's just a nice to reach button that's unused
-        bind "Ctrl q" { SwitchToMode "Pane"; }
+        // S for splits
+        bind "Ctrl s" { SwitchToMode "Pane"; }
         bind "Ctrl t" { SwitchToMode "Tab"; }
-        // Buffer?
+        // B for Buffer and backlog
         bind "Ctrl b" { SwitchToMode "Scroll"; }
     }
     locked {
         bind "Ctrl l" { SwitchToMode "Normal"; }
     }
     shared_except "locked" {
-        bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
-        bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+        bind "Alt h" "Alt Left" { MoveFocus "Left"; }
+        bind "Alt l" "Alt Right" { MoveFocus "Right"; }
         bind "Alt j" "Alt Down" { MoveFocus "Down"; }
         bind "Alt k" "Alt Up" { MoveFocus "Up"; }
         bind "Alt =" "Alt +" { Resize "Increase"; }
