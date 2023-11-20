@@ -10,3 +10,7 @@ fish_add_path $HOME/.local/bin
 
 rtx activate fish | source
 zoxide init fish | source
+
+function l
+    ls -lah $argv
+end
