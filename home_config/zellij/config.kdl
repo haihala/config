@@ -34,7 +34,6 @@ keybinds clear-defaults=true {
         bind "l" { SwitchToMode "Locked"; }
     }
     pane {
-        bind "p" { SwitchFocus; }
         bind "x" { CloseFocus; SwitchToMode "Normal"; }
         bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
         bind "z" { TogglePaneFrames; SwitchToMode "Normal"; }
@@ -44,10 +43,11 @@ keybinds clear-defaults=true {
 
         bind "n" { NewPane; SwitchToMode "Normal"; }
 
-        bind "h" { NewPane "Left"; }
         bind "j" { NewPane "Down"; }
-        bind "k" { NewPane "Up"; }
         bind "l" { NewPane "Right"; }
+        // These don't work for some reason, create the pane right and down respectively
+        bind "h" { NewPane "Left"; }
+        bind "k" { NewPane "Up"; }
 
         // Shift moves
         bind "H" "Left" { MovePane "Left"; }
@@ -73,8 +73,8 @@ keybinds clear-defaults=true {
         bind "x" { CloseTab; SwitchToMode "Normal"; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "Normal"; }
         bind "b" { BreakPane; SwitchToMode "Normal"; }
-        bind "]" { BreakPaneRight; SwitchToMode "Normal"; }
-        bind "[" { BreakPaneLeft; SwitchToMode "Normal"; }
+        bind "]" { BreakPaneRight; }
+        bind "[" { BreakPaneLeft; }
         bind "1" { GoToTab 1; SwitchToMode "Normal"; }
         bind "2" { GoToTab 2; SwitchToMode "Normal"; }
         bind "3" { GoToTab 3; SwitchToMode "Normal"; }
@@ -178,26 +178,26 @@ pane_frames true
 // For more examples, see: https://github.com/zellij-org/zellij/tree/main/example/themes
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
 //
-// themes {
-//     dracula {
-//         fg 248 248 242
-//         bg 40 42 54
-//         red 255 85 85
-//         green 80 250 123
-//         yellow 241 250 140
-//         blue 98 114 164
-//         magenta 255 121 198
-//         orange 255 184 108
-//         cyan 139 233 253
-//         black 0 0 0
-//         white 255 255 255
-//     }
-// }
+themes {
+    dracula {
+        fg 248 248 242
+        bg 40 42 54
+        red 255 85 85
+        green 80 250 123
+        yellow 241 250 140
+        blue 98 114 164
+        magenta 255 121 198
+        orange 255 184 108
+        cyan 139 233 253
+        black 0 0 0
+        white 255 255 255
+    }
+}
 
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-// theme "default"
+theme "dracula"
 
 // The name of the default layout to load on startup
 // Default: "default"
