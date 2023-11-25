@@ -21,10 +21,22 @@ keybinds clear-defaults=true {
         bind "Ctrl l" { SwitchToMode "Normal"; }
     }
     shared_except "locked" {
-        bind "Alt h" "Alt Left" { MoveFocus "Left"; }
-        bind "Alt l" "Alt Right" { MoveFocus "Right"; }
-        bind "Alt j" "Alt Down" { MoveFocus "Down"; }
-        bind "Alt k" "Alt Up" { MoveFocus "Up"; }
+        bind "Alt h" "Alt Left" { Run "zellij-switch-pane" "Left"  {
+            close_on_exit true
+            in_place true
+        }; }
+        bind "Alt l" "Alt Right" { Run "zellij-switch-pane" "Right"  {
+            close_on_exit true
+            in_place true
+        }; }
+        bind "Alt j" "Alt Down" { Run "zellij-switch-pane" "Down" {
+            close_on_exit true
+            in_place true
+        };}
+        bind "Alt k" "Alt Up" { Run "zellij-switch-pane" "Up" {
+            close_on_exit true
+            in_place true
+        };}
         bind "Alt =" "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
     }
