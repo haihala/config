@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-exec zellij action move-focus $1
-
