@@ -9,6 +9,7 @@ dnf install \
     fzf \
     git \
     grim \
+    kitty \
     neovim \
     python3 \
     slurp \
