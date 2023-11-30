@@ -4,11 +4,37 @@ local builtin = require('telescope.builtin')
 telescope.setup {
     defaults = {
         file_ignore_patterns = { ".git/", "node_modules" },
-        layout_strategy = "vertical"
+        layout_strategy = "vertical",
     },
     pickers = {
         find_files = {
-            hidden = true
+            hidden = true,
+            mappings = {
+                i = {
+                    ["<C-h>"] = function(prompt_bufnr)
+                        -- Debugging stuff, figure this out later
+                        --local ta = require("telescope.actions")
+                        --local tas = require("telescope.actions.state")
+                        --local current_picker = tas.get_current_picker(prompt_bufnr)
+                        --local current_line = tas.get_current_line(prompt_bufnr)
+                        --local ts = require("telescope.state")
+                        --local gs = ts.get_status(prompt_bufnr)
+
+                        --local keyset = {}
+                        --local n = 0
+
+                        --for k, v in pairs() do
+                        --    n = n + 1
+                        --    keyset[n] = k
+                        --end
+                        --vim.print(gs)
+                        --vim.print(keyset)
+
+                        --vim.print("line: " .. current_line)
+                        --builtin.find_files({ no_ignore = true })
+                    end
+                }
+            }
         }
     },
     extensions = {
