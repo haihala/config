@@ -12,7 +12,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 4. Install the following (not found in dnf by default)
    1. oh-my-zsh - [link](https://ohmyz.sh/)
    2. nvim - [link](https://github.com/neovim/neovim), A bit of a mystery, may require:
-      1. a c-compiler like `clang`
+      1. `bob use stable` to install the stable version
       2. `npm` (via `rtx` from [Rust tools](#rust-tools))
       3. Several cycles of `:PackerSync` and restart
    3. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
@@ -32,7 +32,7 @@ Tooling for and by rust.
 
 - Install rust with rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Install sccache to speed up compiles: `cargo install sccache`
-- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli zoxide zellij`
+- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli zoxide zellij bob-nvim`
 - Set rtx completions: `rtx completion zsh | sudo tee /usr/local/share/zsh/site-functions/_rtx`
 
 ## What goes where
