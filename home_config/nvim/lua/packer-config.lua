@@ -21,6 +21,8 @@ require('packer').startup(function(use)
     use 'ThePrimeagen/harpoon'
     use 'mbbill/undotree'
     use 'tpope/vim-fugitive'
+    use 'tpope/vim-surround'
+    use 'tpope/vim-commentary'
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
     use 'APZelos/blamer.nvim'
