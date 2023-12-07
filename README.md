@@ -25,6 +25,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 6. Check git email with `git config user.email`
 7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
 8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
+9. Install [tpm](https://github.com/tmux-plugins/tpm)
 
 ### Rust tools
 
