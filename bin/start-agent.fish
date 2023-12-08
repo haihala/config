@@ -14,7 +14,9 @@ end
 if [ -e $SshAgentEnvVarsFile ]
     . $SshAgentEnvVarsFile
 
-    if not pgrep -f mpd >/dev/null; and [ (cat /proc/$SSH_AGENT_PID/cmdline 2>/dev/null | sed 's:\x00::g') != ssh-agent-c ]
+    if begin
+            not pgrep -f mpd >/dev/null; and test "(cat /proc/$SSH_AGENT_PID/cmdline 2>/dev/null | sed 's:\x00::g')" != ssh-agent-c
+        end
         startSshAgent
     end
 else
