@@ -31,10 +31,8 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 
 Tooling for and by rust.
 
-- Install rust with rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-- Install sccache to speed up compiles: `cargo install sccache`
-- Install various rust tools with cargo: `RUSTC_WRAPPER=sccache cargo install tokei nu bat ripgrep fd-find just rtx-cli zoxide zellij bob-nvim bottom bacon`
-- Set rtx completions: `rtx completion zsh | sudo tee /usr/local/share/zsh/site-functions/_rtx`
+- Install rust from https://rustup.rs/
+- Run `./cargo_install.sh`
 
 ## What goes where
 
