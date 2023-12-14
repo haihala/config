@@ -1,2 +1,2 @@
-vim.keymap.set("n", "<leader>h[", "<Plug>(GitGutterPrevHunk)")
-vim.keymap.set("n", "<leader>h]", "<Plug>(GitGutterNextHunk)")
+vim.keymap.set("n", "[h", "<Plug>(GitGutterPrevHunk)")
+vim.keymap.set("n", "]h", "<Plug>(GitGutterNextHunk)")

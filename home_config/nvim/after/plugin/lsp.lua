@@ -42,8 +42,8 @@ lsp_zero.on_attach(function(client, bufnum)
     -- Diagnostics
     vim.keymap.set("n", "<leader>di", vim.diagnostic.open_float, opts)
     vim.keymap.set("n", "<leader>dl", picker.diagnostics, opts)
-    vim.keymap.set("n", "<leader>d]", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "<leader>d[", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
     -- Actions
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
