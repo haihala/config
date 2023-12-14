@@ -40,7 +40,10 @@ telescope.setup {
     extensions = {
         file_browser = {
             hidden = true,
-            hijack_netrw = true
+            hijack_netrw = true,
+            grouped = true,
+            collapse_dirs = true,
+            hide_parent_dir = true,
         },
     }
 }
