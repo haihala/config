@@ -18,6 +18,7 @@ require('packer').startup(function(use)
     vim.cmd('colorscheme dracula')
 
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'ThePrimeagen/harpoon'
     use 'mbbill/undotree'
     use 'tpope/vim-fugitive'
