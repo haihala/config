@@ -36,8 +36,9 @@ lsp_zero.on_attach(function(client, bufnum)
     vim.keymap.set("n", "<leader>i", vim.lsp.buf.hover, opts) -- Inspect
 
     -- Jump
-    vim.keymap.set("n", "<leader>jd", picker.lsp_definitions, opts)
-    vim.keymap.set("n", "<leader>jr", picker.lsp_references, opts)
+    vim.keymap.set("n", "<leader>jd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "<leader>jr", function() picker.lsp_references({ include_declaration = false, }) end, opts)
+    vim.keymap.set("n", "<leader>js", picker.lsp_document_symbols, opts)
 
     -- Diagnostics
     vim.keymap.set("n", "<leader>di", vim.diagnostic.open_float, opts)

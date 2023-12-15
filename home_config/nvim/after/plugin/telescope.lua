@@ -76,8 +76,8 @@ vim.keymap.set('n', '<leader>fo', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 
 -- Help
-vim.keymap.set('n', '<leader>fvm', builtin.help_tags, {}) -- Find vim manual
-vim.keymap.set('n', '<leader>fm', builtin.man_pages, {})  -- Find man
+vim.keymap.set('n', '<leader>fv', builtin.help_tags, {}) -- Find vim manual
+vim.keymap.set('n', '<leader>fm', builtin.man_pages, {}) -- Find man
 
 -- Find previous
 vim.keymap.set('n', '<leader>fp', builtin.resume, {})
