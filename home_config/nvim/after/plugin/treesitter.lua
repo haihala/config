@@ -23,6 +23,18 @@ require('nvim-treesitter.configs').setup {
 
     indent = { enable = true },
 
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            -- Select node
+            init_selection = "<leader>sn",
+            -- Next/prev node
+            node_incremental = "]n",
+            node_decremental = "[n",
+            scope_incremental = false,
+        }
+    },
+
     textobjects = {
         select = {
             enable = true,
@@ -63,6 +75,11 @@ require('nvim-treesitter.configs').setup {
                 ["]l"] = "@loop.*",
                 ["]="] = "@assignment.outer",
                 ["]b"] = "@block.outer",
+                ["]p"] = "@parameter.inner",
+                ["]a="] = "@assignment.outer",
+                ["]i="] = "@assignment.inner",
+                ["]l="] = "@assignment.lhs",
+                ["]r="] = "@assignment.rhs",
             },
 
             goto_previous_start = {
@@ -71,6 +88,11 @@ require('nvim-treesitter.configs').setup {
                 ["[l"] = "@loop.*",
                 ["[="] = "@assignment.outer",
                 ["[b"] = "@block.outer",
+                ["[p"] = "@parameter.inner",
+                ["[a="] = "@assignment.outer",
+                ["[i="] = "@assignment.inner",
+                ["[l="] = "@assignment.lhs",
+                ["[r="] = "@assignment.rhs",
             },
 
             goto_next = {
