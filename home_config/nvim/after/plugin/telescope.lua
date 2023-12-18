@@ -42,7 +42,7 @@ telescope.setup {
             hidden = true,
             hijack_netrw = true,
             grouped = true,
-            collapse_dirs = true,
+            -- collapse_dirs = true,    -- This occasionally just fails
             hide_parent_dir = true,
         },
     }
@@ -64,9 +64,9 @@ vim.keymap.set("n", "<leader>fR", function() fb.file_browser({ hidden = true, no
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fF', function() builtin.find_files({ no_ignore = true }) end, {})
 
--- Search
-vim.keymap.set('n', '<leader>fs', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fS', function() builtin.live_grep({ additional_args = { "--no-ignore" } }) end, {})
+-- Find content
+vim.keymap.set('n', '<leader>fc', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fC', function() builtin.live_grep({ additional_args = { "--no-ignore" } }) end, {})
 
 -- Jumps
 vim.keymap.set('n', '<leader>fj', builtin.jumplist, {})
