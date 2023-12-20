@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+export SWAYSOCK=$(ls /run/user/1000/sway-ipc.* | head -n 1)
+
+case $1 in
+	workstation)
+		sway output DP-4 pos 0 0
+		sway output DP-3 pos 0 0
+		sway output DP-2 pos 2560 0
+		sway output eDP-1 scale 2 pos 5120 360
+		;;
+	*)
+		echo "Unrecognized option, try 'Workstation'"
+esac
+
