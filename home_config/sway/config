@@ -57,6 +57,9 @@ set $wsF12 "F12"
 
 ### Resizing mode
 
+### resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+
 mode "resize" {
         bindsym l resize grow width 10 px
         bindsym h resize shrink width 10 px
@@ -70,6 +73,8 @@ mode "resize" {
 }
 
 ### System mode
+bindsym $mod+Shift+e mode "$mode_system"
+
 set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
 mode "$mode_system" {
 		bindsym l exec $lock, mode "default"
@@ -93,9 +98,6 @@ bindsym $mod+Return exec $term
 
 ### reload the configuration file
 bindsym $mod+Shift+r reload
-
-### exit sway (log out)
-bindsym $mod+Shift+e mode "$mode_system"
 
 ### kill focused window
 bindsym $mod+Shift+q kill
@@ -126,31 +128,22 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 ### Screenshots
-#### Area
-bindsym $mod+p exec grim -g "$(slurp -d)" - | wl-copy
-#### Window
-bindsym $mod+Shift+p exec swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp -d | xargs -I '{}' grim -g '{}' - | wl-copy
+#### Click = window, drag = area
+bindsym $mod+s exec swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp -d | xargs -I '{}' grim -g '{}' - | wl-copy
 #### Display
-bindsym $mod+Alt+p exec grim -g "$(slurp -o -d)" - | wl-copy
+bindsym $mod+Shift+s exec grim -g "$(slurp -o -d)" - | wl-copy
 
 ### Quick launchers
 bindsym $mod+f exec firefox
-bindsym $mod+c exec code
 bindsym $mod+m exec google-chrome https://meet.google.com/
-
-### split in horizontal orientation
-bindsym $mod+b split h
-
-### split in vertical orientation
-bindsym $mod+v split v
 
 ### enter fullscreen mode for the focused container
 bindsym $mod+Shift+f fullscreen toggle
 
 ### change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+b layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+g layout toggle split
 
 ### switch to workspace
 bindsym $mod+0 workspace $ws0
@@ -200,9 +193,6 @@ bindsym $mod+Shift+F10 move container to workspace $wsF10
 bindsym $mod+Shift+F11 move container to workspace $wsF11
 bindsym $mod+Shift+F12 move container to workspace $wsF12
 
-### resize window (you can also use the mouse for that)
-bindsym $mod+r mode "resize"
-
 # Pulse Audio controls
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
 bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
@@ -250,8 +240,8 @@ workspace_layout default
 show_marks yes
 
 ## Start programs
-# NetworkManager Applet. Shows status but is not clickable.
 exec nm-applet --indicator
+exec blueman-applet
 
 # Automatic lock screen
 exec swayidle -w timeout 3600 '$lock'
