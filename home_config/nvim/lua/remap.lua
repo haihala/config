@@ -21,11 +21,6 @@ vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi")
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 
--- Jumps
-vim.keymap.set("n", "<leader>jp", "``") -- to Previous jump
-vim.keymap.set("n", "<leader>jf", "gf") -- to File
-vim.keymap.set("n", "gf", "<Nop>")      -- Unbind default
-
 -- Execute current file
 vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
 
