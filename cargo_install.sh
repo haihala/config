@@ -9,6 +9,7 @@ then
         bacon \
         bob-nvim \
         bottom \
+        cargo-make \
         fd-find \
         just \
         nu \
