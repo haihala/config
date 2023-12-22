@@ -17,3 +17,11 @@ zoxide init fish | source
 function l
     ls -lah $argv
 end
+
+function yoink
+    wl-copy <$argv
+end
+
+function yeet
+    wl-paste >$argv
+end
