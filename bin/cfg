@@ -13,7 +13,7 @@ prompt() {
     fi
 }
 
-legal_targets=("zsh" "fish" "sway" "nvim" "tmux" "zellij" "readme" "cfg")
+legal_targets=("zsh" "fish" "sway" "nvim" "tmux" "zellij" "readme" "cfg" "e")
 
 if [ $# -eq 0 ]; then
     target=${legal_targets[$(prompt "${legal_targets[@]}")]}
@@ -45,6 +45,9 @@ case $target in
     ;;
 "cfg")
     exec $EDITOR $(which cfg)
+    ;;
+"e")
+    exec $EDITOR $(which e)
     ;;
 *)
     echo "Invalid target '$target'"
