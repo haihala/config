@@ -30,7 +30,7 @@ done | fzf --print0 | cut -d ":" -f 1) in
     result=$(FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix' \
         fzf --print0 --preview "$preview_cmd" |
         xargs -0 -o)
-    exec $EDITOR $result
+    exec $EDITOR "$result"
     ;;
 2)
     # Fuzzy find against current folder contents, match file name, line and column
@@ -42,27 +42,30 @@ done | fzf --print0 | cut -d ":" -f 1) in
             xargs -0 -o |
             cut -d ':' -f 1-3
     )
-    parts=(${result//:/ })
-    result=${parts[0]}
-    line=${parts[1]}
-    column=${parts[2]}
-    exec $EDITOR $result "+call cursor($line, $column)"
+    file_name=$(echo ${result} | cut -d: -f1 | tr -d "'" | tr -d '"')
+    line=$(echo ${result} | cut -d: -f2)
+    column=$(echo ${result} | cut -d: -f3)
+    exec $EDITOR "$file_name" "+call cursor($line, $column)"
     ;;
 3)
+    # This includes extra quotes and the reason why a file is in the status list
     result=($(git status -s | fzf --ansi --print0 | xargs -0 -o))
-    exec $EDITOR ${result[1]} # Number is here to get the non-status thingy
+    # This strips the reason and the quotes away.
+    # Will probably fail on files with quotes in the names
+    file_name=$(echo ${result[@]:1}| tr -d "'" | tr -d '"')
+    exec $EDITOR "$file_name"
     ;;
 4)
     result=$(git diff-tree --no-commit-id --name-only HEAD -r | fzf --print0 | xargs -0 -o)
-    exec $EDITOR ${result}
+    exec $EDITOR "$result"
     ;;
 5)
     commit_hash=$(git log --all --oneline --color=always | fzf --ansi --print0 | xargs -0 -o | cut -d' ' -f1)
     result=$(git diff-tree --no-commit-id --name-only $commit_hash -r | fzf --print0 | xargs -0 -o)
-    exec $EDITOR ${result}
+    exec $EDITOR "$result"
     ;;
 6)
     result=$(fzf --print0 --preview "$preview_cmd" | xargs -0 -o)
-    exec $EDITOR $result
+    exec $EDITOR "$result"
     ;;
 esac
