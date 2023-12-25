@@ -26,14 +26,7 @@ function e
 
     set preview_cmd 'bat --style=numbers --color=always --line-range :500 {}'
 
-    for action in $actions
-        set index (contains -i $action $actions)
-        set indexed[$index] "$index: $action"
-    end
-
-    set selection (printf %s\n $indexed | fzf --print0 | cut -d ":" -f 1)
-
-    switch $selection
+    switch (index_picker $actions)
         case 1
             $EDITOR
         case 2
