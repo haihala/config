@@ -55,6 +55,7 @@ function e
             set result (git status -s | 
                 fzf --ansi --print0 | 
                 xargs -0 -o | 
+                string trim |
                 string split ' ' -f2)
 
             if test -e $result

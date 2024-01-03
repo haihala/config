@@ -8,10 +8,11 @@ fish_add_path $HOME/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.local/share/bob/nvim-bin
+fish_add_path $HOME/.local/share/mise/shims
 
 . $HOME/bin/start-agent.fish
 
-rtx activate fish | source
+mise activate fish | source
 zoxide init fish | source
 
 function l

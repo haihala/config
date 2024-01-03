@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-if command -v cargo &> /dev/null
-then
+if command -v cargo &>/dev/null; then
     cargo install sccache
 
     RUSTC_WRAPPER=sccache cargo install \
@@ -12,9 +11,9 @@ then
         cargo-make \
         fd-find \
         just \
+        mise \
         nu \
         ripgrep \
-        rtx-cli \
         tokei \
         zellij \
         zoxide
@@ -22,4 +21,3 @@ else
     echo "Please install rust from https://rustup.rs/"
     exit 1
 fi
-
