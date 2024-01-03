@@ -15,6 +15,8 @@ vim.keymap.set("n", "<leader>Y", ":let @+=@%<CR>")
 -- Paste from system clipboard
 vim.keymap.set("i", "<C-v>", "<C-p>+")
 
+vim.keymap.set("n", "<leader>n", ":noh<CR>")
+
 -- Line shimmy (Work funny in normal mode so don't bother for now)
 vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi")
 vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi")
@@ -34,4 +36,3 @@ end, {})
 
 -- TODO: Pane resizing
 -- TODO: Reload
--- TODO: Import ordering

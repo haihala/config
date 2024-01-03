@@ -20,6 +20,10 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true -- Searching with upper case character is case sensitive
 
+-- Automatically reload and save files upon navigation
+vim.opt.autoread = true
+vim.opt.autowriteall = true
+
 -- Neovide
 if vim.g.neovide then
     vim.o.guifont = "Source Code Pro:h10"
@@ -31,6 +35,7 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80"
 
+-- Unobvious filetypes
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "Jenkinsfile" },
     command = ":set filetype=groovy",

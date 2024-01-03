@@ -24,6 +24,7 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use 'tpope/vim-surround'
     use 'tpope/vim-commentary'
+    use 'tpope/vim-repeat'
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
     use 'APZelos/blamer.nvim'
