@@ -28,6 +28,10 @@ require('packer').startup(function(use)
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
     use 'APZelos/blamer.nvim'
+    use 'norcalli/nvim-colorizer.lua'
+    use 'jwalton512/vim-blade'
+    use 'sbdchd/neoformat'
+    use 'christoomey/vim-tmux-navigator'
 
     use {
         'nvim-lualine/lualine.nvim',
@@ -57,7 +61,6 @@ require('packer').startup(function(use)
         }
     }
 
-    use 'jwalton512/vim-blade'
 
     -- Copilot slows down editing a lot if not logged in
     -- use 'github/copilot.vim'
@@ -71,8 +74,4 @@ require('packer').startup(function(use)
             }
         end
     }
-
-    use 'sbdchd/neoformat'
-
-    use 'christoomey/vim-tmux-navigator'
 end)
