@@ -26,6 +26,16 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 -- Execute current file
 vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
 
+-- Snippets
+-- Inserts an ISO timestamp after the current character
+local function timestamp(flags)
+    return "a<c-r>=trim(system('date " .. flags .. "'))<CR><Esc>"
+end
+vim.keymap.set("n", "<leader>sti", timestamp("-Im"))    -- ISO
+vim.keymap.set("n", "<leader>std", timestamp("-Idate")) -- Date
+vim.keymap.set("n", "<leader>stt", timestamp("+%T"))    -- Time
+vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
+
 -- While not a remap, I'm putting this here
 vim.api.nvim_create_user_command("Upgrade", function()
     -- The order here doesn't seem to matter
