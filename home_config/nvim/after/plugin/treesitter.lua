@@ -9,7 +9,7 @@ require('nvim-treesitter.configs').setup {
 
     -- Automatically install missing parsers when entering buffer
     -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-    auto_install = true,
+    auto_install = false,
 
     highlight = {
         enable = true,
@@ -27,10 +27,10 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         keymaps = {
             -- Select node
-            init_selection = "<leader>sn",
-            -- Next/prev node
-            node_incremental = "]n",
-            node_decremental = "[n",
+            init_selection = "<leader>n",
+            -- Next/prev node (only active if selecting shit with TS)
+            node_incremental = "n",
+            node_decremental = "p",
             scope_incremental = false,
         }
     },
@@ -50,10 +50,13 @@ require('nvim-treesitter.configs').setup {
                 ["al"] = "@loop.outer",
                 ["il"] = "@loop.inner",
 
-                ["a="] = "@assignment.outer",
-                ["i="] = "@assignment.inner",
-                ["l="] = "@assignment.lhs",
-                ["r="] = "@assignment.rhs",
+                ["aa"] = "@assignment.outer",
+                ["ia"] = "@assignment.inner",
+                ["la"] = "@assignment.lhs",
+                ["ra"] = "@assignment.rhs",
+
+                ["ab"] = "@block.outer",
+                ["ib"] = "@block.inner",
             },
         },
 
@@ -76,26 +79,26 @@ require('nvim-treesitter.configs').setup {
                 ["]f"] = "@function.outer",
                 ["]t"] = "@class.outer", -- T for type
                 ["]l"] = "@loop.*",
-                ["]="] = "@assignment.outer",
+                ["]a"] = "@assignment.outer",
                 ["]b"] = "@block.outer",
                 ["]p"] = "@parameter.inner",
-                ["]a="] = "@assignment.outer",
-                ["]i="] = "@assignment.inner",
-                ["]l="] = "@assignment.lhs",
-                ["]r="] = "@assignment.rhs",
+                ["]aa"] = "@assignment.outer",
+                ["]ia"] = "@assignment.inner",
+                ["]la"] = "@assignment.lhs",
+                ["]ra"] = "@assignment.rhs",
             },
 
             goto_previous_start = {
                 ["[f"] = "@function.outer",
                 ["[t"] = "@class.outer",
                 ["[l"] = "@loop.*",
-                ["[="] = "@assignment.outer",
+                ["[a"] = "@assignment.outer",
                 ["[b"] = "@block.outer",
                 ["[p"] = "@parameter.inner",
-                ["[a="] = "@assignment.outer",
-                ["[i="] = "@assignment.inner",
-                ["[l="] = "@assignment.lhs",
-                ["[r="] = "@assignment.rhs",
+                ["[aa"] = "@assignment.outer",
+                ["[ia"] = "@assignment.inner",
+                ["[la"] = "@assignment.lhs",
+                ["[ra"] = "@assignment.rhs",
             },
 
             goto_next = {
@@ -109,7 +112,8 @@ require('nvim-treesitter.configs').setup {
     }
 }
 
-vim.keymap.set("n", "<leader>st", ":InspectTree<CR>")
+-- Tree inspect
+vim.keymap.set("n", "<leader>ti", ":InspectTree<CR>")
 
 -- This makes motions like ]f repeatable with ; and ,
 local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
