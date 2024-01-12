@@ -15,7 +15,13 @@ vim.keymap.set("n", "<leader>Y", ":let @+=@%<CR>")
 -- Paste from system clipboard
 vim.keymap.set("i", "<C-v>", "<C-p>+")
 
+-- Clear search highlights
 vim.keymap.set("n", "<leader>n", ":noh<CR>")
+
+-- Quick split operations
+vim.keymap.set("n", "<a-q>", "<c-w>q")
+vim.keymap.set("n", "<a-->", "<c-w>s")
+vim.keymap.set("n", "<a-|>", "<c-w>v")
 
 -- Line shimmy (Work funny in normal mode so don't bother for now)
 vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi")
