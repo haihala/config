@@ -27,7 +27,7 @@ require('nvim-treesitter.configs').setup {
         enable = true,
         keymaps = {
             -- Select node
-            init_selection = "<leader>n",
+            init_selection = "<leader>t",
             -- Next/prev node (only active if selecting shit with TS)
             node_incremental = "n",
             node_decremental = "p",
@@ -113,7 +113,7 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Tree inspect
-vim.keymap.set("n", "<leader>ti", ":InspectTree<CR>")
+vim.keymap.set("n", "<leader>T", ":InspectTree<CR>")
 
 -- This makes motions like ]f repeatable with ; and ,
 local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
