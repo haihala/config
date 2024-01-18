@@ -12,6 +12,7 @@
 	autocrlf = off
 	safecrlf = off
 	excludeFiles = pyrightconfig.json
+	excludesfile = /home/eeroh/.config/git/global_gitignore
 [cola]
 	spellcheck = false
 [rebase]
