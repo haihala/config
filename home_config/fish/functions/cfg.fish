@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets zsh fish sway nvim tmux zellij readme cfg e
+    set legal_targets zsh fish sway nvim tmux readme cfg e
 
     if count $argv >>/dev/null
         set target $argv
@@ -20,8 +20,6 @@ function cfg
             $EDITOR (readlink $HOME/.config/nvim)/init.lua
         case tmux
             $EDITOR (readlink $HOME/.tmux.conf)
-        case zellij
-            $EDITOR (readlink $HOME/.config/zellij)/config.kdl
         case readme
             $EDITOR (dirname (readlink $HOME/bin))/README.md
         case cfg

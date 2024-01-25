@@ -15,7 +15,6 @@ if command -v cargo &>/dev/null; then
         nu \
         ripgrep \
         tokei \
-        zellij \
         zoxide
 else
     echo "Please install rust from https://rustup.rs/"
