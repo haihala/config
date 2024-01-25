@@ -15,6 +15,8 @@ fish_add_path $HOME/.local/share/mise/shims
 mise activate fish | source
 zoxide init fish | source
 
+set -Ux fish_tmux_config $HOME/.config/tmux/tmux.conf
+
 function l
     ls -lah $argv
 end
