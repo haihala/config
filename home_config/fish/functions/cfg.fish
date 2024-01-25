@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets zsh fish sway nvim tmux readme cfg e
+    set legal_targets fish sway nvim tmux readme cfg e
 
     if count $argv >>/dev/null
         set target $argv
@@ -10,8 +10,6 @@ function cfg
     set fish_conf_dir (readlink $HOME/.config/fish)
 
     switch $target
-        case zsh
-            $EDITOR (readlink $HOME/.zshrc)
         case fish
             $EDITOR $fish_conf_dir/config.fish
         case sway
