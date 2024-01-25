@@ -19,7 +19,7 @@ function cfg
         case nvim vim
             $EDITOR (readlink $HOME/.config/nvim)/init.lua
         case tmux
-            $EDITOR (readlink $HOME/.tmux.conf)
+            $EDITOR (readlink $HOME/.config/tmux)/tmux.conf
         case readme
             $EDITOR (dirname (readlink $HOME/bin))/README.md
         case cfg
