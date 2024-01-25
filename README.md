@@ -39,7 +39,6 @@ Tooling for and by rust.
 - `dotfiles/*` is linked to `$HOME/*`
 - `home_config/*` -> `$HOME/.config/*`
 - `bin` -> `$HOME/bin`
-- `non_linked` isn't linked anywhere, but I still think I should have handy.
 
 ## Setting up SSH key magic
 
