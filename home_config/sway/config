@@ -125,6 +125,17 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
+### Keys to move workspaces:
+bindsym $mod+Control+Shift+Left move workspace to output left
+bindsym $mod+Control+Shift+Down move workspace to output down
+bindsym $mod+Control+Shift+Up move workspace to output up
+bindsym $mod+Control+Shift+Right move workspace to output right
+
+bindsym $mod+Control+Shift+h move workspace to output left
+bindsym $mod+Control+Shift+j move workspace to output down
+bindsym $mod+Control+Shift+k move workspace to output up
+bindsym $mod+Control+Shift+l move workspace to output right
+
 ### Screenshots
 #### Click = window, drag = area
 bindsym $mod+s exec swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp -d | xargs -I '{}' grim -g '{}' - | wl-copy
