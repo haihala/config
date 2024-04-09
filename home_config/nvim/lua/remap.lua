@@ -18,6 +18,9 @@ vim.keymap.set("i", "<C-v>", "<C-p>+")
 -- Clear search highlights
 vim.keymap.set("n", "<leader>n", ":noh<CR>")
 
+-- Clear search highlights
+vim.keymap.set("n", "<leader>w", ":noa w<CR>")
+
 -- Quick split operations
 vim.keymap.set("n", "<a-q>", "<c-w>q")
 vim.keymap.set("n", "<a-->", "<c-w>s")
