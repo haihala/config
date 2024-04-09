@@ -87,3 +87,25 @@ vim.keymap.set('n', '<leader>fgf', builtin.git_files, {})    -- Files not in git
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {}) -- Branches
 vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})  -- Commits
 vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})   -- Status (lists changed files)
+
+
+-- Visual mode
+-- Common pattern: Yoink selection to register t, use that as the default_text argument to telescope
+
+-- Find files
+vim.api.nvim_set_keymap('v', '<leader>ff', '"ty:Telescope find_files default_text=<c-r>t<CR>', {})
+vim.api.nvim_set_keymap(
+    'v',
+    '<leader>fF',
+    '"ty:Telescope find_files default_text=<c-r>t additional_args=--no-ignore<CR>',
+    {}
+)
+
+-- Find content
+vim.api.nvim_set_keymap('v', '<leader>fc', '"ty:Telescope live_grep default_text=<c-r>t<CR>', {})
+vim.api.nvim_set_keymap(
+    'v',
+    '<leader>fC',
+    '"ty:Telescope live_grep default_text=<c-r>t additional_args=--no-ignore<CR>',
+    {}
+)
