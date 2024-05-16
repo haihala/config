@@ -26,6 +26,7 @@
 	clean = git-lfs clean -- %f
 [pull]
 	rebase = true
+	ff = only
 [push]
 	autoSetupRemote = true
 [include]
