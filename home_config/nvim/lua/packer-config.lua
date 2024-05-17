@@ -23,7 +23,6 @@ require('packer').startup(function(use)
     use 'mbbill/undotree'
     use 'tpope/vim-fugitive'
     use 'tpope/vim-surround'
-    use 'tpope/vim-commentary'
     use 'tpope/vim-repeat'
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
