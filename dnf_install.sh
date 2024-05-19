@@ -4,12 +4,14 @@ dnf install \
     autojump \
     autojump-zsh \
     chromium \
+    clang \
     dunst \
     fish \
     fzf \
     git \
     grim \
     kitty \
+    mpv \
     neovim \
     python3 \
     slurp \
