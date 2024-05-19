@@ -25,7 +25,14 @@ else
     echo "linked bin to $HOME/bin"
 fi
 
+# ~/.config stuff
 for conf in $(ls -AL home_config/); do
     ln -fs $(pwd)/home_config/$conf $HOME/.config/
     echo "linked $conf to $HOME/.config/$conf"
+done
+
+# Desktop icons
+for desk in $(ls -AL desktop/); do
+    ln -fs $(pwd)/desktop/$desk $HOME/.local/share/applications
+    echo "linked $desk to $HOME/.local/share/applications/$desk"
 done
