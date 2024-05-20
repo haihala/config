@@ -15,6 +15,7 @@ dnf install \
     network-manager-applet \
     openssl \
     openssl-devel \
+    pavucontrol \
     python3 \
     slurp \
     sway \
