@@ -12,7 +12,7 @@ dnf install \
     grim \
     kitty \
     mpv \
-    neovim \
+    network-manager-applet \
     openssl \
     openssl-devel \
     python3 \
