@@ -13,6 +13,8 @@ dnf install \
     kitty \
     mpv \
     neovim \
+    openssl \
+    openssl-devel \
     python3 \
     slurp \
     sway \
