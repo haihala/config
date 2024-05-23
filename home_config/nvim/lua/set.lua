@@ -2,6 +2,10 @@
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
+-- Cursor visualization
+vim.opt.cursorline = true
+vim.opt.cursorcolumn = true
+
 -- Indents
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4

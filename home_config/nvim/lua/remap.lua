@@ -18,8 +18,12 @@ vim.keymap.set("i", "<C-v>", "<C-p>+")
 -- Clear search highlights
 vim.keymap.set("n", "<leader>n", ":noh<CR>")
 
--- Clear search highlights
+-- Save without formating
 vim.keymap.set("n", "<leader>w", ":noa w<CR>")
+
+-- Search for selected text
+-- Yoink highlighted text to s register, search for it
+vim.keymap.set("v", "<leader>/", "\"sy/<C-r>s")
 
 -- Quick split operations
 vim.keymap.set("n", "<a-q>", "<c-w>q")
@@ -33,7 +37,10 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 
 -- Execute current file
-vim.keymap.set("n", "<leader>e", ":!%:p<CR>")
+vim.keymap.set("n", "<leader>ef", ":!%:p<CR>")
+
+-- Load current file as vim source
+vim.keymap.set("n", "<leader>es", ":so %<CR>")
 
 -- Snippets
 -- Inserts an ISO timestamp after the current character
@@ -54,4 +61,3 @@ vim.api.nvim_create_user_command("Upgrade", function()
 end, {})
 
 -- TODO: Pane resizing
--- TODO: Reload

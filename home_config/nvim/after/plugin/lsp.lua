@@ -49,6 +49,11 @@ lsp_zero.on_attach(function(client, bufnum)
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
     vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
 
+    -- Toggle inlay hints
+    vim.keymap.set("n", "<leader>v", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+    end)
+
     -- Automatic format on save
     vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="tsserver" end})]]
 end)

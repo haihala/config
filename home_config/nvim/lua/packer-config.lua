@@ -5,25 +5,28 @@ require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.4',
+        'nvim-telescope/telescope.nvim', tag = '0.1.7',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
-    use {
+    use { -- TODO: Try oil at some point, maybe not quite the same thing
         'nvim-telescope/telescope-file-browser.nvim',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
+
+    -- TODO: Not a huge fan of this, it sometimes prompts when it shouldn't
     use { 'nvim-telescope/telescope-ui-select.nvim' }
 
-    use({ 'dracula/vim', as = 'dracula' })
-    vim.cmd('colorscheme dracula')
+    use {
+        "cbochs/grapple.nvim",
+        requires = { "nvim-tree/nvim-web-devicons" }
+    }
 
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use 'nvim-treesitter/nvim-treesitter-textobjects'
-    use 'ThePrimeagen/harpoon'
     use 'mbbill/undotree'
     use 'tpope/vim-fugitive'
     use 'tpope/vim-surround'
-    use 'tpope/vim-repeat'
+    use 'tpope/vim-repeat' -- This is just for vim-surround
     use 'airblade/vim-gitgutter'
     use 'mhinz/vim-startify'
     use 'APZelos/blamer.nvim'
@@ -37,6 +40,7 @@ require('packer').startup(function(use)
         requires = { { 'nvim-tree/nvim-web-devicons', opt = true } }
     }
 
+    -- Highlights TODO/FIXME/etc
     use {
         "folke/todo-comments.nvim",
         requires = "nvim-lua/plenary.nvim",
@@ -60,10 +64,11 @@ require('packer').startup(function(use)
         }
     }
 
-
     -- Copilot slows down editing a lot if not logged in
     -- use 'github/copilot.vim'
 
+    -- IIRC, the purpose of this is to set the cwd to the root of the project
+    -- This will make certain plugins work better
     use {
         "ahmedkhalf/project.nvim",
         config = function()
