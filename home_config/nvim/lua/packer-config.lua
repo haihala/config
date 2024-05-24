@@ -8,13 +8,11 @@ require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim', tag = '0.1.7',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
-    use { -- TODO: Try oil at some point, maybe not quite the same thing
-        'nvim-telescope/telescope-file-browser.nvim',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
 
-    -- TODO: Not a huge fan of this, it sometimes prompts when it shouldn't
-    use { 'nvim-telescope/telescope-ui-select.nvim' }
+    use {
+        "stevearc/oil.nvim",
+        config = function() require("oil").setup() end,
+    }
 
     use {
         "cbochs/grapple.nvim",
@@ -31,7 +29,6 @@ require('packer').startup(function(use)
     use 'mhinz/vim-startify'
     use 'APZelos/blamer.nvim'
     use 'norcalli/nvim-colorizer.lua'
-    use 'jwalton512/vim-blade'
     use 'sbdchd/neoformat'
     use 'christoomey/vim-tmux-navigator'
 

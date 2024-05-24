@@ -9,32 +9,6 @@ telescope.setup {
     pickers = {
         find_files = {
             hidden = true,
-            mappings = {
-                i = {
-                    ["<C-h>"] = function(prompt_bufnr)
-                        -- Debugging stuff, figure this out later
-                        --local ta = require("telescope.actions")
-                        --local tas = require("telescope.actions.state")
-                        --local current_picker = tas.get_current_picker(prompt_bufnr)
-                        --local current_line = tas.get_current_line(prompt_bufnr)
-                        --local ts = require("telescope.state")
-                        --local gs = ts.get_status(prompt_bufnr)
-
-                        --local keyset = {}
-                        --local n = 0
-
-                        --for k, v in pairs() do
-                        --    n = n + 1
-                        --    keyset[n] = k
-                        --end
-                        --vim.print(gs)
-                        --vim.print(keyset)
-
-                        --vim.print("line: " .. current_line)
-                        --builtin.find_files({ no_ignore = true })
-                    end
-                }
-            }
         }
     },
     extensions = {
@@ -47,18 +21,6 @@ telescope.setup {
         },
     }
 }
-
-telescope.load_extension("ui-select")
-local fb = telescope.load_extension("file_browser")
-local projects = telescope.load_extension('projects')
-
-vim.keymap.set('n', '<leader>fP', projects.projects, {})
-
--- File explorer (comes from the file browser extention)
-vim.keymap.set("n", "<leader>fe", function() fb.file_browser({ path = "%:p:h" }) end, {})
-vim.keymap.set("n", "<leader>fE", function() fb.file_browser({ path = "%:p:h", hidden = true, no_ignore = true }) end, {})
-vim.keymap.set("n", "<leader>fr", fb.file_browser, {})
-vim.keymap.set("n", "<leader>fR", function() fb.file_browser({ hidden = true, no_ignore = true }) end, {})
 
 -- Find files
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -109,3 +71,7 @@ vim.api.nvim_set_keymap(
     '"ty:Telescope live_grep default_text=<c-r>t additional_args=--no-ignore<CR>',
     {}
 )
+
+-- Projects
+local projects = telescope.load_extension('projects')
+vim.keymap.set('n', '<leader>fP', projects.projects, {})
