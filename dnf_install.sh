@@ -3,6 +3,7 @@ dnf install \
     alacritty \
     autojump \
     autojump-zsh \
+    calc \
     chromium \
     clang \
     dunst \

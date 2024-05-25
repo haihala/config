@@ -36,11 +36,11 @@ vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi")
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
 
--- Execute current file
-vim.keymap.set("n", "<leader>ef", ":!%:p<CR>")
-
--- Load current file as vim source
-vim.keymap.set("n", "<leader>es", ":so %<CR>")
+-- Exec/Eval
+vim.keymap.set("n", "<leader>ef", ":!%:p<CR>")                                     -- File (like a script)
+vim.keymap.set("n", "<leader>es", ":so %<CR>")                                     -- Source (in vim)
+vim.keymap.set("n", "<leader>ec", "Vc<c-r>=trim(system('calc <c-r>\"'))<CR><Esc>") -- Calc math expression (line)
+vim.keymap.set("v", "<leader>ec", "c<c-r>=trim(system('calc <c-r>\"'))<CR><Esc>")  -- Calc math expression (selection)
 
 -- Snippets
 -- Inserts an ISO timestamp after the current character
