@@ -24,6 +24,11 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true -- Searching with upper case character is case sensitive
 
+-- Text wrapping
+vim.opt.showbreak = "> "
+vim.opt.breakindent = true
+vim.opt.breakindentopt = { 'shift:2' }
+
 -- Automatically reload and save files upon navigation
 vim.opt.autoread = true
 vim.opt.autowriteall = true
