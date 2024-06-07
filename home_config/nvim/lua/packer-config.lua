@@ -22,12 +22,11 @@ require('packer').startup(function(use)
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'mbbill/undotree'
-    use 'tpope/vim-fugitive'
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat' -- This is just for vim-surround
-    use 'airblade/vim-gitgutter'
+    use 'tpope/vim-fugitive'
+    use 'lewis6991/gitsigns.nvim'
     use 'mhinz/vim-startify'
-    use 'APZelos/blamer.nvim'
     use 'norcalli/nvim-colorizer.lua'
     use 'sbdchd/neoformat'
     use 'christoomey/vim-tmux-navigator'
