@@ -42,15 +42,19 @@ vim.keymap.set("n", "<leader>es", ":so %<CR>")                                  
 vim.keymap.set("n", "<leader>ec", "Vc<c-r>=trim(system('calc <c-r>\"'))<CR><Esc>") -- Calc math expression (line)
 vim.keymap.set("v", "<leader>ec", "c<c-r>=trim(system('calc <c-r>\"'))<CR><Esc>")  -- Calc math expression (selection)
 
--- Snippets
--- Inserts an ISO timestamp after the current character
+-- Timestamp Snippets
 local function timestamp(flags)
+    -- Inserts an ISO timestamp after the current character
     return "a<c-r>=trim(system('date " .. flags .. "'))<CR><Esc>"
 end
 vim.keymap.set("n", "<leader>sti", timestamp("-Im"))    -- ISO
 vim.keymap.set("n", "<leader>std", timestamp("-Idate")) -- Date
 vim.keymap.set("n", "<leader>stt", timestamp("+%T"))    -- Time
 vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
+
+-- Markdown snippets
+vim.keymap.set("n", "<leader>sml", "a[]()<ESC>i")
+vim.keymap.set("v", "<leader>sml", "di[<c-r>\"]()<ESC>i")
 
 -- While not a remap, I'm putting this here
 vim.api.nvim_create_user_command("Upgrade", function()
