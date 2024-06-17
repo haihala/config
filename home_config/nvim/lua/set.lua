@@ -49,3 +49,12 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "Jenkinsfile" },
     command = ":set filetype=groovy",
 })
+
+-- Automatically wrap lines when writing markdown.
+-- Use gwip to manually reformat a paragraph
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+    pattern = { "*.md" },
+    callback = function()
+        vim.opt.textwidth = 80
+    end
+})
