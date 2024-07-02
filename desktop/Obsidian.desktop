@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Obsidian
-Exec=obsidian
+Exec=fish -c obsidian
 Terminal=false
 Type=Application
 Icon=/home/hajhawa/Pictures/obsidian-icon.png
