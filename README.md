@@ -9,7 +9,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 1. Run a new-ish fedora workstation
 2. `sudo dnf_install.sh`
 3. Run `./link.sh` from the repository root
-   1. You may have to create the `.config` folder in home.
+    1. You may have to create the `.config` folder in home.
 4. Install rust stuff
     1. Install [Rustup](https://rustup.rs/)
     2. Run `./cargo_install.sh`
@@ -18,9 +18,10 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
         1. Install [Packer](https://github.com/wbthomason/packer.nvim)
         2. Do several cycles of restart and PackerUpdate
 5. Install the following (not found in dnf by default)
-   1. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
-      1. Compile by hand to avoid a bug on the lock screen
-   2. obsidian - [link](https://obsidian.md/download)
+    1. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
+        1. Compile by hand to avoid a bug on the lock screen
+    2. obsidian - [link](https://obsidian.md/download)
+        1. Move it to `/usr/local/bin/obsidian`
 6. Check git email with `git config user.email`
 7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
 8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
