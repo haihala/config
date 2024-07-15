@@ -1,6 +1,7 @@
 set -gx PAGER less
 set -gx EDITOR nvim
 set -gx VISUAL nvim
+set -gx RUSTC_WRAPPER sccache
 set -gx LC_ALL en_US.UTF-8
 set -gx LANG en_US.UTF-8
 
