@@ -6,6 +6,13 @@ function e
         return
     end
 
+    # If an editor is already open in this window, just re-open it
+    set jobline (jobs | grep EDITOR | head -n 1)
+    if test -n "$jobline"
+        fg %(echo $jobline | cut -c1-1)
+        return
+    end
+
     function file_in_commit
         set result (git diff-tree --no-commit-id --name-only $argv -r | 
         fzf --print0 |
