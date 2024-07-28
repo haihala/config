@@ -49,7 +49,7 @@ case $mode in
 esac
 
 # Record
-wf-recorder -g "$area" -f "$output"
+wf-recorder -g "$area" -f "$output" --codec libx264 --pixel-format yuv420p
 echo
 
 # Select output

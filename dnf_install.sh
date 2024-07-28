@@ -7,11 +7,13 @@ dnf install \
     chromium \
     clang \
     dunst \
+    ffmpeg-free \
     fish \
     fzf \
     git \
     grim \
     kitty \
+    libavcodec-freeworld \
     mpv \
     network-manager-applet \
     openssl \
