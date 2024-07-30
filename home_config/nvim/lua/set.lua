@@ -31,6 +31,7 @@ vim.opt.breakindentopt = { 'shift:2' }
 
 -- Automatically reload and save files upon navigation
 vim.opt.autoread = true
+vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
 -- Neovide
