@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- Move through search terms in a way where they remain at the center
 vim.keymap.set("n", "n", "nzzzv")

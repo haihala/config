@@ -3,4 +3,4 @@ vim.opt.shell = "/bin/bash"
 
 require("remap")
 require("set")
-require("packer-config")
+require("config.lazy")
