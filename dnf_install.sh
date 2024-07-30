@@ -26,6 +26,7 @@ dnf install \
     sway \
     swaybg \
     swayidle \
+    tldr \
     waybar \
     wdisplays \
     wf-recorder \
