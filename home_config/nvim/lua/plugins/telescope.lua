@@ -1,7 +1,22 @@
 return {
     {
         'nvim-telescope/telescope.nvim',
-        dependencies = { { 'nvim-lua/plenary.nvim' }, { "nvim-tree/nvim-web-devicons" }, },
+        dependencies = {
+            { 'nvim-lua/plenary.nvim' },
+            { "nvim-tree/nvim-web-devicons" },
+
+            -- IIRC, the purpose of this is to set the cwd to the root of the project
+            -- This will make certain plugins work better
+            {
+                "ahmedkhalf/project.nvim",
+                config = function()
+                    require("project_nvim").setup {
+                        detection_methods = { "pattern" },
+                        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", ">projects" }
+                    }
+                end
+            },
+        },
         config = function()
             local telescope = require('telescope')
             local builtin = require('telescope.builtin')
@@ -83,4 +98,16 @@ return {
             vim.keymap.set('n', '<leader>fP', projects.projects, {})
         end
     },
+
+    -- Highlights TODO/FIXME/etc as well, but a big part is the telescope finder so it goes here
+    {
+        "folke/todo-comments.nvim",
+        dependencies = "nvim-lua/plenary.nvim",
+        lazy = false,
+        keys = {
+            { "<leader>ft", ":TodoTelescope keywords=TODO,FIX<CR>" }
+        },
+        opts = {},
+    },
+
 }
