@@ -37,8 +37,7 @@ function e
         case 1
             $EDITOR
         case 2
-            set result (FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix' \
-                fzf --print0 --preview "$preview_cmd" | xargs -0 -o)
+            set result (fzf --print0 --preview "$preview_cmd" | xargs -0 -o)
 
             if test -e $result
                 $EDITOR $result
