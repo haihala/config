@@ -14,7 +14,6 @@ dnf install \
     git \
     grim \
     kitty \
-    libavcodec-freeworld \
     luarocks \
     mpv \
     network-manager-applet \
