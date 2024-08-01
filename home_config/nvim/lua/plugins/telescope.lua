@@ -31,15 +31,6 @@ return {
                         hidden = true,
                     }
                 },
-                extensions = {
-                    file_browser = {
-                        hidden = true,
-                        hijack_netrw = true,
-                        grouped = true,
-                        -- collapse_dirs = true,    -- This occasionally just fails
-                        hide_parent_dir = true,
-                    },
-                }
             }
 
             -- Find files
