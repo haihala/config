@@ -1,6 +1,10 @@
 return {
     { 'tpope/vim-surround', },
     { 'tpope/vim-repeat' }, -- This is just for vim-surround,
+    {
+        'windwp/nvim-ts-autotag',
+        config = function() require('nvim-ts-autotag').setup() end
+    },
     { 'mhinz/vim-startify', },
     {
         'norcalli/nvim-colorizer.lua',
