@@ -29,7 +29,8 @@ function e
         "Search git status" \
         "Search previous commit changed files" \
         "Search arbitrary commit" \
-        "Search by file name (disregard .gitignore)"
+        "Search by file name (disregard .gitignore)" \
+        "Open previously opened file"
 
     set preview_cmd 'bat --style=numbers --color=always --line-range :500 {}'
 
@@ -81,5 +82,7 @@ function e
             if test -e $result
                 $EDITOR $result
             end
+        case 8
+            $EDITOR '+\'0'
     end
 end
