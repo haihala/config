@@ -29,3 +29,5 @@
 	autoSetupRemote = true
 [include]
     path = secret-config
+[init]
+	defaultBranch = main
