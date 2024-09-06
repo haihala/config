@@ -119,9 +119,9 @@ return {
                         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
                     end)
 
-                    -- Automatic format on save except with tsserver
+                    -- Automatic format on save except with typescript language server (prefer prettier)
                     -- TODO: Move this elsewhere maybe?
-                    vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="tsserver" end})]]
+                    vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
                 end
             })
 
@@ -138,6 +138,9 @@ return {
             require("mason-lspconfig").setup_handlers({
                 -- default
                 function(server_name)
+                    if server_name == "tsserver" then
+                        server_name = "ts_ls"
+                    end
                     lspconfig[server_name].setup({
                         capabilities = capabilities
                     })
