@@ -10,7 +10,7 @@ return {
         'norcalli/nvim-colorizer.lua',
         config = function() require('colorizer').setup() end
     },
-
+    { 'mhinz/vim-startify', },
     {
         "stevearc/oil.nvim",
         keys = { { "<leader>o", "<CMD>Oil<CR>" } },
