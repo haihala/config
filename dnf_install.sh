@@ -13,6 +13,7 @@ dnf install \
     fzf \
     git \
     grim \
+    ImageMagick-devel \
     kitty \
     luarocks \
     mpv \
