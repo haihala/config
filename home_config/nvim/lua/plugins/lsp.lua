@@ -63,7 +63,7 @@ return {
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
-                    'tsserver',
+                    'ts_ls',
                     'eslint',
                     'pylsp',
                     'lua_ls',
@@ -120,7 +120,6 @@ return {
                     end)
 
                     -- Automatic format on save except with typescript language server (prefer prettier)
-                    -- TODO: Move this elsewhere maybe?
                     vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
                 end
             })
