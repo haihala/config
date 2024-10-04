@@ -16,6 +16,7 @@ dnf install \
     ImageMagick-devel \
     kitty \
     luarocks \
+    lxpolkit \
     mpv \
     network-manager-applet \
     openssl \

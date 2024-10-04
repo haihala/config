@@ -251,6 +251,7 @@ show_marks yes
 ## Start programs
 exec nm-applet --indicator
 exec blueman-applet
+exec lxpolkit
 
 # Automatic lock screen
 exec swayidle -w timeout 3600 '$lock'
