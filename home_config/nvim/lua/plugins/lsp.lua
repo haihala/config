@@ -91,38 +91,35 @@ return {
 
             local picker = require("telescope.builtin")
 
-            vim.api.nvim_create_autocmd("LspAttach", {
-                group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-                callback = function(ev)
-                    local opts = { silent = true, remap = false, buffer = ev.buf }
-                    -- Info popup
-                    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- Inspect
+            local on_attach = function(ev)
+                local opts = { silent = true, remap = false, buffer = ev.buf }
+                -- Info popup
+                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- Inspect
 
-                    -- Jump
-                    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-                    vim.keymap.set("n", "gr", function() picker.lsp_references({ include_declaration = false, }) end,
-                        opts)
-                    vim.keymap.set("n", "<leader>fs", picker.lsp_document_symbols, opts) -- find symbols
+                -- Jump
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+                vim.keymap.set("n", "gr", function() picker.lsp_references({ include_declaration = false, }) end,
+                    opts)
+                vim.keymap.set("n", "<leader>fs", picker.lsp_document_symbols, opts) -- find symbols
 
-                    -- Diagnostics
-                    vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-                    vim.keymap.set("n", "<leader>fd", picker.diagnostics, opts) -- Find diagnostics
-                    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-                    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+                -- Diagnostics
+                vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+                vim.keymap.set("n", "<leader>fd", picker.diagnostics, opts) -- Find diagnostics
+                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
-                    -- Actions
-                    vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
-                    vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
+                -- Actions
+                vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
+                vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
 
-                    -- Toggle inlay Hints
-                    vim.keymap.set("n", "<leader>th", function()
-                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
-                    end)
+                -- Toggle inlay Hints
+                vim.keymap.set("n", "<leader>th", function()
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+                end)
 
-                    -- Automatic format on save except with typescript language server (prefer prettier)
-                    vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
-                end
-            })
+                -- Automatic format on save except with typescript language server (prefer prettier)
+                vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
+            end
 
             local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -138,12 +135,14 @@ return {
                 -- default
                 function(server_name)
                     lspconfig[server_name].setup({
+                        on_attach = on_attach,
                         capabilities = capabilities
                     })
                 end,
                 ["lua_ls"] = function()
                     -- configure lua server (with special settings)
                     lspconfig["lua_ls"].setup({
+                        on_attach = on_attach,
                         capabilities = capabilities,
                         settings = {
                             Lua = {
