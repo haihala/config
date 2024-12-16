@@ -121,6 +121,16 @@ return {
 
                 -- Automatic format on save except with typescript language server (prefer prettier)
                 vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
+
+                for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+                    local default_diagnostic_handler = vim.lsp.handlers[method]
+                    vim.lsp.handlers[method] = function(err, result, context, config)
+                        if err ~= nil and err.code == -32802 then
+                            return
+                        end
+                        return default_diagnostic_handler(err, result, context, config)
+                    end
+                end
             end
 
             local capabilities = cmp_nvim_lsp.default_capabilities()
