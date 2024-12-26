@@ -34,6 +34,10 @@ vim.opt.autoread = true
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
+-- Spell checks
+vim.opt.spell = true
+vim.opt.spelllang = "en_us"
+
 -- Neovide
 if vim.g.neovide then
     vim.o.guifont = "Source Code Pro:h10"
@@ -45,7 +49,7 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80"
 
--- Unobvious filetypes
+-- Unobvious file types
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "Jenkinsfile" },
     command = ":set filetype=groovy",
@@ -57,7 +61,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 
 
 -- Automatically wrap lines when writing markdown.
--- Use gwip to manually reformat a paragraph
+-- Use `gwip` to manually reformat a paragraph
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "*.md" },
     callback = function()

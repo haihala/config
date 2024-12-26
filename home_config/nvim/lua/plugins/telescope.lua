@@ -56,8 +56,11 @@ return {
             -- Find previous
             vim.keymap.set('n', '<leader>fp', builtin.resume, {})
 
+            -- Find spelling
+            vim.keymap.set('n', '<leader>fs', builtin.spell_suggest, {})
+
             -- Git
-            vim.keymap.set('n', '<leader>fgf', builtin.git_files, {})    -- Files not in gitignore
+            vim.keymap.set('n', '<leader>fgf', builtin.git_files, {})    -- Files not in .gitignore
             vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {}) -- Branches
             vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})  -- Commits
             vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})   -- Status (lists changed files)

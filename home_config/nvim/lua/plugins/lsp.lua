@@ -101,7 +101,8 @@ return {
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
                 vim.keymap.set("n", "gr", function() picker.lsp_references({ include_declaration = false, }) end,
                     opts)
-                vim.keymap.set("n", "<leader>fs", picker.lsp_document_symbols, opts) -- find symbols
+                -- Overlaps with Find Spelling
+                -- vim.keymap.set("n", "<leader>fs", picker.lsp_document_symbols, opts) -- find symbols
 
                 -- Diagnostics
                 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
