@@ -1,61 +1,30 @@
 return {
     {
-        "hrsh7th/nvim-cmp",
-        event = "InsertEnter",
-        dependencies = {
-            "hrsh7th/cmp-buffer", -- source for text in buffer
-            "hrsh7th/cmp-path",   -- source for file system paths
-            {
-                "L3MON4D3/LuaSnip",
-                -- follow latest release.
-                version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-                -- install jsregexp (optional!).
-                build = "make install_jsregexp",
+        'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        -- dependencies = 'rafamadriz/friendly-snippets',
+
+        version = '*',
+        opts = {
+            -- I used to have CR as a complete submission, but will try going without now
+            keymap = {
+                preset = 'default',
+                -- Unfortunately, this is my tmux prefix
+                ['<C-space>'] = {},
+                -- For 'blink', same as default ctrl+space
+                ['<C-b>'] = { 'show', 'show_documentation', 'hide_documentation' },
             },
-            "saadparwaiz1/cmp_luasnip",     -- for autocompletion
-            "rafamadriz/friendly-snippets", -- useful snippets
-            "onsails/lspkind.nvim",         -- vs-code like pictograms
+
+            appearance = {
+                use_nvim_cmp_as_default = true,
+                nerd_font_variant = 'mono'
+            },
+
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
         },
-        config = function()
-            local cmp = require("cmp")
-
-            local luasnip = require("luasnip")
-
-            local lspkind = require("lspkind")
-
-            -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-            require("luasnip.loaders.from_vscode").lazy_load()
-
-            cmp.setup({
-                completion = {
-                    completeopt = "menu,menuone,preview,noselect",
-                },
-                preselect = cmp.PreselectMode.None,
-                snippet = { -- configure how nvim-cmp interacts with snippet engine
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                }),
-                -- sources for autocompletion
-                sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" }, -- snippets
-                    { name = "buffer" },  -- text within current buffer
-                    { name = "path" },    -- file system paths
-                }),
-
-                -- configure lspkind for vs-code like pictograms in completion menu
-                formatting = {
-                    format = lspkind.cmp_format({
-                        maxwidth = 50,
-                        ellipsis_char = "...",
-                    }),
-                },
-            })
-        end,
+        opts_extend = { "sources.default" }
     },
     {
         'williamboman/mason.nvim',
@@ -78,7 +47,7 @@ return {
         'neovim/nvim-lspconfig',
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
+            'saghen/blink.cmp',
             'nvim-telescope/telescope.nvim',
             { 'williamboman/mason-lspconfig.nvim' },
             { -- Automatically do stuff on file rename, maybe with oil?
@@ -88,8 +57,6 @@ return {
         },
         config = function()
             local lspconfig = require("lspconfig")
-            local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
             local picker = require("telescope.builtin")
 
             local on_attach = function(ev)
@@ -133,7 +100,7 @@ return {
                 end
             end
 
-            local capabilities = cmp_nvim_lsp.default_capabilities()
+            local capabilities = require('blink.cmp').get_lsp_capabilities()
 
             -- Change the Diagnostic symbols in the sign column (gutter)
             local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
