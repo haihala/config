@@ -12,11 +12,13 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 4. Install rust stuff (in order)
    1. Install [Rustup](https://rustup.rs/)
    2. Run `./cargo_install.sh`
-   3. Install `python` and `node` with `mise` (`mise use xxxx`)
-   4. Install `nvim` with `bob install stable` / `bob use stable`
+   3. Install `python` and `node` with `mise` (`mise use --global xxxx`)
+   4. Install `nvim` with `bob use stable`
 5. Install the following (not found in dnf by default)
-   1. swaylock-effects - [link](https://github.com/mortie/swaylock-effects)
+   1. [swaylock-effects](https://github.com/jirutka/swaylock-effects)
       1. Compile by hand to avoid a bug on the lock screen
+      2. Deps: `sudo dnf install meson ninja wayland-devel wayland-protocols-devel libxkbcommon-devel cairo-devel gdk-pixbuf2-devel pam-devel scdoc libomp bash-completion-devel`
+
    2. obsidian - [link](https://obsidian.md/download)
       1. Make it executable with `chmod +x`
       2. Move it to `/usr/local/bin/obsidian`
@@ -29,6 +31,11 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
    2. Open fish (should open tmux as well)
    3. `tmux source ~/.config/tmux/tmux.conf`
    4. Install tpm packages with prefix+I
+10. Misc one time conf
+    1. Enable dark mode with `gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'`
+    2. Passwordless sudo: 
+        1. `sudo visudo` (give %wheel NOPASSWD)
+        2. `sudo usermod -a -G wheel <username>`
 
 ## What goes where
 
