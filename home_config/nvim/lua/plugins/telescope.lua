@@ -4,6 +4,7 @@ return {
         dependencies = {
             { 'nvim-lua/plenary.nvim' },
             { "nvim-tree/nvim-web-devicons" },
+            { "nvim-telescope/telescope-ui-select.nvim" },
 
             -- IIRC, the purpose of this is to set the cwd to the root of the project
             -- This will make certain plugins work better
@@ -31,7 +32,16 @@ return {
                         hidden = true,
                     }
                 },
+                extensions = {
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown {
+                            -- even more opts
+                        },
+                    }
+                }
             }
+
+            require("telescope").load_extension("ui-select")
 
             -- Find files
             vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
