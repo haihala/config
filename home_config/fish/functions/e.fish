@@ -30,7 +30,8 @@ function e
         "Search previous commit changed files" \
         "Search arbitrary commit" \
         "Search by file name (disregard .gitignore)" \
-        "Open previously opened file"
+        "Open previously opened file" \
+        "Listen to cached pipe"
 
     set preview_cmd 'bat --style=numbers --color=always --line-range :500 {}'
 
@@ -84,5 +85,12 @@ function e
             end
         case 8
             $EDITOR '+\'0'
+        case 9
+            set pipe_path ~/.cache/nvim/server.pipe
+            if test -e $pipe_path
+                echo "Pipe already exists, exiting"
+            else
+                $EDITOR --listen $pipe_path
+            end
     end
 end

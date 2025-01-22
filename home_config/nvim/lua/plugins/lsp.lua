@@ -109,6 +109,12 @@ return {
                 vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
             end
 
+            -- Not sure why gdscript requires special
+            lspconfig.gdscript.setup({
+                on_attach = on_attach,
+                capabilities = capabilities
+            })
+
             -- This allows for per language server configs
             require("mason-lspconfig").setup_handlers({
                 -- default

@@ -5,7 +5,7 @@ return {
         'windwp/nvim-ts-autotag',
         config = function() require('nvim-ts-autotag').setup() end
     },
-    { 'mhinz/vim-startify', },
+    { 'mhinz/vim-startify' },
     {
         "stevearc/oil.nvim",
         keys = { { "<leader>o", "<CMD>Oil<CR>" } },
