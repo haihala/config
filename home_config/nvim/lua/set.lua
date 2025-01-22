@@ -10,8 +10,10 @@ vim.opt.cursorcolumn = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.opt.expandtab = true    -- Make spaces instead of tabs when pressing tab
+vim.opt.smarttab = true     -- Always put tabs at the start of the line
 
+vim.opt.autoindent= true
 vim.opt.smartindent = true
 
 -- Swap files
@@ -66,5 +68,13 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "*.md" },
     callback = function()
         vim.opt.textwidth = 80
+    end
+})
+
+-- Use tabs instead of spaces in godot files, since godot defaults to tabs and you can't mix
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+    pattern = { "*.gd" },
+    callback = function()
+        vim.opt.expandtab = false
     end
 })
