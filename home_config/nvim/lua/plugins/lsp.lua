@@ -86,8 +86,13 @@ return {
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
                 end)
 
-                -- Automatic format on save except with typescript language server (prefer prettier)
-                vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format({filter = function(c) return c.name ~="ts_ls" end})]]
+                -- Automatic format on save, 
+                local autoformat_lsps = {"lua_ls"}
+                for allowed_lsp in ipairs(autoformat_lsps) do
+                    if ev.config.name == allowed_lsp then
+                        vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format()]]
+                    end
+                end
 
                 for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
                     local default_diagnostic_handler = vim.lsp.handlers[method]
