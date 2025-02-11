@@ -86,9 +86,10 @@ return {
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
                 end)
 
-                -- Automatic format on save, 
-                local autoformat_lsps = {"lua_ls"}
-                for allowed_lsp in ipairs(autoformat_lsps) do
+                -- Automatic format on save,
+                local autoformat_lsps = { "lua_ls" }
+                ---@diagnostic disable-next-line: unused-local
+                for i, allowed_lsp in ipairs(autoformat_lsps) do
                     if ev.config.name == allowed_lsp then
                         vim.cmd [[autocmd BufWritePre * silent! lua vim.lsp.buf.format()]]
                     end
