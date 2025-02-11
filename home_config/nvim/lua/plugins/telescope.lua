@@ -5,18 +5,6 @@ return {
             { 'nvim-lua/plenary.nvim' },
             { "nvim-tree/nvim-web-devicons" },
             { "nvim-telescope/telescope-ui-select.nvim" },
-
-            -- IIRC, the purpose of this is to set the cwd to the root of the project
-            -- This will make certain plugins work better
-            {
-                "ahmedkhalf/project.nvim",
-                config = function()
-                    require("project_nvim").setup {
-                        detection_methods = { "pattern" },
-                        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", ">projects" }
-                    }
-                end
-            },
         },
         config = function()
             local telescope = require('telescope')
@@ -96,10 +84,6 @@ return {
                 '"ty:Telescope live_grep default_text=<c-r>t additional_args=--no-ignore<CR>',
                 {}
             )
-
-            -- Projects
-            local projects = telescope.load_extension('projects')
-            vim.keymap.set('n', '<leader>fP', projects.projects, {})
         end
     },
 
