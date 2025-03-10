@@ -26,6 +26,7 @@ return {
         'sbdchd/neoformat',
         config = function()
             vim.g.neoformat_try_node_exe = 1
+            vim.g.neoformat_enabled_json = { 'prettier' }
             vim.cmd [[autocmd BufWritePre * silent! Neoformat]]
         end
     },
