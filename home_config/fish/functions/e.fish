@@ -14,9 +14,14 @@ function e
     end
 
     function file_in_commit
-        set result (git diff-tree --no-commit-id --name-only $argv -r | 
-        fzf --print0 |
-        xargs -0 -o)
+        set selected (
+            git diff-tree --no-commit-id --name-only $argv -r | 
+            fzf --print0 |
+            xargs -0 -o
+        )
+
+        set reporoot (git rev-parse --show-toplevel)
+        set result (string join '/' $reporoot $selected)
 
         if test -e $result
             $EDITOR $result
