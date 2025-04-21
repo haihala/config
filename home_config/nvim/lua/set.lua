@@ -62,6 +62,13 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 })
 
 
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+    pattern = { "*.wgsl" },
+    callback = function()
+        vim.bo.commentstring = "// %s"
+    end
+})
+
 -- Automatically wrap lines when writing markdown.
 -- Use `gwip` to manually reformat a paragraph
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
