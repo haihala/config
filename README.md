@@ -14,11 +14,11 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
    2. Run `./cargo_install.sh`
    3. Install `python` and `node` with `mise` (`mise use --global xxxx`)
    4. Install `nvim` with `bob use stable`
+      1. Run `./nvim_setup.sh` to install LSPs
 5. Install the following (not found in dnf by default)
    1. [swaylock-effects](https://github.com/jirutka/swaylock-effects)
       1. Compile by hand to avoid a bug on the lock screen
       2. Deps: `sudo dnf install meson ninja wayland-devel wayland-protocols-devel libxkbcommon-devel cairo-devel gdk-pixbuf2-devel pam-devel scdoc libomp bash-completion-devel`
-
    2. obsidian - [link](https://obsidian.md/download)
       1. Make it executable with `chmod +x`
       2. Move it to `/usr/local/bin/obsidian`
@@ -33,9 +33,9 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
    4. Install tpm packages with prefix+I
 10. Misc one time conf
     1. Enable dark mode with `gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'`
-    2. Passwordless sudo: 
-        1. `sudo visudo` (give %wheel NOPASSWD)
-        2. `sudo usermod -a -G wheel <username>`
+    2. Passwordless sudo:
+       1. `sudo visudo` (give %wheel NOPASSWD)
+       2. `sudo usermod -a -G wheel <username>`
 
 ## What goes where
 
