@@ -72,21 +72,29 @@ M.setup = function()
         "pylsp",
         "lua_ls",
         "rust_analyzer",
-        "json",
+        "jsonls",
     })
 
+    -- Change the Diagnostic symbols in the sign column (gutter)
     vim.diagnostic.config({
         virtual_lines = {
             current_line = true,
         },
+        signs = {
+            text = {
+                [vim.diagnostic.severity.ERROR] = " ",
+                [vim.diagnostic.severity.WARN] = " ",
+                [vim.diagnostic.severity.HINT] = "󰠠 ",
+                [vim.diagnostic.severity.INFO] = " ",
+            },
+            numhl = {
+                [vim.diagnostic.severity.ERROR] = "",
+                [vim.diagnostic.severity.WARN] = "",
+                [vim.diagnostic.severity.HINT] = "",
+                [vim.diagnostic.severity.INFO] = "",
+            },
+        },
     })
-
-    -- Change the Diagnostic symbols in the sign column (gutter)
-    local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-    for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-    end
 end
 
 return M
