@@ -23,11 +23,11 @@ cargo install --git https://github.com/wgsl-analyzer/wgsl-analyzer.git wgsl-anal
 pip install python-lsp-server
 
 echo "Installing marksman"
+marksman_path="$(dirname "$(realpath $0)")/bin/git-ignored/marksman"
 # Marksman allows for brew, nix, snap or prebuilt binaries, this is the least pain
 # NOTE: This assumes that the user running this script can write to /usr/local/bin
 curl -s https://api.github.com/repos/artempyanykh/marksman/releases/latest \
     | jq '.assets[] | select(.name=="marksman-linux-x64") | .browser_download_url' -r \
-    | wget -qi - -O marksman
-chmod +x marksman
-mv marksman /usr/local/bin
+    | wget -qi - -O $marksman_path
+chmod +x $marksman_path
 echo "Marksman installed"

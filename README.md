@@ -19,10 +19,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
    1. [swaylock-effects](https://github.com/jirutka/swaylock-effects)
       1. Compile by hand to avoid a bug on the lock screen
       2. Deps: `sudo dnf install meson ninja wayland-devel wayland-protocols-devel libxkbcommon-devel cairo-devel gdk-pixbuf2-devel pam-devel scdoc libomp bash-completion-devel`
-   2. obsidian - [link](https://obsidian.md/download)
-      1. Make it executable with `chmod +x`
-      2. Move it to `/usr/local/bin/obsidian`
-      3. Get the icon and put it in `~/Pictures/obsidian-icon.png`
+   2. obsidian - Run `./obsidian_setup.sh`
 6. Check git email with `git config user.email`
 7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
 8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
