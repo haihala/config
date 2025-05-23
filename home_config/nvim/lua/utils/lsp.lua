@@ -22,7 +22,7 @@ M.on_attach = function(ev)
 
     -- Actions
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>a", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>s", vim.lsp.buf.code_action, opts) -- Suggest, avoid conflict with avante
 
     -- Toggle inlay Hints
     vim.keymap.set("n", "<leader>th", function()
