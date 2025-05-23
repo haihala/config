@@ -1,3 +1,5 @@
+local strings = require("utils.strings")
+
 return {
     {
         'nvim-telescope/telescope.nvim',
@@ -65,25 +67,50 @@ return {
 
 
             -- Visual mode
-            -- Common pattern: Yoink selection to register t, use that as the default_text argument to telescope
+            local function get_selection_visual()
+                -- Returns first line of the selection
+                return vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."))[1]
+            end
+
+            local function get_selection_visual_block()
+                return vim.fn.getregion(vim.fn.getpos("'<"), vim.fn.getpos("'>"))[1]
+            end
+
+            local function get_selection()
+                local mode = vim.api.nvim_get_mode()["mode"]
+                if mode == 'v' then
+                    return strings.trim(get_selection_visual())
+                elseif mode == 'V' then
+                    return strings.trim(get_selection_visual_block())
+                else
+                    vim.print("You are trying to get visual selection in a weird mode")
+                    return nil
+                end
+            end
 
             -- Find files
-            vim.api.nvim_set_keymap('v', '<leader>ff', '"ty:Telescope find_files default_text=<c-r>t<CR>', {})
-            vim.api.nvim_set_keymap(
-                'v',
-                '<leader>fF',
-                '"ty:Telescope find_files default_text=<c-r>t additional_args=--no-ignore<CR>',
-                {}
-            )
+            vim.api.nvim_set_keymap('v', '<leader>ff', '', {
+                callback = function()
+                    builtin.find_files({ default_text = get_selection() })
+                end
+            })
+            vim.api.nvim_set_keymap('v', '<leader>fU', '', {
+                callback = function()
+                    builtin.find_files({ default_text = get_selection(), no_ignore = true })
+                end
+            })
 
             -- Find content
-            vim.api.nvim_set_keymap('v', '<leader>fc', '"ty:Telescope live_grep default_text=<c-r>t<CR>', {})
-            vim.api.nvim_set_keymap(
-                'v',
-                '<leader>fC',
-                '"ty:Telescope live_grep default_text=<c-r>t additional_args=--no-ignore<CR>',
-                {}
-            )
+            vim.api.nvim_set_keymap('v', '<leader>fc', '', {
+                callback = function()
+                    builtin.live_grep({ default_text = get_selection() })
+                end
+            })
+            vim.api.nvim_set_keymap('v', '<leader>fC', '', {
+                callback = function()
+                    builtin.live_grep({ default_text = get_selection(), no_ignore = true })
+                end
+            })
         end
     },
 
