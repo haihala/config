@@ -1,7 +1,0 @@
-if [[ "$1" = /* ]]; then
-	# Absolute path
-	echo $1 |  wl-copy
-else
-	# relative path
-	echo `pwd`/$1 | wl-copy
-fi
