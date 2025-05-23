@@ -9,17 +9,10 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 1. Run a new-ish fedora workstation
 2. `sudo dnf_install.sh`
 3. Run `./link.sh` from the repository root
-4. Install rust stuff (in order)
-   1. Install [Rustup](https://rustup.rs/)
-   2. Run `./cargo_install.sh`
-   3. Install `python` and `node` with `mise` (`mise use --global xxxx`)
-   4. Install `nvim` with `bob use stable`
-      1. Run `./nvim_setup.sh` to install LSPs
-5. Install the following (not found in dnf by default)
-   1. [swaylock-effects](https://github.com/jirutka/swaylock-effects)
-      1. Compile by hand to avoid a bug on the lock screen
-      2. Deps: `sudo dnf install meson ninja wayland-devel wayland-protocols-devel libxkbcommon-devel cairo-devel gdk-pixbuf2-devel pam-devel scdoc libomp bash-completion-devel`
-   2. obsidian - Run `./obsidian_setup.sh`
+4. Run `./bin/tool all` (will take a while)
+5. [swaylock-effects](https://github.com/jirutka/swaylock-effects)
+   1. Compile by hand to avoid a bug on the lock screen
+   2. Deps: `sudo dnf install meson ninja wayland-devel wayland-protocols-devel libxkbcommon-devel cairo-devel gdk-pixbuf2-devel pam-devel scdoc libomp bash-completion-devel`
 6. Check git email with `git config user.email`
 7. Edit crontab to run `bin/cron_battery.sh` (for laptops)
 8. Handle ssh keys (See [instructions](#setting-up-ssh-key-magic))
@@ -39,6 +32,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 - `dotfiles/*` is linked to `$HOME/*`
 - `home_config/*` -> `$HOME/.config/*`
 - `bin` -> `$HOME/bin`
+- `desktop/*`-> `$HOME/.local/share/applications/*` (desktop icons for wofi)
 
 ## Setting up SSH key magic
 

@@ -1,0 +1,149 @@
+#!/usr/bin/env fish
+
+# This is a utility script for getting / installing / updating all of my tools
+# Assumes fish is installed
+
+# Utils 
+function require
+    if ! command -v $argv 2>&1 >/dev/null
+        echo "Command '$argv' is not found, can't proceed"
+        exit 1
+    end
+end
+
+# Languages
+function rust
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+end
+
+function node
+    require mise
+    mise use -g node
+end
+
+function python
+    require mise
+    mise use -g python
+end
+
+function cargo_stuff
+    require cargo
+    cargo install sccache
+
+    RUSTC_WRAPPER=sccache cargo install \
+        bat \
+        bacon \
+        bob-nvim \
+        bottom \
+        cargo-make \
+        fd-find \
+        just \
+        mise \
+        nu \
+        ripgrep \
+        tokei \
+        zoxide
+end
+
+# Tools
+function obsidian
+    set obsidian_path $HOME/bin/git-ignored/obsidian
+    # I want this to not pick up on the ...-arm64.AppImage
+    # Ran into rate limits, assuming it works now
+    curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest \
+        | jq '.assets[] | select(.name | test("\\\\d+\\\\.\\\\d+\\\\.AppImage$")) | .browser_download_url' -r \
+        | wget -qi - -O $obsidian_path
+    chmod +x $obsidian_path
+
+    # They have an official download page, but it's not easy to hook up to bash scripts
+    # So get the one off of Reddit :D
+    set obsidian_picture_url https://styles.redditmedia.com/t5_2mz3dr/styles/communityIcon_l538j35ftd3b1.png
+    wget -qi $obsidian_picture_url -O ~/Pictures/obsidian-icon.png
+end
+
+function nvim
+    require bob
+    bob use stable
+end
+
+# LSPs
+function lua_ls
+    require mise
+    mise use -g lua-language-server
+end
+
+function ts_ls
+    require node
+    npm install -g typescript typescript-language-server
+end
+
+function py_ls
+    require pip
+    pip install python-lsp-server
+end
+
+function vsc_ls
+    require npm
+    # HTML, CSS, JSON, eslint, maybe markdown later
+    npm install -g vscode-langservers-extracted
+end
+
+function tailwind_ls
+    require npm
+    npm install -g @tailwindcss/language-server
+end
+
+function svelte_ls
+    require npm
+    npm install -g svelte-language-server
+end
+
+function rust_analyzer
+    require rustup
+    rustup component add rust-analyzer
+end
+
+function wgsl_analyzer
+    require cargo
+    cargo install --git https://github.com/wgsl-analyzer/wgsl-analyzer.git wgsl-analyzer
+end
+
+function marksman
+    echo "Installing marksman"
+    set marksman_path "$HOME/bin/git-ignored/marksman"
+    # Marksman allows for brew, nix, snap or prebuilt binaries, this is the least pain
+    # NOTE: This assumes that the user running this script can write to /usr/local/bin
+    curl -s https://api.github.com/repos/artempyanykh/marksman/releases/latest \
+        | jq '.assets[] | select(.name=="marksman-linux-x64") | .browser_download_url' -r \
+        | wget -qi - -O $marksman_path
+    chmod +x $marksman_path
+    echo "Marksman installed"
+end
+
+
+# Special targets
+
+function lsp
+    lua_ls
+    ts_ls
+    py_ls
+    vsc_ls
+    tailwind_ls
+    svelte_ls
+    rust_analyzer
+    wgsl_analyzer
+    marksman
+end
+
+function all
+    rust
+    # Provides mise, required later
+    cargo_stuff
+    node
+    python
+    obsidian
+    nvim
+    lsp
+end
+
+$argv
