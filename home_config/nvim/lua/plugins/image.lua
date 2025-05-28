@@ -53,9 +53,10 @@ return {
     {
         '3rd/image.nvim',
         event = "VeryLazy",
+        build = false,
         opts = {
             backend = "kitty",
-            processor = "magick_rock",
+            processor = "magick_cli",
             integrations = {
                 markdown = {
                     enabled = true,
