@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets fish sway nvim tmux readme cfg e tool
+    set legal_targets fish sway nvim tmux readme cfg e tool git
 
     if count $argv >>/dev/null
         set target $argv
@@ -26,6 +26,8 @@ function cfg
             $EDITOR $fish_conf_dir/functions/e.fish
         case tool
             $EDITOR (readlink $HOME/bin)/tool
+        case git
+            $EDITOR (readlink $HOME/.config/git)/config
         case '*'
             echo "Invalid target $target"
     end
