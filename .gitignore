@@ -1,3 +1,6 @@
 home_config/nvim/plugin
 bin/git-ignored/*
 !bin/git-ignored/.gitkeep
+
+# Vim compiled spell files
+*.spl
