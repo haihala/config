@@ -9,7 +9,7 @@
 [core]
 	editor = nvim
     whitespace = error
-	autocrlf = off
+	autocrlf = input
 	safecrlf = off
 	excludesfile = ~/.config/git/global_gitignore
 [cola]
