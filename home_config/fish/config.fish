@@ -12,6 +12,10 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.local/share/bob/nvim-bin
 fish_add_path $HOME/.local/share/mise/shims
 
+# bun
+set -gx BUN_INSTALL "$HOME/.bun"
+fish_add_path $BUN_INSTALL/bin
+
 # Press control-g to delete last line in history
 bind \cg 'history delete --exact --case-sensitive -- $history[1]'
 

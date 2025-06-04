@@ -13,12 +13,30 @@ end
 
 # Languages
 function rust
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    if command -v rustup 2>&1 >/dev/null
+        rustup update
+    else
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    end
 end
 
-function node
+function javascript
     require mise
     mise use -g node
+
+    # Deno
+    if command -v deno 2>&1 >/dev/null
+        deno upgrade
+    else
+        curl -fsSL https://deno.land/install.sh | sh
+    end
+
+    # Bun
+    if command -v bun 2>&1 >/dev/null
+        bun upgrade
+    else
+        curl -fsSL https://bun.sh/install | bash
+    end
 end
 
 function python
@@ -144,7 +162,7 @@ function all
     rust
     # Provides mise, required later
     cargo_stuff
-    node
+    javascript
     python
     obsidian
     nvim

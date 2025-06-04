@@ -1,0 +1,1 @@
+source "/home/hajhawa/.deno/env.fish"
