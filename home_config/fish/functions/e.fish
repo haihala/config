@@ -69,10 +69,13 @@ function e
                 fzf --ansi --print0 | 
                 xargs -0 -o | 
                 string trim |
-                string split ' ' -f2)
+                string split ' ' -f2 -m1|
+                string unescape)
 
-            if test -e $result
-                $EDITOR $result
+            if test -e "$result"
+                $EDITOR "$result"
+            else
+                echo "$result doesn't exist, there is a bug in 'e'"
             end
         case 5
             file_in_commit HEAD
