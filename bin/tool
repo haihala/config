@@ -24,6 +24,8 @@ end
 function python
     require mise
     mise use -g python
+    # So ssh agent keeps working
+    pip install pexpect
 end
 
 function cargo_stuff
