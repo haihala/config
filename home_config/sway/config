@@ -257,3 +257,6 @@ exec lxpolkit
 exec swayidle -w timeout 3600 '$lock'
 
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# If screens command is present (don't have it in git as it changes for each system), setup default
+exec bash -c "command -v screens >/dev/null && screens default"
