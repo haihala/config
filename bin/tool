@@ -79,6 +79,7 @@ function cargo_stuff
         ripgrep \
         sccache \
         tokei \
+        zellij \
         zoxide
 end
 

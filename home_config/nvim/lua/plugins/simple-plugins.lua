@@ -31,15 +31,6 @@ return {
         end
     },
     {
-        'christoomey/vim-tmux-navigator',
-        keys = {
-            { "<A-h>", ":TmuxNavigateLeft<CR>" },
-            { "<A-j>", ":TmuxNavigateDown<CR>" },
-            { "<A-k>", ":TmuxNavigateUp<CR>" },
-            { "<A-l>", ":TmuxNavigateRight<CR>" },
-        }
-    },
-    {
         "lervag/vimtex",
         lazy = false,
         init = function()

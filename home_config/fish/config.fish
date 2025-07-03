@@ -37,3 +37,8 @@ end
 function yeet
     wl-paste >$argv
 end
+
+if set -q ZELLIJ
+else
+    zellij
+end
