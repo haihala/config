@@ -59,7 +59,7 @@ function cargo_stuff
     set -gx RUSTC_WRAPPER sccache
 
     # Install cargo-update if not already installed
-    if cargo install --list | grep cargo-install-update
+    if cargo install --list | grep cargo-install-update 2>&1 >/dev/null
         echo "cargo-update already installed"
     else
         echo "Installing cargo-update"
