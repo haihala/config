@@ -1,6 +1,6 @@
 keybinds clear-defaults=true {
     locked {
-        bind "Ctrl g" { SwitchToMode "normal"; }
+        bind "Ctrl space" { SwitchToMode "normal"; }
     }
     pane {
         bind "left" { MoveFocus "left"; }
@@ -128,6 +128,7 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "locked"
         }
+        // NOTE: Could probably use an easier shortcut for this
         bind "w" {
             LaunchOrFocusPlugin "session-manager" {
                 floating true
@@ -136,13 +137,17 @@ keybinds clear-defaults=true {
             SwitchToMode "locked"
         }
     }
+
     shared_among "normal" "locked" {
+        // The navigation is from https://github.com/hiasr/vim-zellij-navigator
+        // In nvim, I'm using these:
+        // - https://github.com/hiasr/vim-zellij-navigator.nvim (Not sure if necessary)
+        // - https://github.com/swaits/zellij-nav.nvim (Definitely necessary)
         // Left
         bind "Alt h" {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus_or_tab";
                 payload "left";
-
                 move_mod "alt";
             };
         }
@@ -150,7 +155,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus_or_tab";
                 payload "left";
-
                 move_mod "alt";
             };
         }
@@ -160,7 +164,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus_or_tab";
                 payload "right";
-
                 move_mod "alt";
             };
         }
@@ -168,7 +171,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus_or_tab";
                 payload "right";
-
                 move_mod "alt";
             };
         }
@@ -178,7 +180,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus";
                 payload "down";
-
                 move_mod "alt";
             };
         }
@@ -186,7 +187,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus";
                 payload "down";
-
                 move_mod "alt";
             };
         }
@@ -196,7 +196,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus";
                 payload "up";
-
                 move_mod "alt";
             };
         }
@@ -204,7 +203,6 @@ keybinds clear-defaults=true {
             MessagePlugin "https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm" {
                 name "move_focus";
                 payload "up";
-
                 move_mod "alt";
             };
         }
@@ -303,6 +301,7 @@ plugins {
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
+    " https://github.com/hiasr/vim-zellij-navigator/releases/download/0.2.1/vim-zellij-navigator.wasm "
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
@@ -325,7 +324,7 @@ default_mode "locked"
 // Choose the path to the default shell that zellij will use for opening new panes
 // Default: $SHELL
 // 
-// default_shell "fish"
+default_shell "fish"
  
 // Choose the path to override cwd that zellij will use for opening new panes
 // 
@@ -353,7 +352,7 @@ default_mode "locked"
 //   - true (default)
 //   - false
 // 
-// mouse_mode false
+mouse_mode true
  
 // Toggle having pane frames around the panes
 // Options:
@@ -368,7 +367,7 @@ pane_frames true
 // (Requires restart)
 // Default: false
 // 
-// mirror_session true
+mirror_session true
  
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
@@ -377,7 +376,8 @@ pane_frames true
 //   - detach (Default)
 //   - quit
 // 
-// on_force_close "quit"
+// NOTE: It's psychotic that this is not the default
+on_force_close "quit"
  
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
@@ -386,7 +386,7 @@ pane_frames true
 // Valid values: positive integers
 // Default value: 10000
 // 
-// scroll_buffer_size 10000
+scroll_buffer_size 10000
  
 // Provide a command to execute when copying text. The text will be piped to
 // the stdin of the program to perform the copy. This can be used with
@@ -423,7 +423,7 @@ copy_command "wl-copy"                    // wayland
 // otherwise this will error if such a session exists.
 // Default: <RANDOM>
 // 
-// session_name "My singleton session"
+// session_name "generic"
  
 // When `session_name` is provided, attaches to that session
 // if it is already running or creates it otherwise.
@@ -463,7 +463,7 @@ copy_command "wl-copy"                    // wayland
 // (Requires restart)
 // Default: true
 // 
-// styled_underlines false
+styled_underlines true
  
 // How often in seconds sessions are serialized
 // 
@@ -480,7 +480,7 @@ copy_command "wl-copy"                    // wayland
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-// support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol true
  
 // Whether to stack panes when resizing beyond a certain size
 // Default: true
@@ -490,9 +490,9 @@ copy_command "wl-copy"                    // wayland
 // Whether to show tips on startup
 // Default: true
 // 
-// show_startup_tips false
+show_startup_tips false
  
 // Whether to show release notes on first version run
 // Default: true
 // 
-// show_release_notes false
+show_release_notes true
