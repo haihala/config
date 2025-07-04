@@ -37,3 +37,14 @@ end
 function yeet
     wl-paste >$argv
 end
+
+function timer-blocking
+    sleep $argv[1]
+    set msg "Timer '$argv[2..-1]' finished"
+    spd-say $msg --pitch -20
+    notify-send $msg
+end
+
+function timer
+    fish -c "timer-blocking $argv" &
+end
