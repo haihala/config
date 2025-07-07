@@ -16,21 +16,6 @@ set $mod Mod4
 set $term kitty
 #set $menu wofi --show drun -G -i -I -m
 set $menu exec wofi --show=drun -G -i -I -m | xargs swaymsg exec --
-set $lock swaylock \
-	--screenshots \
-	--clock \
-	--datestr "%A, %d. %m. %Y." \
-	--indicator \
-	--indicator-radius 150 \
-	--indicator-thickness 10 \
-	--effect-blur 7x7 \
-	--effect-vignette 0.5:0.5 \
-	--ring-color $cl_unfocused \
-	--key-hl-color $cl_exfocused \
-	--line-color 00000000 \
-	--inside-color 00000088 \
-	--separator-color 00000088 \
-    -f && systemctl suspend
 
 set $ws0 "0"
 set $ws1 "1"
@@ -72,9 +57,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### System mode
-set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
+set $mode_system System: (t) test, (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
 mode "$mode_system" {
-		bindsym l exec $lock, mode "default"
+		bindsym l exec fish -c "lock", mode "default"
 		bindsym e exit
 		bindsym s exec systemctl suspend, mode "default"
 		bindsym r exec systemctl reboot, mode "default"
@@ -251,13 +236,9 @@ show_marks yes
 
 ## Start programs
 exec nm-applet --indicator
-exec blueman-applet
 exec lxpolkit
-
-# Automatic lock screen
-exec swayidle -w timeout 3600 '$lock'
 
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
-# If screens command is present (don't have it in git as it changes for each system), setup default
-exec bash -c "command -v screens >/dev/null && screens default"
+# Specific things we want to do on some hardware
+exec fish -c "machine-init"

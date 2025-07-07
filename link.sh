@@ -36,3 +36,18 @@ for desk in $(ls -AL desktop/); do
     ln -fs $(pwd)/desktop/$desk $HOME/.local/share/applications
     echo "linked $desk to $HOME/.local/share/applications/$desk"
 done
+
+hwinit=$HOME/bin/git-ignored/machine-init
+
+if [[ ! -f $hwinit ]]; then
+    echo """#!/usr/bin/env fish
+
+# This is a hardware specific git-ignored file
+# A few things you may want to do:
+# swayidle -w timeout 3600 lock
+# blueman-applet
+# something to do with screens
+""" > $hwinit
+    chmod +x $hwinit
+    echo "Created machine-init"
+fi

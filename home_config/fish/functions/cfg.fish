@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets fish sway nvim tmux readme cfg e tool git zellij kitty
+    set legal_targets fish sway nvim tmux readme cfg e tool git zellij kitty machine-init
 
     if count $argv >>/dev/null
         set target $argv
@@ -32,6 +32,8 @@ function cfg
             $EDITOR (readlink $HOME/.config/zellij)/config.kdl
         case kitty
             $EDITOR (readlink $HOME/.config/kitty)/kitty.conf
+        case machine-init
+            $EDITOR (readlink $HOME/bin)/git-ignored/machine-init
         case '*'
             echo "Invalid target $target"
     end

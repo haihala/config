@@ -1,0 +1,20 @@
+#!/usr/bin/env fish
+
+# If it won't accept password, see:
+# https://github.com/jirutka/swaylock-effects/issues/54
+
+swaylock \
+    --screenshots \
+    --clock \
+    --datestr "%A, %d. %m. %Y." \
+    --indicator \
+    --indicator-radius 150 \
+    --indicator-thickness 10 \
+    --effect-blur 7x7 \
+    --effect-vignette 0.5:0.5 \
+    --ring-color 2E294E \
+    --key-hl-color 586BA4 \
+    --line-color 00000000 \
+    --inside-color 00000088 \
+    --separator-color 00000088 \
+    -f && systemctl suspend
