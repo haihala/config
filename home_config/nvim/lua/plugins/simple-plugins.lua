@@ -55,6 +55,13 @@ return {
         "folke/flash.nvim",
         event = "VeryLazy",
         opts = {},
+        -- n - normal
+        -- x - visual mode
+        -- s - select mode (kinda weird version of visual mode)
+        -- v - visual and select modes
+        -- i - insert (also used in replace mode)
+        -- o - operator pending (Waiting motion, such as after d, c or y)
+        -- c - command line (/ or :)
         keys = {
             { "<leader>j",  mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
             { "<leader>tn", mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter node" },
