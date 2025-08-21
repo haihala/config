@@ -241,4 +241,4 @@ exec lxpolkit
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # Specific things we want to do on some hardware
-exec fish -c "machine-init"
+exec_always fish -c "machine-conf"

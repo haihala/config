@@ -1,0 +1,17 @@
+#!/usr/bin/env fish
+
+# This isn't great but they change names every reboot so dunno
+set left_serial 9X2VY72I38XL
+set right_serial 9X2VY72I33ML
+
+set left_output (swaymsg -t get_outputs | jq ".[]|select(.serial==\"$left_serial\").name" -r)
+set right_output (swaymsg -t get_outputs | jq ".[]|select(.serial==\"$right_serial\").name" -r)
+
+swaymsg output $left_output enable pos 0 0
+swaymsg output $right_output enable pos 2560 0
+
+# Because mic keeps resetting, this sets the volume
+set card_id (arecord -l | grep "USB Advanced Audio Device" | sed -nE 's/card ([0-9]+).*/\1/p')
+amixer --card $card_id cset "name='Mic Capture Volume'" 12
+
+fix-static
