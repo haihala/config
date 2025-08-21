@@ -38,13 +38,17 @@ function yeet
     wl-paste >$argv
 end
 
-function timer-blocking
-    sleep $argv[1]
+# TODO: Figure out a better way to do this
+# Would be nice to be able to do it in the background (with no output)
+function timer
+    set seconds $argv[1]
     set msg "Timer '$argv[2..-1]' finished"
+    while test $seconds -gt 0
+        echo "$seconds seconds left"
+        sleep 1
+        set seconds (math $seconds-1)
+    end
+
     spd-say $msg --pitch -20
     notify-send $msg
-end
-
-function timer
-    fish -c "timer-blocking $argv" &
 end
