@@ -26,6 +26,7 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
     2. Passwordless sudo:
        1. `sudo visudo` (give %wheel NOPASSWD)
        2. `sudo usermod -a -G wheel <username>`
+    3. Symlink a file from `machine-confs` to `bin/git-ignored/machine-conf`
 
 ## What goes where
 
