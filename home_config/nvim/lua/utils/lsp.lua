@@ -68,7 +68,7 @@ M.setup = function()
         "html",
         "marksman", -- Markdown
         "svelte",
-        "wgsl_analyzer",
+        -- "wgsl_analyzer", -- Broken with Bevy
         "pylsp",
         "lua_ls",
         "rust_analyzer",
