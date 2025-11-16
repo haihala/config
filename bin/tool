@@ -161,6 +161,10 @@ function marksman
     echo "Marksman installed"
 end
 
+function opencode
+    curl -fsSL https://opencode.ai/install | bash
+end
+
 # Special targets
 
 function lsp
@@ -184,6 +188,7 @@ function all
     obsidian
     nvim
     lsp
+    opencode
 end
 
 $argv

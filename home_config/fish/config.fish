@@ -12,6 +12,7 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.local/share/bob/nvim-bin
 fish_add_path $HOME/.local/share/mise/shims
 fish_add_path $HOME/sdks/flutter/bin
+fish_add_path $HOME/.opencode/bin
 
 # bun
 set -gx BUN_INSTALL "$HOME/.bun"
