@@ -15,6 +15,7 @@ dnf install \
     grim \
     ImageMagick-devel \
     kitty \
+    light \
     luarocks \
     lxpolkit \
     mpv \
