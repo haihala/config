@@ -1,0 +1,14 @@
+#!/usr/bin/env fish
+
+function is_running
+    ps -C $argv >/dev/null
+end
+
+if ! is_running swayidle
+    echo Starting swayidle
+    swayidle -w timeout 3600 lock &
+end
+if ! is_running blueman-applet
+    echo Starting blueman-applet
+    blueman-applet &
+end
