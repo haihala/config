@@ -45,9 +45,9 @@
 			"spacing": 10
 		},
 		"clock": {
-			// "timezone": "America/New_York",
-			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-			"format-alt": "{:%Y-%m-%d}"
+            "interval": 60,
+			"format": "{:%H:%M,  %Y-%m-%d (%A)}",
+			"tooltip-format": "{:%A, %B %d, %Y (%R)}",
 		},
 		"cpu": {
 			"format": "{usage}% ",
