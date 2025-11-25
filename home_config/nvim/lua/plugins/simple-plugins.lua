@@ -42,7 +42,10 @@ return {
     {
         "folke/flash.nvim",
         event = "VeryLazy",
-        opts = {},
+        opts = {
+            -- Disables fFtT repeatable overrides
+            modes = { char = { enabled = false } }
+        },
         -- n - normal
         -- x - visual mode
         -- s - select mode (kinda weird version of visual mode)
