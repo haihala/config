@@ -3,12 +3,15 @@
 # This isn't great but they change names every reboot so dunno
 set left_serial 9X2VY72I38XL
 set right_serial 9X2VY72I33ML
+set tv_serial 0x01010101
 
 set left_output (swaymsg -t get_outputs | jq ".[]|select(.serial==\"$left_serial\").name" -r)
 set right_output (swaymsg -t get_outputs | jq ".[]|select(.serial==\"$right_serial\").name" -r)
+set tv_output (swaymsg -t get_outputs | jq ".[]|select(.serial==\"$tv_serial\").name" -r)
 
 swaymsg output $left_output enable pos 0 0
 swaymsg output $right_output enable pos 2560 0
+swaymsg output $tv_output enable pos 0 1440 scale 1.5
 
 # Because mic keeps resetting, this sets the volume
 set card_id (arecord -l | grep "USB Advanced Audio Device" | sed -nE 's/card ([0-9]+).*/\1/p')
