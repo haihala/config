@@ -3,7 +3,7 @@
 # This is a utility script for getting / installing / updating all of my tools
 # Assumes fish is installed
 
-# Utils 
+# Utils
 function require
     if ! command -v $argv 2>&1 >/dev/null
         echo "Command '$argv' is not found, can't proceed"
@@ -72,12 +72,14 @@ function cargo_stuff
         bob-nvim \
         bottom \
         cargo-make \
+        cargo-update \
         fd-find \
         just \
         mise \
         nu \
         ripgrep \
         sccache \
+        stylua \
         tokei \
         zellij \
         zoxide
@@ -129,6 +131,11 @@ function vsc_ls
     npm install -g vscode-langservers-extracted
 end
 
+function eslint_d
+    require npm
+    npm install -g eslint_d
+end
+
 function tailwind_ls
     require npm
     npm install -g @tailwindcss/language-server
@@ -172,6 +179,7 @@ function lsp
     ts_ls
     py_ls
     vsc_ls
+    eslint_d
     tailwind_ls
     svelte_ls
     rust_analyzer
