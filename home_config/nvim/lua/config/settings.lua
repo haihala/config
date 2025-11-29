@@ -11,7 +11,7 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true -- Make spaces instead of tabs when pressing tab
-vim.opt.smarttab = true  -- Always put tabs at the start of the line
+vim.opt.smarttab = true -- Always put tabs at the start of the line
 
 vim.opt.autoindent = true
 vim.opt.smartindent = true
@@ -29,7 +29,7 @@ vim.opt.smartcase = true -- Searching with upper case character is case sensitiv
 -- Text wrapping
 vim.opt.showbreak = "> "
 vim.opt.breakindent = true
-vim.opt.breakindentopt = { 'shift:2' }
+vim.opt.breakindentopt = { "shift:2" }
 
 -- Automatically reload and save files upon navigation
 vim.opt.autoread = true
@@ -42,7 +42,7 @@ vim.opt.spelllang = "en_us"
 
 -- Neovide
 if vim.g.neovide then
-    vim.o.guifont = "Source Code Pro:h10"
+	vim.o.guifont = "Source Code Pro:h10"
 end
 
 -- Misc
