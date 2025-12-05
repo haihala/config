@@ -171,6 +171,11 @@ function marksman
     echo "Marksman installed"
 end
 
+function harper
+    require cargo
+    cargo install harper-ls --locked
+end
+
 function opencode
     curl -fsSL https://opencode.ai/install | bash
 end
@@ -188,6 +193,7 @@ function lsp
     rust_analyzer
     wgsl_analyzer
     marksman
+    harper
 end
 
 function all

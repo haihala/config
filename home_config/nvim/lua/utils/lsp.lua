@@ -74,6 +74,7 @@ M.setup = function()
 		"lua_ls",
 		"rust_analyzer",
 		"jsonls",
+        "harper_ls",
 	})
 
 	-- Change the Diagnostic symbols in the sign column (gutter)
