@@ -30,11 +30,6 @@ M.on_attach = function(ev)
 		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
 	end)
 
-	-- Automatic format on save for lua
-	if vim.bo.filetype == "lua" then
-		vim.cmd([[autocmd BufWritePre * silent! lua vim.lsp.buf.format()]])
-	end
-
 	for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
 		local default_diagnostic_handler = vim.lsp.handlers[method]
 		vim.lsp.handlers[method] = function(err, result, context, config)
@@ -74,7 +69,7 @@ M.setup = function()
 		"lua_ls",
 		"rust_analyzer",
 		"jsonls",
-        "harper_ls",
+		"harper_ls",
 	})
 
 	-- Change the Diagnostic symbols in the sign column (gutter)
