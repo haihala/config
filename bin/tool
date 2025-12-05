@@ -83,6 +83,9 @@ function cargo_stuff
         tokei \
         zellij \
         zoxide
+
+    # This won't check for updates I think
+    cargo install --git https://github.com/elijah-potter/tatum --locked
 end
 
 # Tools
