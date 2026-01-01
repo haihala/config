@@ -227,7 +227,7 @@ client.focused_inactive	$cl_dark	$cl_exfocused	$cl_light	$cl_light	$cl_exfocused
 client.unfocused		$cl_dark	$cl_unfocused	$cl_light	$cl_light	$cl_dark
 client.urgent			$cl_dark	$cl_urgent		$cl_dark	$cl_light	$cl_dark
 
-### Font 
+### Font
 font '/usr/share/fonts/jetbrains-mono/JetBrains Mono Medium Nerd Font Complete Mono.ttf' 8
 
 ### Window borders
@@ -241,6 +241,7 @@ show_marks yes
 ## Start programs
 exec nm-applet --indicator
 exec lxpolkit
+exec blueman-applet
 
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 

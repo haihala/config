@@ -1,0 +1,31 @@
+#!/usr/bin/env fish
+# This is a script for fixing various janky things
+
+function static
+    # Power saving mode occasionally re-enables, which causes static audio
+    echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save > /dev/null
+end
+
+
+function discord
+    # Discord will log output, which is a problem somehow, we wrap the command so it doesn't happen
+    set target '/usr/bin/Discord'
+    set replacement 'Exec=sh -c "/usr/bin/Discord" > /dev/null'
+
+    sudo sed -i "s|$target|$replacement|g" /usr/share/applications/discord.desktop
+end
+
+function steam
+    set target 'PrefersNonDefaultGPU=true'
+    set replacement 'PrefersNonDefaultGPU=false'
+
+    sudo sed -i "s|$target|$replacement|g" /usr/share/applications/steam.desktop
+end
+
+function all
+    static
+    discord
+    steam
+end
+
+$argv

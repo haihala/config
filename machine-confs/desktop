@@ -17,4 +17,4 @@ swaymsg output $tv_output enable pos 0 1440 scale 1.5
 set card_id (arecord -l | grep "USB Advanced Audio Device" | sed -nE 's/card ([0-9]+).*/\1/p')
 amixer --card $card_id cset "name='Mic Capture Volume'" 12
 
-fix-static
+fix all
