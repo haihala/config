@@ -9,7 +9,7 @@ end
 
 function discord
     # Discord will log output, which is a problem somehow, we wrap the command so it doesn't happen
-    set target '/usr/bin/Discord'
+    set target 'Exec=/usr/bin/Discord'
     set replacement 'Exec=sh -c "/usr/bin/Discord" > /dev/null'
 
     sudo sed -i "s|$target|$replacement|g" /usr/share/applications/discord.desktop
