@@ -15,7 +15,7 @@ function e
 
     function file_in_commit
         set selected (
-            git diff-tree --no-commit-id --name-only $argv -r | 
+            git diff-tree --no-commit-id --name-only $argv -r |
             fzf --print0 |
             xargs -0 -o
         )
@@ -65,13 +65,15 @@ function e
                 $EDITOR $result[1] "+call cursor($result[2], $result[3])"
             end
         case 4
-            set result (git status -s | 
-                fzf --ansi --print0 | 
-                xargs -0 -o | 
+            set result (git status -s |
+                grep -v -E "^ ?D" |
+                fzf --ansi --print0 |
+                xargs -0 -o |
                 string trim |
                 string split ' ' -f2 -m1|
                 string unescape)
 
+            echo $result
             if test -e "$result"
                 $EDITOR "$result"
             else
@@ -80,9 +82,9 @@ function e
         case 5
             file_in_commit HEAD
         case 6
-            set commit_hash (git log --all --oneline --color=always | 
-                fzf --ansi --print0 | 
-                xargs -0 -o | 
+            set commit_hash (git log --all --oneline --color=always |
+                fzf --ansi --print0 |
+                xargs -0 -o |
                 cut -d' ' -f1)
             file_in_commit $commit_hash
         case 7
