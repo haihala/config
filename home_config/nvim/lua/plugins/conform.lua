@@ -34,6 +34,7 @@ return {
 			-- I recommend these options. See :help conform.format for details.
 			lsp_format = "fallback",
 			timeout_ms = 500,
+			stop_after_first = true,
 		},
 		stop_after_first = true,
 	},
