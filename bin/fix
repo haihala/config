@@ -6,6 +6,10 @@ function static
     echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save > /dev/null
 end
 
+function hdmi-audio
+    # Set the GPU audio output to the port the TV is plugged into
+    pactl set-card-profile alsa_card.pci-0000_03_00.1 output:hdmi-stereo-extra1
+end
 
 function discord
     # Discord will log output, which is a problem somehow, we wrap the command so it doesn't happen
