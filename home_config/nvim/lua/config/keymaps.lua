@@ -57,12 +57,4 @@ vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
 vim.keymap.set("n", "<leader>sml", "a[]()<ESC>i")
 vim.keymap.set("v", "<leader>sml", 'di[<c-r>"]()<ESC>i')
 
--- While not a remap, I'm putting this here
-vim.api.nvim_create_user_command("Upgrade", function()
-	-- The order here doesn't seem to matter
-	vim.cmd(":MasonUpdate") -- This may not work correctly
-	vim.cmd(":TSUpdate")
-	vim.cmd(":PackerSync")
-end, {})
-
 -- TODO: Pane resizing

@@ -50,3 +50,8 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80"
+
+-- Folding: treesitter produces many more fold candidates than indent-based
+-- folding. Start with everything unfolded so files open expanded.
+vim.opt.foldlevelstart = 99
+vim.opt.foldlevel = 99

@@ -81,6 +81,7 @@ function cargo_stuff
         sccache \
         stylua \
         tokei \
+        tree-sitter-cli \
         zellij \
         zoxide
 

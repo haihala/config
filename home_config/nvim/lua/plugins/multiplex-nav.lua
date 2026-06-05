@@ -1,24 +1,11 @@
-return {
-	-- Navigators (Zellij and tmux
-	{
-		"christoomey/vim-tmux-navigator",
-		keys = {
-			{ "<A-h>", ":TmuxNavigateLeft<CR>" },
-			{ "<A-j>", ":TmuxNavigateDown<CR>" },
-			{ "<A-k>", ":TmuxNavigateUp<CR>" },
-			{ "<A-l>", ":TmuxNavigateRight<CR>" },
-		},
-	},
-	-- {
-	--     "swaits/zellij-nav.nvim",
-	--     lazy = true,
-	--     event = "VeryLazy",
-	--     keys = {
-	--         { "<a-h>", "<cmd>ZellijNavigateLeftTab<cr>",  { silent = true, desc = "navigate left or tab" } },
-	--         { "<a-j>", "<cmd>ZellijNavigateDown<cr>",     { silent = true, desc = "navigate down" } },
-	--         { "<a-k>", "<cmd>ZellijNavigateUp<cr>",       { silent = true, desc = "navigate up" } },
-	--         { "<a-l>", "<cmd>ZellijNavigateRightTab<cr>", { silent = true, desc = "navigate right or tab" } },
-	--     },
-	--     opts = {},
-	-- },
-}
+-- vim-tmux-navigator: no Lua setup, just keymaps
+vim.keymap.set("n", "<A-h>", ":TmuxNavigateLeft<CR>")
+vim.keymap.set("n", "<A-j>", ":TmuxNavigateDown<CR>")
+vim.keymap.set("n", "<A-k>", ":TmuxNavigateUp<CR>")
+vim.keymap.set("n", "<A-l>", ":TmuxNavigateRight<CR>")
+
+-- Alternative (Zellij). Uncomment plugin in config/plugins.lua and swap keymaps above:
+-- vim.keymap.set("n", "<A-h>", "<cmd>ZellijNavigateLeftTab<cr>",  { silent = true })
+-- vim.keymap.set("n", "<A-j>", "<cmd>ZellijNavigateDown<cr>",     { silent = true })
+-- vim.keymap.set("n", "<A-k>", "<cmd>ZellijNavigateUp<cr>",       { silent = true })
+-- vim.keymap.set("n", "<A-l>", "<cmd>ZellijNavigateRightTab<cr>", { silent = true })
