@@ -1,0 +1,233 @@
+#!/usr/bin/env bash
+# opencode-usage: per-month token usage report across all local opencode sessions.
+#
+# Reads from two sources and unions them:
+#   1. SQLite DB: ~/.local/share/opencode/opencode.db (current storage backend)
+#   2. JSON files: ~/.local/share/opencode/storage/message/**/*.json (legacy storage,
+#      used before opencode migrated to SQLite around 2026-01)
+#
+# Sums input/output/cache tokens per assistant message, groups by year-month
+# and provider/model, and applies GitHub Copilot per-token pricing.
+#
+# Pricing source: https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing
+# Rates are per 1M tokens. Update PRICES in the awk block if rates change.
+
+set -euo pipefail
+
+DB="${OPENCODE_DB:-$HOME/.local/share/opencode/opencode.db}"
+JSON_STORE="${OPENCODE_STORAGE:-$HOME/.local/share/opencode/storage/message}"
+
+# Emit TSV: yearmonth_seed provider model input output reasoning cache_read cache_write
+# (the awk aggregator below carries provider/model from user -> assistant within a session)
+emit_records() {
+  # --- DB source ---
+  if [[ -f "$DB" ]]; then
+    python3 - "$DB" <<'PY'
+import sqlite3, json, sys
+db = sys.argv[1]
+conn = sqlite3.connect(db)
+cur = conn.cursor()
+cur.execute("SELECT session_id, time_created, data FROM message ORDER BY session_id, time_created")
+for sid, ts, raw in cur.fetchall():
+    try:
+        d = json.loads(raw)
+    except Exception:
+        continue
+    role = d.get('role', '')
+    prov = d.get('providerID') or (d.get('model') or {}).get('providerID') or ''
+    model = d.get('modelID') or (d.get('model') or {}).get('modelID') or ''
+    tok = d.get('tokens') or {}
+    cache = tok.get('cache') or {}
+    fields = [
+        sid, str(ts), role, prov, model,
+        str(tok.get('input') or 0),
+        str(tok.get('output') or 0),
+        str(tok.get('reasoning') or 0),
+        str(cache.get('read') or 0),
+        str(cache.get('write') or 0),
+    ]
+    print('\t'.join(fields))
+PY
+  fi
+
+  # --- legacy JSON source ---
+  if [[ -d "$JSON_STORE" ]]; then
+    find "$JSON_STORE" -mindepth 2 -maxdepth 2 -name '*.json' -print0 \
+      | sort -z \
+      | xargs -0 jq -r '
+          [.sessionID, .time.created, .role,
+           (.providerID // .model.providerID // ""),
+           (.modelID   // .model.modelID   // ""),
+           ((.tokens // {}) | .input     // 0),
+           ((.tokens // {}) | .output    // 0),
+           ((.tokens // {}) | .reasoning // 0),
+           ((.tokens // {}) | .cache.read  // 0),
+           ((.tokens // {}) | .cache.write // 0)]
+          | @tsv
+        '
+  fi
+}
+
+if [[ ! -f "$DB" && ! -d "$JSON_STORE" ]]; then
+  echo "error: neither $DB nor $JSON_STORE exists" >&2
+  exit 1
+fi
+
+emit_records \
+  | sort -t $'\t' -k1,1 -k2,2n \
+  | awk -F'\t' '
+      BEGIN { OFS = "\t" }
+      {
+        sid = $1; ts = $2; role = $3
+        prov = $4; model = $5
+        in_t = $6; out_t = $7; reas = $8; cr = $9; cw = $10
+
+        # remember the latest provider/model declared in this session
+        if (prov != "" && model != "") {
+          last_prov[sid]  = prov
+          last_model[sid] = model
+        }
+
+        if (role != "assistant") next
+        if (in_t + out_t + reas + cr + cw == 0) next
+
+        p = (prov  != "" ? prov  : last_prov[sid])
+        m = (model != "" ? model : last_model[sid])
+        if (p == "") p = "unknown"
+        if (m == "") m = "unknown"
+
+        ym = strftime("%Y-%m", int(ts / 1000))
+        key = ym "\t" p "\t" m
+
+        sum_in[key]    += in_t
+        sum_out[key]   += out_t
+        sum_reas[key]  += reas
+        sum_cr[key]    += cr
+        sum_cw[key]    += cw
+        msgs[key]      += 1
+      }
+      END {
+        for (k in msgs) print k, msgs[k], sum_in[k], sum_out[k], sum_reas[k], sum_cr[k], sum_cw[k]
+      }
+    ' \
+  | sort \
+  | awk -F'\t' '
+      BEGIN {
+        OFS = "  "
+
+        # GitHub Copilot per-1M-token rates (USD), as of 2026-06.
+        # Source: docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing
+        # Anthropic
+        set_price("claude-haiku-4.5",   1.00, 0.10, 1.25,  5.00)
+        set_price("claude-sonnet-4",    3.00, 0.30, 3.75, 15.00)
+        set_price("claude-sonnet-4.5",  3.00, 0.30, 3.75, 15.00)
+        set_price("claude-sonnet-4.6",  3.00, 0.30, 3.75, 15.00)
+        set_price("claude-opus-4.5",    5.00, 0.50, 6.25, 25.00)
+        set_price("claude-opus-4.6",    5.00, 0.50, 6.25, 25.00)
+        set_price("claude-opus-4.7",    5.00, 0.50, 6.25, 25.00)
+        set_price("claude-opus-4.8",    5.00, 0.50, 6.25, 25.00)
+        # OpenAI
+        set_price("gpt-5-mini",         0.25, 0.025, 0.0,  2.00)
+        set_price("gpt-5.2",            1.75, 0.175, 0.0, 14.00)
+        set_price("gpt-5.2-codex",      1.75, 0.175, 0.0, 14.00)
+        set_price("gpt-5.3-codex",      1.75, 0.175, 0.0, 14.00)
+        set_price("gpt-5.4",            2.50, 0.25,  0.0, 15.00)
+        set_price("gpt-5.4-mini",       0.75, 0.075, 0.0,  4.50)
+        set_price("gpt-5.4-nano",       0.20, 0.02,  0.0,  1.25)
+        set_price("gpt-5.5",            5.00, 0.50,  0.0, 30.00)
+        # Google
+        set_price("gemini-2.5-pro",     1.25, 0.125, 0.0, 10.00)
+        set_price("gemini-3-flash",     0.50, 0.05,  0.0,  3.00)
+        set_price("gemini-3.1-pro",     2.00, 0.20,  0.0, 12.00)
+        set_price("gemini-3.5-flash",   1.50, 0.15,  0.0,  9.00)
+        # Microsoft / GitHub
+        set_price("mai-code-1-flash",   0.75, 0.075, 0.0,  4.50)
+        set_price("raptor-mini",        0.25, 0.025, 0.0,  2.00)
+
+        # Fallback rates for unknown models (Sonnet 4.5 rates)
+        PRICE_DEFAULT_in   = 3.00
+        PRICE_DEFAULT_cr   = 0.30
+        PRICE_DEFAULT_cw   = 3.75
+        PRICE_DEFAULT_out  = 15.00
+
+        row_fmt = "%-9s  %-15s  %-32s  %8s  %12s  %12s  %12s  %12s  %12s  %14s  %10s\n"
+        printf row_fmt, "month", "provider", "model", "msgs", "input", "output", "reasoning", "cache_read", "cache_write", "total", "cost USD"
+        printf row_fmt, "---------", "---------------", "--------------------------------", "--------", "------------", "------------", "------------", "------------", "------------", "--------------", "----------"
+      }
+      function set_price(name, p_in, p_cr, p_cw, p_out) {
+        price_in[name]  = p_in
+        price_cr[name]  = p_cr
+        price_cw[name]  = p_cw
+        price_out[name] = p_out
+      }
+      function fmt(n,   s, t, neg) {
+        s = sprintf("%d", n); neg = ""
+        if (substr(s,1,1) == "-") { neg = "-"; s = substr(s,2) }
+        t = ""
+        while (length(s) > 3) { t = "," substr(s, length(s)-2) t; s = substr(s, 1, length(s)-3) }
+        return neg s t
+      }
+      function cost(model, in_t, out_t, reas, cr, cw,   p_in, p_cr, p_cw, p_out, est) {
+        if (model in price_in) {
+          p_in  = price_in[model];  p_cr  = price_cr[model]
+          p_cw  = price_cw[model];  p_out = price_out[model]
+          est = ""
+        } else {
+          p_in  = PRICE_DEFAULT_in;  p_cr  = PRICE_DEFAULT_cr
+          p_cw  = PRICE_DEFAULT_cw;  p_out = PRICE_DEFAULT_out
+          est = "?"
+          unknown_models[model] = 1
+        }
+        return sprintf("$%.2f%s", (in_t * p_in + cr * p_cr + cw * p_cw + (out_t + reas) * p_out) / 1000000.0, est)
+      }
+      {
+        month = $1; prov = $2; model = $3
+        msgs = $4; in_t = $5; out_t = $6; reas = $7; cr = $8; cw = $9
+        total = in_t + out_t + reas + cr + cw
+        c = cost(model, in_t, out_t, reas, cr, cw)
+
+        # If month changed, flush the prior month TOTAL row first
+        if (prev_month != "" && prev_month != month) {
+          printf row_fmt, prev_month, "TOTAL", "", fmt(m_msgs[prev_month]), fmt(m_in[prev_month]), fmt(m_out[prev_month]), \
+            fmt(m_reas[prev_month]), fmt(m_cr[prev_month]), fmt(m_cw[prev_month]), \
+            fmt(m_in[prev_month] + m_out[prev_month] + m_reas[prev_month] + m_cr[prev_month] + m_cw[prev_month]), \
+            sprintf("$%.2f", m_cost[prev_month])
+          print ""
+        }
+
+        printf row_fmt, month, prov, model, fmt(msgs), fmt(in_t), fmt(out_t), fmt(reas), fmt(cr), fmt(cw), fmt(total), c
+
+        m_msgs[month]  += msgs
+        m_in[month]    += in_t
+        m_out[month]   += out_t
+        m_reas[month]  += reas
+        m_cr[month]    += cr
+        m_cw[month]    += cw
+        gsub(/[$?]/, "", c)
+        m_cost[month] += c + 0
+        g_msgs += msgs; g_in += in_t; g_out += out_t; g_reas += reas; g_cr += cr; g_cw += cw
+        g_cost += c + 0
+
+        prev_month = month
+      }
+      END {
+        if (prev_month != "") {
+          printf row_fmt, prev_month, "TOTAL", "", fmt(m_msgs[prev_month]), fmt(m_in[prev_month]), fmt(m_out[prev_month]), \
+            fmt(m_reas[prev_month]), fmt(m_cr[prev_month]), fmt(m_cw[prev_month]), \
+            fmt(m_in[prev_month] + m_out[prev_month] + m_reas[prev_month] + m_cr[prev_month] + m_cw[prev_month]), \
+            sprintf("$%.2f", m_cost[prev_month])
+        }
+        print ""
+        printf row_fmt, "ALL", "GRAND TOTAL", "", fmt(g_msgs), fmt(g_in), fmt(g_out), fmt(g_reas), fmt(g_cr), fmt(g_cw), \
+          fmt(g_in + g_out + g_reas + g_cr + g_cw), sprintf("$%.2f", g_cost)
+
+        n_unknown = 0
+        for (m in unknown_models) n_unknown++
+        if (n_unknown > 0) {
+          print ""
+          print "Note: rows marked with ? used fallback (Sonnet 4.5) pricing because the"
+          print "modelID was not in the price table. Unknown models:"
+          for (m in unknown_models) print "  - " m
+        }
+      }
+    '
