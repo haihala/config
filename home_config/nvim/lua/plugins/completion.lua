@@ -30,6 +30,16 @@ require("blink.cmp").setup({
 		nerd_font_variant = "mono",
 	},
 
+	completion = {
+		-- More aggressive triggering so the menu reliably appears when starting a
+		-- new word. Default behavior occasionally missed the first keystroke
+		-- after entering insert mode, requiring a backspace + retype to recover.
+		trigger = {
+			show_on_insert = true,
+			show_on_backspace_in_keyword = true,
+		},
+	},
+
 	sources = {
 		default = { "lsp", "path", "snippets", "buffer" },
 	},

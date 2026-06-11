@@ -46,6 +46,14 @@ M.on_attach = function(ev)
 end
 
 M.setup = function()
+	-- Advertise blink.cmp's expanded LSP capabilities (snippet support, item
+	-- resolve, etc.) to every server. Without this, servers like rust_analyzer
+	-- will send fewer or no completion candidates because they think the
+	-- client cannot handle them.
+	vim.lsp.config("*", {
+		capabilities = require("blink.cmp").get_lsp_capabilities(nil, true),
+	})
+
 	vim.lsp.config("lua_ls", {
 		settings = {
 			Lua = {
@@ -81,6 +89,28 @@ M.setup = function()
 			},
 		},
 	})
+	vim.lsp.config("wgsl_analyzer", {
+		settings = {
+			["wgsl-analyzer"] = {
+				diagnostics = {
+					typeErrors = true,
+					nagaParsingErrors = true,
+					nagaValidationErrors = true,
+					nagaVersion = "main",
+				},
+				inlayHints = {
+					enabled = true,
+					typeHints = true,
+					parameterHints = true,
+					structLayoutHints = true,
+					typeVerbosity = "compact",
+				},
+				typing = {
+					continueCommentsOnNewline = true,
+				},
+			},
+		},
+	})
 
 	-- Enable LSP servers for Neovim 0.11+
 	local ts_server = vim.g.lsp_typescript_server or "ts_ls" -- "ts_ls" or "vtsls" for TypeScript
@@ -90,9 +120,9 @@ M.setup = function()
 		"html",
 		"marksman", -- Markdown
 		"svelte",
-		-- "wgsl_analyzer", -- Broken with Bevy
 		"ty",
-		-- "pylsp", -- TODO: Figure out a way to fall back to pylsp
+		"wgsl_analyzer", -- Broken with Bevy?
+		"pylsp",
 		"lua_ls",
 		"rust_analyzer",
 		"jsonls",
