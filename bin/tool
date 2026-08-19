@@ -4,6 +4,11 @@
 # Assumes fish is installed
 
 # Utils
+# Defaults to Linux, so only macOS needs special casing
+function is_macos
+    test (uname) = Darwin
+end
+
 function require
     if ! command -v $argv 2>&1 >/dev/null
         echo "Command '$argv' is not found, can't proceed"
@@ -92,19 +97,26 @@ end
 # Tools
 function obsidian
     echo "Installing Obsidian"
-    set obsidian_path $HOME/bin/git-ignored/obsidian
-    # I want this to not pick up on the ...-arm64.AppImage
-    set obsidian_url (curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest \
-        | jq '.assets[] | select(.name | test("\\\\d+\\\\.\\\\d+\\\\.AppImage$")) | .browser_download_url' -r)
-    echo "Downloading $obsidian_url to $obsidian_path"
-    wget -qi $obsidian_url -O $obsidian_path
-    chmod +x $obsidian_path
 
-    # They have an official download page, but it's not easy to hook up to bash scripts
-    # So get the one off of Reddit :D
-    echo "Downloading icon so desktop shortcut works"
-    set obsidian_picture_url https://styles.redditmedia.com/t5_2mz3dr/styles/communityIcon_l538j35ftd3b1.png
-    wget -qi $obsidian_picture_url -O ~/Pictures/obsidian-icon.png
+    if is_macos
+        require brew
+        brew install --cask obsidian
+    else
+        set obsidian_path $HOME/bin/git-ignored/obsidian
+        # I want this to not pick up on the ...-arm64.AppImage
+        set obsidian_url (curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest \
+            | jq '.assets[] | select(.name | test("\\\\d+\\\\.\\\\d+\\\\.AppImage$")) | .browser_download_url' -r)
+        echo "Downloading $obsidian_url to $obsidian_path"
+        wget -qi $obsidian_url -O $obsidian_path
+        chmod +x $obsidian_path
+
+        # They have an official download page, but it's not easy to hook up to bash scripts
+        # So get the one off of Reddit :D
+        echo "Downloading icon so desktop shortcut works"
+        set obsidian_picture_url https://styles.redditmedia.com/t5_2mz3dr/styles/communityIcon_l538j35ftd3b1.png
+        wget -qi $obsidian_picture_url -O ~/Pictures/obsidian-icon.png
+    end
+
     echo "Obsidian installed"
 end
 
@@ -161,15 +173,32 @@ function wgsl_analyzer
 end
 
 function marksman
-    echo "Installing marksman"
-    set marksman_path "$HOME/bin/git-ignored/marksman"
-    # Marksman allows for brew, nix, snap or prebuilt binaries, this is the least pain
-    # NOTE: This assumes that the user running this script can write to /usr/local/bin
-    curl -s https://api.github.com/repos/artempyanykh/marksman/releases/latest \
-        | jq '.assets[] | select(.name=="marksman-linux-x64") | .browser_download_url' -r \
-        | wget -qi - -O $marksman_path
-    chmod +x $marksman_path
-    echo "Marksman installed"
+    require mise
+    mise use -g marksman
+end
+
+function roslyn_ls
+    # https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl/NuGet/Microsoft.CodeAnalysis.LanguageServer.neutral/overview
+end
+
+function terraform_ls
+    require mise
+    mise use -g terraform-ls
+end
+
+function ruff
+    require uv
+    uv tool install ruff@latest
+end
+
+function ty
+    require uv
+    uv tool install ty@latest
+end
+
+function shfmt
+    require go
+    go install mvdan.cc/sh/v3/cmd/shfmt@latest
 end
 
 function opencode
@@ -189,6 +218,11 @@ function lsp
     rust_analyzer
     wgsl_analyzer
     marksman
+    roslyn_ls
+    terraform_ls
+    ruff
+    ty
+    shfmt
 end
 
 function all

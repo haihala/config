@@ -18,8 +18,12 @@ M.on_attach = function(ev)
 	-- Diagnostics
 	vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "<leader>fd", picker.diagnostics, opts) -- Find diagnostics
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.jump({ count = 1, float = true })
+	end, opts)
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.jump({ count = -1, float = true })
+	end, opts)
 
 	-- Actions
 	vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
@@ -56,6 +60,28 @@ M.setup = function()
 		},
 	})
 
+	vim.lsp.config("terraform_lsp", {
+		cmd = "terraform-ls serve",
+	})
+
+	vim.lsp.config("ty", {
+		cmd = { "ty", "server" },
+		filetypes = { "python" },
+		root_dir = vim.fs.dirname(vim.fs.find({ "pyproject.toml", ".git" }, { upward = true })[1]),
+		settings = {
+			python = {
+				-- Ensure ty knows where to look for your dependencies
+				venvPath = ".",
+				venv = ".venv",
+				analysis = {
+					autoSearchPaths = true,
+					useLibraryCodeForTypes = true,
+					typeCheckingMode = "strict",
+				},
+			},
+		},
+	})
+
 	-- Enable LSP servers for Neovim 0.11+
 	local ts_server = vim.g.lsp_typescript_server or "ts_ls" -- "ts_ls" or "vtsls" for TypeScript
 	vim.lsp.enable({
@@ -65,7 +91,8 @@ M.setup = function()
 		"marksman", -- Markdown
 		"svelte",
 		-- "wgsl_analyzer", -- Broken with Bevy
-		"pylsp",
+		"ty",
+		-- "pylsp", -- TODO: Figure out a way to fall back to pylsp
 		"lua_ls",
 		"rust_analyzer",
 		"jsonls",
