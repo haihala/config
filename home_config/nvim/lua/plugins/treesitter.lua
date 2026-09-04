@@ -25,6 +25,9 @@ local ensure_installed = {
 -- Async; safe to fire-and-forget at startup. Already-installed parsers are no-ops.
 nts.install(ensure_installed)
 
+-- Filetypes where the treesitter indentexpr does more harm than good.
+local no_ts_indent = { markdown = true, ["markdown_inline"] = true }
+
 -- Enable highlight + folds + indent on every buffer whose filetype has a parser.
 -- Incremental selection is built-in in 0.12 (see v_an / v_in / v_]n / v_[n).
 vim.api.nvim_create_autocmd("FileType", {
@@ -37,8 +40,12 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 		vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 		vim.wo[0][0].foldmethod = "expr"
-		-- nvim-treesitter (main) ships an experimental indent expression
-		vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		-- nvim-treesitter (main) ships an experimental indent expression.
+		-- It returns 0 for markdown, which kills 'autoindent' and breaks
+		-- list-item continuation on o/O/<CR>, so keep plain autoindent there.
+		if not no_ts_indent[ft] then
+			vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		end
 	end,
 })
 
