@@ -205,6 +205,10 @@ function opencode
     curl -fsSL https://opencode.ai/install | bash
 end
 
+function witr
+    curl -fsSL https://raw.githubusercontent.com/pranshuparmar/witr/main/install.sh | bash
+end
+
 # Special targets
 
 function lsp
@@ -235,6 +239,7 @@ function all
     nvim
     lsp
     opencode
+    witr
 end
 
 $argv
