@@ -1,3 +1,6 @@
+-- Biome has no markdown support, so don't let it shadow prettier there
+local prettier_only = { "prettierd", "prettier" }
+
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
@@ -13,7 +16,7 @@ require("conform").setup({
 				return { "isort", "black", "autopep8" }
 			end
 		end,
-		markdown = { "biome-check", "prettierd", "prettier", "eslint_d" },
+		markdown = prettier_only,
 		typescript = { "biome-check", "prettierd", "prettier", "eslint_d" },
 		javascript = { "biome-check", "prettierd", "prettier", "eslint_d" },
 		typescriptreact = { "biome-check", "prettierd", "prettier", "eslint_d" },
