@@ -1,3 +1,7 @@
+# The following lines were added by Docker Desktop to add commands to your PATH.
+export PATH="$PATH:/Users/eero.haihala/.docker/bin"
+# End of Docker Desktop section.
+
 set -gx PAGER less
 set -gx EDITOR nvim
 set -gx VISUAL nvim
@@ -56,3 +60,7 @@ function timer
     spd-say $msg --pitch -20
     notify-send $msg
 end
+
+# >>> railway initialize >>>
+source "$HOME/.railway/env.fish"
+# <<< railway initialize <<<
