@@ -205,8 +205,90 @@ function opencode
     curl -fsSL https://opencode.ai/install | bash
 end
 
+function pandoc
+    if is_macos
+        require brew
+        brew install pandoc
+    else
+        require dnf
+        sudo dnf install -y pandoc
+    end
+end
+
+function xelatex
+    if command -sq xelatex
+        echo "xelatex is already installed at "(command -s xelatex)
+        return
+    else if test -x /Library/TeX/texbin/xelatex
+        fish_add_path /Library/TeX/texbin
+        echo "xelatex is already installed at /Library/TeX/texbin/xelatex"
+        return
+    end
+
+    if is_macos
+        require brew
+        brew install --cask basictex
+        fish_add_path /Library/TeX/texbin
+    else
+        require dnf
+        sudo dnf install -y texlive-xetex
+    end
+
+    if ! command -sq xelatex
+        echo "xelatex was installed but is not available on PATH" >&2
+        return 1
+    end
+end
+
 function witr
-    curl -fsSL https://raw.githubusercontent.com/pranshuparmar/witr/main/install.sh | bash
+    require curl
+    require jq
+
+    # The upstream install.sh defaults to /usr/local and needs sudo. It appends
+    # /bin to INSTALL_PREFIX, so it can't target bin/git-ignored either. Fetch
+    # the release asset directly instead, like the obsidian function does.
+    set witr_path $HOME/bin/git-ignored/witr
+    set witr_man $HOME/.local/share/man/man1/witr.1
+
+    set witr_os (uname -s | tr '[:upper:]' '[:lower:]')
+    set witr_arch (uname -m)
+    switch $witr_arch
+        case x86_64 amd64
+            set witr_arch amd64
+        case aarch64 arm64
+            set witr_arch arm64
+        case '*'
+            echo "Unsupported architecture: $witr_arch"
+            return 1
+    end
+
+    set witr_asset "witr-$witr_os-$witr_arch"
+    set witr_tag (curl -fsSL https://api.github.com/repos/pranshuparmar/witr/releases/latest | jq -r .tag_name)
+    set witr_base "https://github.com/pranshuparmar/witr/releases/download/$witr_tag"
+
+    echo "Downloading witr $witr_tag ($witr_asset)"
+    curl -fsSL "$witr_base/$witr_asset" -o $witr_path
+
+    # Upstream ships SHA256SUMS, so actually check it
+    set witr_want (curl -fsSL "$witr_base/SHA256SUMS" | grep " $witr_asset\$" | cut -d' ' -f1)
+    if is_macos
+        set witr_got (shasum -a 256 $witr_path | cut -d' ' -f1)
+    else
+        set witr_got (sha256sum $witr_path | cut -d' ' -f1)
+    end
+
+    if test -z "$witr_want" -o "$witr_want" != "$witr_got"
+        echo "Checksum mismatch for $witr_asset, discarding download"
+        rm -f $witr_path
+        return 1
+    end
+
+    chmod +x $witr_path
+
+    mkdir -p (dirname $witr_man)
+    curl -fsSL "$witr_base/witr.1" -o $witr_man
+
+    echo "witr $witr_tag installed to $witr_path"
 end
 
 # Special targets
@@ -239,6 +321,8 @@ function all
     nvim
     lsp
     opencode
+    pandoc
+    xelatex
     witr
 end
 

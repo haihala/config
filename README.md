@@ -35,6 +35,23 @@ A bunch of simple scripts and dotfiles I use. Should eventually be able to recre
 - `bin` -> `$HOME/bin`
 - `desktop/*`-> `$HOME/.local/share/applications/*` (desktop icons for wofi)
 
+## Markdown conversion
+
+Convert one or more Markdown files to styled PDF and standalone HTML files:
+
+```sh
+md-convert document.md
+md-convert first.md "second document.md"
+md-convert --html document.md
+md-convert --pdf document.md
+```
+
+The default generates both formats; `--html` or `--pdf` generates only the
+selected format. Outputs are written next to each source file. The command
+uses the language name on fenced code blocks for syntax highlighting, such as
+`rust` or `typescript`. It requires `pandoc`, plus `xelatex` for PDF output. Run
+`./link.sh` first to make scripts under `bin` available from `~/bin`.
+
 ## Setting up SSH key magic
 
 Requirements:

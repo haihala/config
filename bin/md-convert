@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: md-convert [--html | --pdf] FILE.md [FILE.md ...]
+
+Generate standalone HTML and PDF files next to each Markdown file.
+By default, both formats are generated. Use --html or --pdf to generate only
+that format. Output files use the source filename with the new extension.
+EOF
+}
+
+make_html=true
+make_pdf=true
+
+case "${1:-}" in
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  --html)
+    make_pdf=false
+    shift
+    ;;
+  --pdf)
+    make_html=false
+    shift
+    ;;
+esac
+
+if [[ $# -eq 0 ]]; then
+  usage >&2
+  exit 2
+fi
+
+required_commands=(pandoc)
+if [[ "$make_pdf" == true ]]; then
+  required_commands+=(xelatex)
+fi
+
+for command in "${required_commands[@]}"; do
+  if ! command -v "$command" >/dev/null 2>&1; then
+    printf 'Missing required command: %s\n' "$command" >&2
+    exit 1
+  fi
+done
+
+pdf_header_colors='\definecolor{CodeKeyword}{HTML}{008000}\definecolor{CodeComment}{HTML}{3D7B7B}\definecolor{CodeString}{HTML}{BA2121}\definecolor{CodeNumber}{HTML}{666666}\definecolor{CodeBackground}{HTML}{F2F4F6}\definecolor{CodeBorder}{HTML}{D8DDE3}'
+pdf_header_listings='\lstset{breaklines=true,breakatwhitespace=false,columns=fullflexible,keepspaces=true,basicstyle=\small\ttfamily,keywordstyle=\color{CodeKeyword}\bfseries,commentstyle=\color{CodeComment}\itshape,stringstyle=\color{CodeString},identifierstyle=\color{black},numberstyle=\scriptsize\color{CodeNumber},showstringspaces=false,backgroundcolor=\color{CodeBackground},frame=single,rulecolor=\color{CodeBorder},framerule=0.4pt,framesep=6pt,xleftmargin=1pt,xrightmargin=1pt,aboveskip=10pt,belowskip=10pt,postbreak=\mbox{\textcolor{CodeComment}{$\hookrightarrow$}\space}}'
+html_css='body{max-width:1100px;margin:0 auto;padding:32px 24px;font-family:"Avenir Next",Avenir,Lato,sans-serif;line-height:1.55;color:#212629}div.sourceCode,pre{margin:1em 0;border:1px solid #d8dde3;border-radius:6px;background:#f2f4f6}pre.sourceCode,pre{padding:16px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere;border:0}code{font-family:Menlo,Monaco,monospace}pre code{white-space:inherit}@media(max-width:600px){body{padding:20px 16px}pre.sourceCode,pre{padding:12px}}'
+
+for source_file in "$@"; do
+  if [[ ! -f "$source_file" ]]; then
+    printf 'Source file not found: %s\n' "$source_file" >&2
+    exit 1
+  fi
+
+  case "$source_file" in
+    *.md | *.markdown) ;;
+    *)
+      printf 'Source file must end in .md or .markdown: %s\n' "$source_file" >&2
+      exit 1
+      ;;
+  esac
+
+  output_base="${source_file%.*}"
+  title="$(basename -- "$output_base")"
+
+  printf 'Generated:\n'
+
+  if [[ "$make_pdf" == true ]]; then
+    pandoc "$source_file" \
+      --from=gfm-strikeout \
+      --pdf-engine=xelatex \
+      --syntax-highlighting=idiomatic \
+      --variable='mainfont:Avenir Next' \
+      --variable='sansfont:Avenir Next' \
+      --variable='monofont:Menlo' \
+      --variable='fontsize:11pt' \
+      --variable='geometry:left=18mm' \
+      --variable='geometry:right=18mm' \
+      --variable='geometry:top=20mm' \
+      --variable='geometry:bottom=20mm' \
+      --variable="header-includes=$pdf_header_colors" \
+      --variable="header-includes=$pdf_header_listings" \
+      --variable='header-includes=\pagestyle{empty}' \
+      --output="$output_base.pdf"
+    printf '  %s\n' "$output_base.pdf"
+  fi
+
+  if [[ "$make_html" == true ]]; then
+    pandoc "$source_file" \
+      --from=gfm \
+      --to=html5 \
+      --standalone \
+      --syntax-highlighting=pygments \
+      --metadata="pagetitle=$title" \
+      --css="data:text/css;charset=utf-8,$html_css" \
+      --output="$output_base.html"
+    printf '  %s\n' "$output_base.html"
+  fi
+done
