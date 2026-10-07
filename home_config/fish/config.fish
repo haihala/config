@@ -1,5 +1,5 @@
 # The following lines were added by Docker Desktop to add commands to your PATH.
-export PATH="$PATH:/Users/eero.haihala/.docker/bin"
+export PATH="$PATH:$HOME/.docker/bin"
 # End of Docker Desktop section.
 
 set -gx PAGER less
@@ -13,6 +13,7 @@ fish_add_path $HOME/bin
 fish_add_path $HOME/bin/git-ignored
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.local/bin
+# On mac, you may have to ln -s $HOME/Library/Application\ Support/bob $HOME/.local/share/bob
 fish_add_path $HOME/.local/share/bob/nvim-bin
 fish_add_path $HOME/.local/share/mise/shims
 fish_add_path $HOME/sdks/flutter/bin
@@ -60,6 +61,11 @@ function timer
     spd-say $msg --pitch -20
     notify-send $msg
 end
+
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
 
 # >>> railway initialize >>>
 source "$HOME/.railway/env.fish"

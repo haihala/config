@@ -44,11 +44,29 @@ function javascript
     end
 end
 
+function uv
+    require curl
+
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+end
+
 function python
     require mise
     mise use -g python
+
+    uv
+
     # So ssh agent keeps working
     pip install pexpect
+end
+
+function go
+    if command -v go 2>&1 >/dev/null
+        echo "Go is installed"
+    else
+        echo "Go to https://go.dev/doc/install and install go"
+        exit
+    end
 end
 
 function cargo_stuff
@@ -291,6 +309,13 @@ function witr
     echo "witr $witr_tag installed to $witr_path"
 end
 
+function railway
+    require curl
+
+    curl -fsSL agents.railway.com | sh
+end
+
+
 # Special targets
 
 function lsp
@@ -317,6 +342,7 @@ function all
     cargo_stuff
     javascript
     python
+    go
     obsidian
     nvim
     lsp
@@ -324,6 +350,7 @@ function all
     pandoc
     xelatex
     witr
+    railway
 end
 
 $argv
