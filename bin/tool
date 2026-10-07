@@ -58,7 +58,7 @@ function cargo_stuff
         echo "Found sccache"
     else
         echo "Installing sccache"
-        cargo install sccache
+        RUSTC_WRAPPER="" cargo install sccache
     end
 
     set -gx RUSTC_WRAPPER sccache
