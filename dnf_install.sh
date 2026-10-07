@@ -7,6 +7,7 @@ dnf install \
     calc \
     chromium \
     clang \
+    cmake \
     dunst \
     fd-find \
     ffmpeg-free \
