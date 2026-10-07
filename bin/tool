@@ -65,33 +65,33 @@ function cargo_stuff
 
     # Install cargo-update if not already installed
     if cargo install --list | grep cargo-install-update 2>&1 >/dev/null
-        echo "cargo-update already installed"
+        echo "Updating cargo packages"
+        cargo install-update -a
     else
-        echo "Installing cargo-update"
-        cargo install cargo-update
+        echo "Installing cargo-packages"
+        cargo install \
+            bat \
+            bacon \
+            bob-nvim \
+            bottom \
+            cargo-make \
+            cargo-update \
+            fd-find \
+            just \
+            mise \
+            nu \
+            ripgrep \
+            sccache \
+            stylua \
+            tokei \
+            tree-sitter-cli \
+            zellij \
+            zoxide
+
+        # This won't check for updates I think
+        cargo install --git https://github.com/elijah-potter/tatum --locked
     end
 
-    cargo install-update \
-        bat \
-        bacon \
-        bob-nvim \
-        bottom \
-        cargo-make \
-        cargo-update \
-        fd-find \
-        just \
-        mise \
-        nu \
-        ripgrep \
-        sccache \
-        stylua \
-        tokei \
-        tree-sitter-cli \
-        zellij \
-        zoxide
-
-    # This won't check for updates I think
-    cargo install --git https://github.com/elijah-potter/tatum --locked
 end
 
 # Tools
