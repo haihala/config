@@ -4,3 +4,6 @@ bin/git-ignored/*
 
 # Vim compiled spell files
 *.spl
+
+# macOS
+.DS_Store
