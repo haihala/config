@@ -73,16 +73,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 			return in_leader() and "<C-d>" or "<S-Tab>"
 		end, vim.tbl_extend("force", opts, { expr = true }))
 
-		-- Normal mode. Note this shadows <Tab>'s default jumplist-forward
-		-- (<C-i>) in markdown buffers only; <C-i> itself still works.
-		vim.keymap.set("n", "<Tab>", function()
-			return md_list_leader(vim.api.nvim_get_current_line()) and ">>" or "<Tab>"
-		end, vim.tbl_extend("force", opts, { expr = true }))
-
-		vim.keymap.set("n", "<S-Tab>", function()
-			return md_list_leader(vim.api.nvim_get_current_line()) and "<<" or "<S-Tab>"
-		end, vim.tbl_extend("force", opts, { expr = true }))
-
 		-- Visual mode shifts the whole selection and keeps it selected.
 		vim.keymap.set("v", "<Tab>", ">gv", opts)
 		vim.keymap.set("v", "<S-Tab>", "<gv", opts)
