@@ -48,8 +48,17 @@ local function timestamp(flags)
 	-- Inserts an ISO timestamp after the current character
 	return "a<c-r>=trim(system('date " .. flags .. "'))<CR><Esc>"
 end
-vim.keymap.set("n", "<leader>sti", timestamp("-Im")) -- ISO
-vim.keymap.set("n", "<leader>std", timestamp("-Idate")) -- Date
+-- BSD date (macOS) has no -I, so build the ISO strings with strftime
+local function iso_timestamp()
+	local offset = vim.fn.strftime("%z"):gsub("(%d%d)$", ":%1")
+	return vim.fn.strftime("%Y-%m-%dT%H:%M") .. offset
+end
+vim.keymap.set("n", "<leader>sti", function() -- ISO
+	vim.api.nvim_put({ iso_timestamp() }, "c", true, true)
+end)
+vim.keymap.set("n", "<leader>std", function() -- Date
+	vim.api.nvim_put({ vim.fn.strftime("%Y-%m-%d") }, "c", true, true)
+end)
 vim.keymap.set("n", "<leader>stt", timestamp("+%T")) -- Time
 vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
 
