@@ -7,18 +7,6 @@
 
 -- Build hooks: run when a plugin is freshly installed or updated.
 -- Must be registered BEFORE vim.pack.add so install-time triggers fire.
-vim.api.nvim_create_autocmd("PackChanged", {
-	callback = function(ev)
-		local name = ev.data.spec.name
-		local kind = ev.data.kind
-		if name == "blink.cmp" and (kind == "install" or kind == "update") then
-			-- Download/build the native Rust fuzzy matcher. pwait blocks but
-			-- shows progress; without it the matcher would silently fall back
-			-- to the slower Lua implementation.
-			require("blink.cmp").build():pwait()
-		end
-	end,
-})
 
 vim.pack.add({
 	-- Completion + LSP presets
@@ -65,6 +53,8 @@ vim.pack.add({
 	-- Language-specific
 	"https://github.com/lervag/vimtex",
 })
+
+require("blink.cmp").build():pwait()
 
 -- :Packupdate and :Packdel user commands. As of Nvim 0.12.2 only the Lua
 -- API (vim.pack.update / vim.pack.del) is exposed; the built-in lowercase
