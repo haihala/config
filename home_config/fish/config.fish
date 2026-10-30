@@ -21,6 +21,8 @@ fish_add_path $HOME/.opencode/bin
 fish_add_path $HOME/.diversion/bin
 fish_add_path $HOME/rider/bin
 fish_add_path $HOME/odin
+fish_add_path /usr/local/go/bin
+fish_add_path (go env GOPATH)/bin
 
 # bun
 set -gx BUN_INSTALL "$HOME/.bun"
@@ -29,12 +31,10 @@ fish_add_path $BUN_INSTALL/bin
 # Press control-g to delete last line in history
 bind \cg 'history delete --exact --case-sensitive -- $history[1]'
 
-. $HOME/bin/start-agent.fish
+source $HOME/bin/start-agent.fish
 
 mise activate fish | source
 zoxide init fish | source
-
-set -Ux fish_tmux_config $HOME/.config/tmux/tmux.conf
 
 function l
     ls -lah $argv

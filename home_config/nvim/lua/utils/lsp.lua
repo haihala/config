@@ -68,10 +68,6 @@ M.setup = function()
 		},
 	})
 
-	vim.lsp.config("terraform_lsp", {
-		cmd = "terraform-ls serve",
-	})
-
 	vim.lsp.config("ty", {
 		cmd = { "ty", "server" },
 		filetypes = { "python" },
@@ -126,6 +122,13 @@ M.setup = function()
 		"lua_ls",
 		"rust_analyzer",
 		"jsonls",
+		"gopls",
+		"terraformls",
+		"yamlls",
+		"bashls",
+		"dockerls",
+		"fish_lsp",
+		"taplo",
 	})
 
 	-- Change the Diagnostic symbols in the sign column (gutter)

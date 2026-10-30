@@ -195,6 +195,37 @@ function marksman
     mise use -g marksman
 end
 
+function gopls
+    require go
+    command go install golang.org/x/tools/gopls@latest
+end
+
+function yaml_ls
+    require npm
+    npm install -g yaml-language-server
+end
+
+function bash_ls
+    require npm
+    npm install -g bash-language-server
+end
+
+function docker_ls
+    require npm
+    npm install -g dockerfile-language-server-nodejs
+end
+
+function fish_lsp
+    require npm
+    npm install -g fish-lsp
+end
+
+function taplo
+    # TOML: Cargo.toml, pyproject.toml, mise.toml
+    require mise
+    mise use -g taplo
+end
+
 function roslyn_ls
     # https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl/NuGet/Microsoft.CodeAnalysis.LanguageServer.neutral/overview
 end
@@ -206,17 +237,48 @@ end
 
 function ruff
     require uv
-    uv tool install ruff@latest
+    command uv tool install ruff@latest
 end
 
 function ty
     require uv
-    uv tool install ty@latest
+    command uv tool install ty@latest
 end
 
 function shfmt
     require go
-    go install mvdan.cc/sh/v3/cmd/shfmt@latest
+    command go install mvdan.cc/sh/v3/cmd/shfmt@latest
+end
+
+function prettier
+    require npm
+    # conform tries prettierd first, then falls back to prettier
+    npm install -g prettier @fsouza/prettierd
+end
+
+function biome
+    require npm
+    npm install -g @biomejs/biome
+end
+
+function eslint
+    require npm
+    npm install -g eslint
+end
+
+function goimports
+    require go
+    command go install golang.org/x/tools/cmd/goimports@latest
+end
+
+function golangci_lint
+    require mise
+    mise use -g golangci-lint
+end
+
+function shellcheck
+    require mise
+    mise use -g shellcheck
 end
 
 function opencode
@@ -329,10 +391,25 @@ function lsp
     rust_analyzer
     wgsl_analyzer
     marksman
+    gopls
+    yaml_ls
+    bash_ls
+    docker_ls
+    fish_lsp
+    taplo
     roslyn_ls
     terraform_ls
-    ruff
     ty
+end
+
+function linters
+    prettier
+    biome
+    eslint
+    goimports
+    golangci_lint
+    ruff
+    shellcheck
     shfmt
 end
 
@@ -346,6 +423,7 @@ function all
     obsidian
     nvim
     lsp
+    linters
     opencode
     pandoc
     xelatex
