@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets fish sway nvim tmux readme cfg e tool git zellij kitty machine-conf fix
+    set legal_targets fish sway nvim tmux readme cfg e n tool git zellij kitty machine-conf fix
 
     if count $argv >>/dev/null
         set target $argv
@@ -24,6 +24,8 @@ function cfg
             $EDITOR $fish_conf_dir/functions/cfg.fish
         case e
             $EDITOR $fish_conf_dir/functions/e.fish
+        case n
+            $EDITOR $fish_conf_dir/functions/n.fish
         case tool
             $EDITOR (readlink $HOME/bin)/tool
         case fix
