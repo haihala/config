@@ -1,0 +1,136 @@
+#!/usr/bin/env fish
+# Fuzzy session switcher for tmux, ordered by how recently each session was used.
+#
+# Intended to be run inside `display-popup -E`. display-popup does not expand
+# #{...} in its shell-command, so the client is resolved here instead.
+#
+#   enter    switch to the highlighted session
+#   ctrl-x   kill the highlighted session and keep picking
+#   ctrl-r   rename the highlighted session
+
+set -g sep (printf '\t')
+
+function session_lines --description "name<TAB>windows<TAB>age, most recently used first"
+    set -l now (date +%s)
+    set -l current (tmux display-message -p '#{session_name}')
+
+    # session_last_attached is 0 for a session that has never been attached
+    for row in (tmux list-sessions -F "#{session_last_attached}$sep#{session_name}$sep#{session_windows}$sep#{session_attached}" | sort -rn)
+        set -l f (string split $sep -- $row)
+        set -l last $f[1]
+        set -l name $f[2]
+        set -l windows $f[3]
+        set -l attached $f[4]
+
+        set -l age unused
+        if test "$last" -gt 0
+            set -l delta (math $now - $last)
+            if test $delta -lt 60
+                set age "just now"
+            else if test $delta -lt 3600
+                set age (math -s0 $delta / 60)"m ago"
+            else if test $delta -lt 86400
+                set age (math -s0 $delta / 3600)"h ago"
+            else
+                set age (math -s0 $delta / 86400)"d ago"
+            end
+        end
+
+        set -l marker ""
+        test "$name" = "$current"; and set marker " (current)"
+        test "$attached" -gt 0 -a "$name" != "$current"; and set marker " (attached)"
+
+        printf '%s%s%s windows%s%s%s\n' $name $sep $windows $sep $age $marker
+    end
+end
+
+if test (tmux list-sessions 2>/dev/null | count) -eq 0
+    echo "No sessions"
+    exit 1
+end
+
+if test "$argv[1]" = --preview
+    set -l session $argv[2]
+    test -z "$session"; and exit 0
+
+    # Window names come from automatic-rename, which this config sets to the
+    # active pane's folder. Only show a name when it differs from that, ie.
+    # when it was set deliberately. Paths belong on the panes.
+    for wrow in (tmux list-windows -t "=$session" -F "#{window_index}$sep#{window_name}$sep#{window_active}$sep#{b:pane_current_path}" 2>/dev/null)
+
+        set -l w (string split $sep -- $wrow)
+        set -l header "window $w[1]"
+        test "$w[2]" != "$w[4]"; and set header "$header: $w[2]"
+        test "$w[3]" = 1; and set header "$header *"
+        echo $header
+
+        for prow in (tmux list-panes -t "=$session:$w[1]" -F "#{pane_index}$sep#{pane_active}$sep#{pane_current_command}$sep#{pane_current_path}$sep#{pane_pid}" 2>/dev/null)
+
+            set -l p (string split $sep -- $prow)
+
+            set -l marker "  "
+            test "$p[2]" = 1; and set marker "> "
+
+            # pane_current_command is the shell whenever the shell spawned the
+            # program (eg. `fish -c opencode`), so look at its children too.
+            set -l running (ps -o comm= --ppid $p[5] 2>/dev/null | string trim | string match -rv '^$')
+            set -l label "$p[3] (idle)"
+            test (count $running) -gt 0; and set label (string join ',' $running)
+
+            echo "  $marker$p[1]  "(string pad -r -w 16 -- $label)"  "(string replace -- $HOME '~' $p[4])
+        end
+    end
+
+    exit 0
+end
+
+
+# Rebuilt on every reload so the list stays correct after a kill or rename
+set -l reload "$HOME/bin/tmux-session-switch --lines"
+
+if test "$argv[1]" = --lines
+    session_lines
+    exit 0
+end
+
+# Renaming is done here rather than with `tmux command-prompt`: that command
+# only schedules a prompt and returns immediately, so fzf's execute() finishes
+# before anything is typed and the prompt ends up behind the popup.
+if test "$argv[1]" = --rename
+    set -l old $argv[2]
+    test -z "$old"; and exit 0
+
+    read -P "rename '$old' to> " new
+    set new (string trim -- $new | string replace -ra -- '[:.[:space:]]+' '-')
+
+    test -z "$new"; and exit 0
+    test "$new" = "$old"; and exit 0
+
+    if tmux has-session -t "=$new" 2>/dev/null
+        echo "A session called '$new' already exists"
+        sleep 1.5
+        exit 1
+    end
+
+    tmux rename-session -t "=$old" "$new"
+    exit 0
+end
+
+set -l result (
+    session_lines |
+    fzf --delimiter $sep \
+        --with-nth '1,2,3' \
+        --prompt 'session> ' \
+        --header 'enter switch  ctrl-x kill  ctrl-r rename' \
+        --preview "$HOME/bin/tmux-session-switch --preview {1}" \
+        --preview-window 'down,40%' \
+        --bind "ctrl-x:execute-silent(tmux kill-session -t '={1}')+reload($reload)" \
+        --bind "ctrl-r:execute($HOME/bin/tmux-session-switch --rename {1})+reload($reload)" |
+    string split $sep
+)
+
+test -z "$result[1]"; and exit 0
+
+if tmux has-session -t "=$result[1]" 2>/dev/null
+    tmux switch-client -c $client -t "=$result[1]"
+end

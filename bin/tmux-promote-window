@@ -1,0 +1,77 @@
+#!/usr/bin/env fish
+# Move the current window into a brand new session of its own.
+#
+# Intended to be run inside `display-popup -E`. Note that display-popup does
+# NOT expand `#{...}` formats in its shell-command, so the window and client
+# cannot be passed in from the binding - they are resolved here instead. A
+# popup inherits the target of the client that opened it, so the "current"
+# window seen here is the window the key was pressed in.
+#
+# Usage: tmux-promote-window [name]
+
+function fail --description "Report, then hold the popup open long enough to read it"
+    set_color red
+    echo $argv >&2
+    set_color normal
+    echo
+    read -P "press enter to close> " _
+    exit 1
+end
+
+set -l name $argv[1]
+
+set -l window_id (tmux display-message -p '#{window_id}')
+set -l client_tty (tmux display-message -p '#{client_tty}')
+set -l start_path (tmux display-message -p '#{pane_current_path}')
+set -l source_session (tmux display-message -p '#{session_name}')
+set -l window_count (tmux display-message -p '#{session_windows}')
+
+if test -z "$window_id"
+    fail "Could not determine the current window"
+end
+
+# Default to the folder name, matching what `prefix + r` does
+set -l default (basename $start_path)
+
+if test -z "$name"
+    read -P "session name [$default]> " name
+end
+test -z "$name"; and set name $default
+
+# ':' and '.' separate session/window/pane in tmux targets, so a session
+# containing them is created but can never be targeted again. Whitespace is
+# legal but awkward to quote everywhere.
+set name (string trim -- $name | string replace -ra -- '[:.[:space:]]+' '-')
+
+if test -z "$name"
+    fail "Not a usable session name"
+end
+
+if tmux has-session -t "=$name" 2>/dev/null
+    fail "Session '$name' already exists"
+end
+
+# Moving a session's last window deletes that session. Worth confirming,
+# since it looks like a rename rather than a split.
+if test "$window_count" -eq 1
+    read -P "'$source_session' has only this window and will be closed. continue? [y/N]> " confirm
+    if not string match -qri '^y' -- "$confirm"
+        exit 1
+    end
+end
+
+# new-session always makes a window, so make one and throw it away once the
+# real window has been moved in. Killing it first would close the session.
+set -l placeholder (tmux new-session -d -P -F '#{window_id}' -s $name -c $start_path)
+
+if test -z "$placeholder"
+    fail "Could not create session '$name'"
+end
+
+if not tmux move-window -s $window_id -t "=$name": 2>/dev/null
+    tmux kill-session -t "=$name"
+    fail "Could not move window into '$name'"
+end
+
+tmux kill-window -t $placeholder
+tmux switch-client -c $client_tty -t "=$name"

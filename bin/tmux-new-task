@@ -1,0 +1,101 @@
+#!/usr/bin/env fish
+# Start a new task: pick a repo, make a git worktree for it, open a tmux
+# session there and launch an agent.
+#
+# Intended to be run inside `display-popup -E`. display-popup does not expand
+# #{...} in its shell-command, so the client is resolved here.
+#
+#   repo        chosen with fzf from the git repos under the current directory
+#   slug        what the task is, used for the branch, worktree and session
+#   worktree    <repo>-<slug>, as a sibling of the repo
+#   session     <repo>/<slug>
+#   branch      <slug>, branched from the repo's default branch
+#
+# The agent command comes from $HARNESS so it can be swapped without editing
+# this script.
+
+set -g harness $HARNESS
+test -z "$harness"; and set harness opencode
+
+function fail
+    set_color red
+    echo $argv >&2
+    set_color normal
+    echo
+    read -P "press enter to close> " _
+    exit 1
+end
+
+function repo_roots --description "Git repos under cwd, excluding linked worktrees"
+    # A main repo has .git as a directory; a linked worktree has it as a file
+    # pointing back at the parent, so this skips worktrees we made earlier.
+    if type -q fd
+        fd --type directory --hidden --no-ignore --glob '.git' --max-depth 3 2>/dev/null
+    else
+        find . -maxdepth 3 -type d -name .git 2>/dev/null
+    end | while read -l gitdir
+        test -d $gitdir; or continue
+        # Must be absolute: `git -C <repo> worktree add <relative>` resolves
+        # the path against the repo, which would nest the worktree inside it.
+        echo (path resolve (dirname $gitdir))
+    end | sort -u
+end
+
+set -l client (tmux display-message -p '#{client_tty}')
+
+set -l roots (repo_roots)
+if test (count $roots) -eq 0
+    fail "No git repositories found under "(pwd)
+end
+
+set -l repo (printf '%s\n' $roots | fzf --prompt 'repo> ' --select-1 --height 100%)
+test -z "$repo"; and exit 0
+
+set -l repo_name (basename $repo)
+
+read -P "what are you doing in $repo_name> " slug
+set slug (string trim -- "$slug" | string lower | string replace -ra -- '[^a-z0-9]+' '-' | string replace -ra -- '^-+|-+$' '')
+test -z "$slug"; and exit 0
+
+set -l worktree (dirname $repo)/$repo_name-$slug
+set -l session $repo_name/$slug
+
+if test -e $worktree
+    fail "$worktree already exists"
+end
+
+if tmux has-session -t "=$session" 2>/dev/null
+    fail "Session '$session' already exists"
+end
+
+if git -C $repo show-ref -q --verify refs/heads/$slug
+    fail "Branch '$slug' already exists in $repo_name"
+end
+
+# __git.default_branch is one of the user's own fish functions, autoloaded
+set -l base (git -C $repo config --get init.defaultBranch)
+if test -z "$base"; or not git -C $repo show-ref -q --verify refs/heads/$base
+    if git -C $repo show-ref -q --verify refs/heads/main
+        set base main
+    else
+        set base master
+    end
+end
+
+echo
+echo "  repo      $repo"
+echo "  worktree  $worktree"
+echo "  branch    $slug (from $base)"
+echo "  session   $session"
+echo "  agent     $harness"
+echo
+
+if not git -C $repo worktree add -b $slug $worktree $base
+    fail "git worktree add failed"
+end
+
+# The window gets the harness's command name, not its whole argument string
+set -l harness_name (string split ' ' -- $harness)[1]
+
+tmux new-session -d -s $session -c $worktree -n $harness_name $harness
+tmux switch-client -c $client -t "=$session"
