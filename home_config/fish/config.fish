@@ -20,6 +20,7 @@ fish_add_path $HOME/sdks/flutter/bin
 fish_add_path $HOME/.opencode/bin
 fish_add_path $HOME/.diversion/bin
 fish_add_path $HOME/rider/bin
+fish_add_path $HOME/odin
 
 # bun
 set -gx BUN_INSTALL "$HOME/.bun"
@@ -61,11 +62,6 @@ function timer
     spd-say $msg --pitch -20
     notify-send $msg
 end
-
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
 
 # >>> railway initialize >>>
 source "$HOME/.railway/env.fish"

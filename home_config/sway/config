@@ -243,7 +243,10 @@ exec nm-applet --indicator
 exec lxpolkit
 exec blueman-applet
 
+# Propagate env to dbus-activated and systemd user services, then mark the
+# graphical session as active so xdg-desktop-portal (and friends) can start.
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user start sway-session.target
 
 # Specific things we want to do on some hardware
 exec_always fish -c "machine-conf"

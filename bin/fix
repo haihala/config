@@ -13,6 +13,7 @@ end
 
 function discord
     # Discord will log output, which is a problem somehow, we wrap the command so it doesn't happen
+    # Fix this to just scoop up whatever comes after the equals
     set target 'Exec=/usr/bin/Discord'
     set replacement 'Exec=sh -c "/usr/bin/Discord > /dev/null"'
 
