@@ -14,7 +14,7 @@
 
 set -g slot_count 4
 set -g sep (printf '\t')
-set -g me $HOME/bin/tmux-session-mark
+
 
 function mark_file --description "Where the marks live"
     set -l state $XDG_STATE_HOME
@@ -116,29 +116,6 @@ function valid_slot
     and test "$argv[1]" -ge 1 -a "$argv[1]" -le $slot_count
 end
 
-function menu_escape --description "'#' starts a format in menu names, so double it"
-    string replace -a -- '#' '##' "$argv"
-end
-
-function slot_label --description "Label for a slot, prefixed with - when unusable"
-    set -l i $argv[1]
-    set -l entry (entry_for $i)
-
-    if test -z "$entry"
-        echo "-$i. empty"
-        return
-    end
-
-    set -l name (resolve $i)
-    if test -z "$name"
-        set -l parts (string split $sep -- $entry)
-        echo "-$i. "(menu_escape $parts[2])" (gone)"
-    else
-        echo "$i. "(menu_escape $name)
-    end
-end
-
-
 switch "$argv[1]"
     case go
         set -l slot $argv[2]
@@ -169,91 +146,56 @@ switch "$argv[1]"
     case list
         render
 
-    case menu
-        set -l client $argv[2]
-        set -l current (tmux display-message -p '#{session_name}')
-        set -l args
-
-        for i in (seq $slot_count)
-            set -a args (slot_label $i) "$i" "run-shell \"$me go $i '$client'\""
-        end
-
-        set -a args "" "" ""
-        set -a args "assign "(menu_escape $current)" to..." a "run-shell \"$me menu-assign '$client'\""
-        set -a args "clear a slot..." d "run-shell \"$me menu-clear '$client'\""
-
-        tmux display-menu -c $client -T " session marks " -x C -y C -- $args
-
-    case menu-assign
-        set -l client $argv[2]
-        set -l current (tmux display-message -p '#{session_name}')
-        set -l current_id (tmux display-message -p '#{session_id}')
-        set -l args
-
-        for i in (seq $slot_count)
-            # Labels are informational here, so strip the disabled marker
-            set -l label (string replace -r '^-' '' -- (slot_label $i))
-            set -a args "$label" "$i" "run-shell \"$me assign $i '$current_id' '$current'\""
-        end
-
-        tmux display-menu -c $client -T " assign "(menu_escape $current)" to " -x C -y C -- $args
-
-    case menu-clear
-        set -l client $argv[2]
-        set -l args
-
-        for i in (seq $slot_count)
-            set -l label (string replace -r '^-' '' -- (slot_label $i))
-            set -a args "$label" "$i" "run-shell \"$me clear $i\""
-        end
-
-        tmux display-menu -c $client -T " clear which slot " -x C -y C -- $args
-
-    case assign
-        if not valid_slot $argv[2]
-            tmux display-message "session mark: slot must be 1-$slot_count"
-            exit 2
-        end
-        store $argv[2] $argv[3] $argv[4]
-        tmux display-message "Slot $argv[2] -> $argv[4]"
-
-    case clear
-        if not valid_slot $argv[2]
-            tmux display-message "session mark: slot must be 1-$slot_count"
-            exit 2
-        end
-        store $argv[2] "" ""
-        tmux display-message "Cleared slot $argv[2]"
-
     case manage
+        # A popup rather than display-menu: a menu is a light overlay that
+        # pane output is written straight through, so it gets painted over by
+        # anything producing output underneath. A popup owns its region.
+        set -l client (tmux display-message -p '#{client_tty}')
         set -l current (tmux display-message -p '#{session_name}')
         set -l current_id (tmux display-message -p '#{session_id}')
 
-        echo "Session marks (current: $current)"
+        echo "  session marks"
+        echo "  current: $current"
         echo
         render
         echo
-        echo "  <n>  assign this session to slot n"
-        echo "  d<n> clear slot n"
+        echo "  1-$slot_count jump    a assign    d clear    q quit"
         echo
-        read -P "> " answer
 
-        set answer (string trim -- $answer)
-        test -z "$answer"; and exit 0
+        read -n 1 -P "  > " key
+        echo
 
-        if set -l matched (string match -r '^d\s*([0-9]+)$' -- $answer)
-            if not valid_slot $matched[2]
-                echo "No such slot: $matched[2]"
-                read -P "press enter to close> " _
-                exit 1
-            end
-            store $matched[2] "" ""
-        else if valid_slot $answer
-            store $answer $current_id $current
-        else
-            echo "Not a slot: $answer"
-            read -P "press enter to close> " _
-            exit 1
+        switch "$key"
+            case q '' ' '
+                exit 0
+
+            case a
+                read -n 1 -P "  assign '$current' to slot> " slot
+                echo
+                valid_slot $slot; or exit 1
+                store $slot $current_id $current
+
+            case d
+                read -n 1 -P "  clear which slot> " slot
+                echo
+                valid_slot $slot; or exit 1
+                store $slot "" ""
+
+            case '*'
+                valid_slot $key; or exit 1
+
+                set -l name (resolve $key)
+                if test -z "$name"
+                    echo "  Nothing in slot $key"
+                    sleep 1
+                    exit 1
+                end
+
+                if test -n "$client"
+                    tmux switch-client -c $client -t "=$name"
+                else
+                    tmux switch-client -t "=$name"
+                end
         end
 
     case '*'
