@@ -116,6 +116,8 @@ if test "$argv[1]" = --rename
     exit 0
 end
 
+set -l client (tmux display-message -p '#{client_tty}')
+
 set -l result (
     session_lines |
     fzf --delimiter $sep \
@@ -132,5 +134,11 @@ set -l result (
 test -z "$result[1]"; and exit 0
 
 if tmux has-session -t "=$result[1]" 2>/dev/null
-    tmux switch-client -c $client -t "=$result[1]"
+    # Guard the empty case: `switch-client -c $client` with an unset client
+    # collapses to `switch-client -c -t ...`, where -c swallows the -t.
+    if test -n "$client"
+        tmux switch-client -c $client -t "=$result[1]"
+    else
+        tmux switch-client -t "=$result[1]"
+    end
 end
