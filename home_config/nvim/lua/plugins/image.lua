@@ -1,52 +1,53 @@
-local function shell_output(cmd)
-	local handle = io.popen(cmd)
-	if handle == nil then
+-- Resolve image paths the way an Obsidian style vault writes them: relative to
+-- the vault (repo) root rather than to the document.
+--
+-- The previous version shelled out to dirname/git for every candidate and had
+-- two bugs: `git rev-parse` output kept its trailing newline so the root was
+-- never recognised, and the root check ran *before* the directory was searched,
+-- so the root itself was skipped.
+
+local function file_exists(path)
+	return vim.fn.filereadable(path) == 1
+end
+
+local function repo_root(dir)
+	local git = vim.fs.find(".git", { path = dir, upward = true })[1]
+	if not git then
 		return nil
 	end
-	local content = handle:read("a")
-	handle:close()
-	return content
+	return vim.fs.dirname(git)
 end
 
-local function all_trim(s)
-	return s:match("^%s*(.-)%s*$")
-end
+-- Walk up from the document, checking <dir>/<img>, <dir>/assets/<img> and
+-- <dir>/images/<img> at each level. The repo root is included in the search
+-- and terminates it.
+local function find_image(start_dir, img_path)
+	local root = repo_root(start_dir)
+	local dir = start_dir
 
-local function parent_dir(path)
-	return all_trim(shell_output("dirname " .. '"' .. path .. '"'))
-end
-
-local function file_exists(name)
-	local f = io.open(name, "r")
-	if f ~= nil then
-		io.close(f)
-		return true
-	else
-		return false
-	end
-end
-
-local function crawl_to_git_root(current_dir, img_path)
-	if current_dir == "/" then
-		return nil
-	end
-
-	local git_root = shell_output("git rev-parse --show-toplevel")
-
-	if current_dir == git_root then
-		return nil
-	end
-
-	local options = { "assets", "images" }
-	for _, option in ipairs(options) do
-		local opt_path = current_dir .. "/" .. option .. "/" .. img_path
-		local exists = file_exists(opt_path)
-		if exists then
-			return opt_path
+	while dir and dir ~= "" do
+		for _, candidate in ipairs({
+			dir .. "/" .. img_path,
+			dir .. "/assets/" .. img_path,
+			dir .. "/images/" .. img_path,
+		}) do
+			if file_exists(candidate) then
+				return candidate
+			end
 		end
+
+		if dir == "/" or dir == root then
+			return nil
+		end
+
+		local parent = vim.fs.dirname(dir)
+		if parent == dir then
+			return nil
+		end
+		dir = parent
 	end
 
-	return crawl_to_git_root(parent_dir(current_dir), img_path)
+	return nil
 end
 
 -- magick_cli processor shells out to the ImageMagick CLI (`magick`, `identify`,
@@ -61,17 +62,18 @@ require("image").setup({
 			clear_in_insert_mode = false,
 			download_remote_images = true,
 			only_render_image_at_cursor = true,
+			-- Defaults to "popup", which renders in a float and skips the
+			-- inline render entirely
+			only_render_image_at_cursor_mode = "inline",
 			filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
 			resolve_image_path = function(document_path, image_path, fallback)
-				local document_dir = parent_dir(document_path)
-				local result = crawl_to_git_root(document_dir, image_path)
-
-				if result then
-					return result
-				else
-					-- Default behavior
+				-- Absolute, home relative and remote paths are the fallback's job
+				if image_path:match("^[~/]") or image_path:match("^%a[%w+.-]*://") then
 					return fallback(document_path, image_path)
 				end
+
+				local found = find_image(vim.fs.dirname(document_path), image_path)
+				return found or fallback(document_path, image_path)
 			end,
 		},
 		neorg = {
@@ -87,4 +89,8 @@ require("image").setup({
 	max_width_window_percentage = nil,
 	max_height_window_percentage = 50,
 	kitty_method = "normal",
+	-- Clear images when the tmux window or session changes, otherwise they stay
+	-- painted over whatever is now on screen. Relies on FocusLost firing, which
+	-- needs visual-activity off in tmux.conf (it is).
+	tmux_show_only_in_active_window = true,
 })
