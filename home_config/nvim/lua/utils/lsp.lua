@@ -109,7 +109,8 @@ M.setup = function()
 	})
 
 	-- Enable LSP servers for Neovim 0.11+
-	local ts_server = vim.g.lsp_typescript_server or "ts_ls" -- "ts_ls" or "vtsls" for TypeScript
+	-- "tsc" is the native TypeScript 7 server (`tsc --lsp`), which falls back to the global tsc
+	local ts_server = vim.g.lsp_typescript_server or "tsc" -- "tsc", "ts_ls" or "vtsls" for TypeScript
 	vim.lsp.enable({
 		ts_server,
 		"eslint",
