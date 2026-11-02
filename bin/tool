@@ -28,6 +28,7 @@ end
 function javascript
     require mise
     mise use -g node
+    mise use -g pnpm
 
     # Deno
     if command -v deno 2>&1 >/dev/null
