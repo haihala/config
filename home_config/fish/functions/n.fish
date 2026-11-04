@@ -17,13 +17,19 @@ function __n_titlecase --description "'sprint-planning' -> 'Sprint Planning'"
     string join -- ' ' $capitalized
 end
 
-function __n_edit --description "Open a note, placing the cursor on the last line"
+function __n_edit --description "Open a note from the notes dir, placing the cursor on the last line"
+    # Run from the notes dir so the editor's root is the notes folder
+    pushd (__n_dir) >/dev/null
+    or return
+
     switch (basename $EDITOR)
         case vi vim nvim
             $EDITOR $argv[1] '+$'
         case '*'
             $EDITOR $argv[1]
     end
+
+    popd >/dev/null
 end
 
 function __n_list --description "Existing notes, as paths relative to the notes dir, without .md"
