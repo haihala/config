@@ -236,6 +236,11 @@ function terraform_ls
     mise use -g terraform-ls
 end
 
+function opentofu
+    require mise
+    mise use -g opentofu
+end
+
 function ruff
     require uv
     command uv tool install ruff@latest
