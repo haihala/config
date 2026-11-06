@@ -1,5 +1,5 @@
 function cfg
-    set legal_targets fish sway nvim tmux readme cfg e n tool git zellij kitty machine-conf fix
+    set legal_targets fish sway nvim tmux readme cfg e n tool git zellij kitty machine-conf fix ssh
 
     if count $argv >>/dev/null
         set target $argv
@@ -38,6 +38,8 @@ function cfg
             $EDITOR (readlink $HOME/.config/kitty)/kitty.conf
         case machine-conf
             $EDITOR (readlink $HOME/bin)/git-ignored/machine-conf
+        case ssh
+            $EDITOR $HOME/.ssh/config
         case '*'
             echo "Invalid target $target"
     end
