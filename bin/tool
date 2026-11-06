@@ -97,10 +97,12 @@ function cargo_stuff
             cargo-update \
             fd-find \
             just \
+            loco \
             mise \
             nu \
             ripgrep \
             sccache \
+            sea-orm-cli \
             stylua \
             tokei \
             tree-sitter-cli \
