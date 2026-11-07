@@ -6,17 +6,23 @@ function startSshAgent
     set -l orig_umask (umask)
     umask 0077
     ssh-agent -c | sed /echo/d >$SshAgentEnvVarsFile
-    . $SshAgentEnvVarsFile
+    source $SshAgentEnvVarsFile
     umask $orig_umask
-    add-ssh-keys.py
 end
 
-if [ -e $SshAgentEnvVarsFile ]
-    . $SshAgentEnvVarsFile
+if test -e $SshAgentEnvVarsFile
+    source $SshAgentEnvVarsFile
+end
 
-    if not pgrep -f ssh-agent >/dev/null
+# Ask the agent itself instead of trusting `pgrep ssh-agent`, which only proves
+# that some agent exists somewhere. Exit codes: 0 reachable and holding keys,
+# 1 reachable but empty, 2 unreachable.
+ssh-add -l >/dev/null 2>&1
+
+switch $status
+    case 2
         startSshAgent
-    end
-else
-    startSshAgent
+        add-ssh-keys.py
+    case 1
+        add-ssh-keys.py
 end
