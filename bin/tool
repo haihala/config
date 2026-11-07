@@ -70,49 +70,114 @@ function go
     end
 end
 
+# The single source of truth for cargo-installed tools. `cargo binstall` is
+# both install and upgrade: it skips a package already at the newest version,
+# refetches the ones that aren't, and compiles only when a crate ships no
+# prebuilt release.
+set -g cargo_crates \
+    bacon \
+    bat \
+    bob-nvim \
+    bottom \
+    cargo-binstall \
+    cargo-insta \
+    cargo-make \
+    fd-find \
+    just \
+    loco \
+    mise \
+    nu \
+    ripgrep \
+    sccache \
+    sea-orm-cli \
+    stylua \
+    tokei \
+    tree-sitter-cli \
+    zellij \
+    zoxide
+
+# Packages built from git, as "<package-name> <url>". The name has to match
+# what `cargo install --list` reports so we can tell if it's installed.
+set -g cargo_git_crates \
+    "tatum https://github.com/elijah-potter/tatum" \
+    "wgsl-analyzer https://github.com/wgsl-analyzer/wgsl-analyzer.git"
+
+function cargo_installed
+    cargo install --list | string match -rg '^(\S+) v'
+end
+
+function binstall
+    if command -v cargo-binstall 2>&1 >/dev/null
+        echo "Found cargo-binstall"
+    else
+        require curl
+        echo "Installing cargo-binstall"
+        curl -L --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+    end
+end
+
 function cargo_stuff
     require cargo
 
-    if command -v sccache
+    # Prefers a prebuilt release binary, falls back to compiling per crate.
+    binstall
+
+    if command -v sccache 2>&1 >/dev/null
         echo "Found sccache"
     else
         echo "Installing sccache"
-        RUSTC_WRAPPER="" cargo install sccache
+        RUSTC_WRAPPER="" cargo binstall --no-confirm sccache
     end
 
     set -gx RUSTC_WRAPPER sccache
 
-    # Install cargo-update if not already installed
-    if cargo install --list | grep cargo-install-update 2>&1 >/dev/null
-        echo "Updating cargo packages"
-        cargo install-update -a
-    else
-        echo "Installing cargo-packages"
-        cargo install \
-            bat \
-            bacon \
-            bob-nvim \
-            bottom \
-            cargo-make \
-            cargo-update \
-            fd-find \
-            just \
-            loco \
-            mise \
-            nu \
-            ripgrep \
-            sccache \
-            sea-orm-cli \
-            stylua \
-            tokei \
-            tree-sitter-cli \
-            zellij \
-            zoxide
+    # Only bites on the compile fallback, but rebuilding this list at -j(nproc)
+    # has thrashed a 30G machine into swap before, so bound the parallelism.
+    set -q CARGO_BUILD_JOBS; or set -gx CARGO_BUILD_JOBS 4
 
-        # This won't check for updates I think
-        cargo install --git https://github.com/elijah-potter/tatum --locked
+    set -l installed (cargo_installed)
+    set -l wanted $cargo_crates
+    set -l missing
+
+    for crate in $cargo_crates
+        contains -- $crate $installed; or set -a missing $crate
     end
 
+    for entry in $cargo_git_crates
+        set -l name (string split -f 1 ' ' -- $entry)
+        set -a wanted $name
+        contains -- $name $installed; or set -a missing $name
+    end
+
+    echo "Installing / updating "(count $wanted)" cargo packages, compile jobs: $CARGO_BUILD_JOBS"
+    if test (count $missing) -gt 0
+        echo "Not yet on this machine: $missing"
+    end
+
+    # Up-to-date packages are skipped, outdated ones refetched. One bad crate
+    # shouldn't cost us the rest of the list.
+    cargo binstall --no-confirm --continue-on-failure $cargo_crates
+
+    for entry in $cargo_git_crates
+        set -l name (string split -f 1 ' ' -- $entry)
+        set -l url (string split -f 2 ' ' -- $entry)
+        cargo binstall --no-confirm --git $url $name
+    end
+
+    # Anything installed by hand over time, so it can be adopted or dropped.
+    set -l extra
+    for pkg in (cargo_installed)
+        contains -- $pkg $wanted; or set -a extra $pkg
+    end
+
+    if test (count $extra) -gt 0
+        set -l self (status filename)
+        echo
+        echo "Installed but not in \$cargo_crates ("(count $extra)"):"
+        printf '    %s\n' $extra
+        echo "Add them to $self or 'cargo uninstall' them."
+    end
 end
 
 # Tools
@@ -186,11 +251,6 @@ end
 function rust_analyzer
     require rustup
     rustup component add rust-analyzer
-end
-
-function wgsl_analyzer
-    require cargo
-    cargo install --git https://github.com/wgsl-analyzer/wgsl-analyzer.git wgsl-analyzer
 end
 
 function marksman
@@ -397,7 +457,6 @@ function lsp
     tailwind_ls
     svelte_ls
     rust_analyzer
-    wgsl_analyzer
     marksman
     gopls
     yaml_ls
