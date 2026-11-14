@@ -76,6 +76,7 @@ vim.filetype.add({
 		["compose.yaml"] = "yaml.docker-compose",
 		[".gitlab-ci.yml"] = "yaml.gitlab",
 		[".gitlab-ci.yaml"] = "yaml.gitlab",
+		["html.t"] = "html", -- Used for html email templates
 	},
 	pattern = {
 		["docker%-compose%..*%.ya?ml"] = "yaml.docker-compose",
