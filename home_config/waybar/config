@@ -2,7 +2,7 @@
 	{
 		"modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
 		"modules-center": ["sway/window"],
-		"modules-right": ["mpd", "idle_inhibitor", "pulseaudio", "cpu", "memory", "temperature", "backlight", "battery", "battery#bat2", "clock", "tray"],
+		"modules-right": ["mpd", "idle_inhibitor", "pulseaudio", "cpu", "memory", "temperature", "backlight", "battery", "battery#bat1", "battery#bat2", "clock", "tray"],
 		"height": 24,
 		"sway/mode": {
 			"format": "<span style=\"italic\">{}</span>"
@@ -70,6 +70,17 @@
 			"format-icons": ["", ""]
 		},
 		"battery": {
+			// Every battery instance must name a "bat". Without it waybar scans
+			// all of /sys/class/power_supply, including HID peripherals, and a
+			// bluetooth device disconnecting mid-scan makes inotify_add_watch
+			// fail on the node that just vanished. waybar 0.15.0 throws from a
+			// worker thread there, which aborts the whole process. Naming a
+			// battery filters by directory name before that race can happen.
+			// Fixed in waybar master, unreleased:
+			// https://github.com/Alexays/Waybar/issues/4904
+			// Machines lacking the named battery just render nothing, so this
+			// is safe to share across desktops and laptops alike.
+			"bat": "BAT0",
 			"states": {
 				// "good": 95,
 				"warning": 30,
@@ -82,6 +93,9 @@
 			// "format-good": "", // An empty format will hide the module
 			// "format-full": "",
 			"format-icons": ["", "", "", "", ""]
+		},
+		"battery#bat1": {
+			"bat": "BAT1"
 		},
 		"battery#bat2": {
 			"bat": "BAT2"
