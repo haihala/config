@@ -66,4 +66,21 @@ vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
 vim.keymap.set("n", "<leader>sml", "a[]()<ESC>i")
 vim.keymap.set("v", "<leader>sml", 'di[<c-r>"]()<ESC>i')
 
+-- Banner comments: ==== rules around centered text, 80 columns by default.
+-- :Banner            turns the current line into a banner
+-- :Banner Some text  inserts one at the cursor
+-- :60Banner          any other width
+vim.api.nvim_create_user_command("Banner", function(opts)
+	local row = vim.api.nvim_win_get_cursor(0)[1]
+	local text, from, to = opts.args, row, row - 1
+	if text == "" then
+		text = vim.trim(vim.api.nvim_get_current_line())
+		to = row -- replace the line rather than inserting above it
+	end
+	local lines = require("utils.strings").banner(text, opts.count > 0 and opts.count or nil, vim.bo.commentstring)
+	vim.api.nvim_buf_set_lines(0, from - 1, to, false, lines)
+end, { nargs = "*", count = 0, desc = "Wrap text in a ==== banner comment" })
+
+vim.keymap.set("n", "<leader>sb", "<Cmd>Banner<CR>", { desc = "Banner comment from current line" })
+
 -- TODO: Pane resizing
