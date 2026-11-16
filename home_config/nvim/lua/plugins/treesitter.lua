@@ -21,6 +21,12 @@ local ensure_installed = {
 	"vim",
 	"vimdoc",
 	"query",
+	-- The htmldjango grammar only parses {% %} tags and injects everything
+	-- else as html, which in turn injects css. Without these two installed the
+	-- markup in a template renders with no highlighting at all.
+	"htmldjango",
+	"html",
+	"css",
 }
 -- Async; safe to fire-and-forget at startup. Already-installed parsers are no-ops.
 nts.install(ensure_installed)
