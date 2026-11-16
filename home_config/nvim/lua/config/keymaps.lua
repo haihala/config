@@ -66,21 +66,91 @@ vim.keymap.set("n", "<leader>stm", timestamp("+%I:%m")) -- Time (minutes)
 vim.keymap.set("n", "<leader>sml", "a[]()<ESC>i")
 vim.keymap.set("v", "<leader>sml", 'di[<c-r>"]()<ESC>i')
 
--- Banner comments: ==== rules around centered text, 80 columns by default.
--- :Banner            turns the current line into a banner
--- :Banner Some text  inserts one at the cursor
--- :60Banner          any other width
-vim.api.nvim_create_user_command("Banner", function(opts)
-	local row = vim.api.nvim_win_get_cursor(0)[1]
-	local text, from, to = opts.args, row, row - 1
-	if text == "" then
-		text = vim.trim(vim.api.nvim_get_current_line())
-		to = row -- replace the line rather than inserting above it
-	end
-	local lines = require("utils.strings").banner(text, opts.count > 0 and opts.count or nil, vim.bo.commentstring)
-	vim.api.nvim_buf_set_lines(0, from - 1, to, false, lines)
-end, { nargs = "*", count = 0, desc = "Wrap text in a ==== banner comment" })
+-- Banner comments: ==== rules around centered text, 80 columns by default
+-- (set vim.g.banner_width to change it). Running it on an existing banner
+-- strips it again, so the mapping toggles.
+local function banner_width()
+	return tonumber(vim.g.banner_width) or 80
+end
 
-vim.keymap.set("n", "<leader>sb", "<Cmd>Banner<CR>", { desc = "Banner comment from current line" })
+-- The contiguous run of comment lines around a row. Used for stripping, so a
+-- banner sitting flush against code doesn't swallow the next statement.
+local function comment_block(buf, row, commentstring)
+	local left = vim.trim(commentstring:match("^(.-)%%s") or "#")
+	local total = vim.api.nvim_buf_line_count(buf)
+	local function commented(r)
+		local l = vim.api.nvim_buf_get_lines(buf, r - 1, r, false)[1]
+		return l ~= nil and left ~= "" and vim.trim(l):sub(1, #left) == left
+	end
+	if not commented(row) then
+		return row, row
+	end
+	local from, to = row, row
+	while from > 1 and commented(from - 1) do
+		from = from - 1
+	end
+	while to < total and commented(to + 1) do
+		to = to + 1
+	end
+	return from, to
+end
+
+-- The run of non-blank lines around a row, i.e. what `ip` selects.
+local function paragraph(buf, row)
+	local total = vim.api.nvim_buf_line_count(buf)
+	local function blank(r)
+		local l = vim.api.nvim_buf_get_lines(buf, r - 1, r, false)[1]
+		return l == nil or vim.trim(l) == ""
+	end
+	if blank(row) then
+		return row, row
+	end
+	local from, to = row, row
+	while from > 1 and not blank(from - 1) do
+		from = from - 1
+	end
+	while to < total and not blank(to + 1) do
+		to = to + 1
+	end
+	return from, to
+end
+
+local function banner_toggle()
+	local strings = require("utils.strings")
+	local cs = vim.bo.commentstring
+	local buf = 0
+	local row = vim.api.nvim_win_get_cursor(0)[1]
+
+	-- Strip an existing banner if the cursor is in one. This uses the comment
+	-- block rather than the paragraph so a banner sitting flush against code
+	-- doesn't swallow the next statement.
+	local cfrom, cto = comment_block(buf, row, cs)
+	local stripped = strings.unbanner(vim.api.nvim_buf_get_lines(buf, cfrom - 1, cto, false), cs)
+	if stripped then
+		vim.api.nvim_buf_set_lines(buf, cfrom - 1, cto, false, stripped)
+		return
+	end
+
+	-- Otherwise wrap the paragraph, the same lines `ip` selects. Indentation
+	-- is handled by strings.banner, which dedents the block and shifts it as a
+	-- unit, so don't flatten the lines here.
+	local from, to = paragraph(buf, row)
+	local lines = vim.api.nvim_buf_get_lines(buf, from - 1, to, false)
+	vim.api.nvim_buf_set_lines(buf, from - 1, to, false, strings.banner(lines, banner_width(), cs))
+end
+
+-- :Banner            toggle the banner around the cursor
+-- :Banner Some text  insert a new banner here
+vim.api.nvim_create_user_command("Banner", function(opts)
+	if opts.args ~= "" then
+		local row = vim.api.nvim_win_get_cursor(0)[1]
+		local lines = require("utils.strings").banner(opts.args, banner_width(), vim.bo.commentstring)
+		vim.api.nvim_buf_set_lines(0, row - 1, row - 1, false, lines)
+	else
+		banner_toggle()
+	end
+end, { nargs = "*", desc = "Toggle a ==== banner comment" })
+
+vim.keymap.set("n", "<leader>sb", banner_toggle, { desc = "Toggle banner comment" })
 
 -- TODO: Pane resizing
