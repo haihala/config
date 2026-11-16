@@ -272,6 +272,13 @@ function svelte_ls
     npm install -g svelte-language-server
 end
 
+# Emmet abbreviation expansion (div.card>ul>li*3). Its default filetypes
+# already cover html, htmldjango, css, scss and the jsx/vue/svelte family.
+function emmet_ls
+    require npm
+    npm install -g @olrtg/emmet-language-server
+end
+
 function rust_analyzer
     require rustup
     rustup component add rust-analyzer
@@ -487,6 +494,7 @@ function lsp
     eslint_d
     tailwind_ls
     svelte_ls
+    emmet_ls
     rust_analyzer
     marksman
     gopls

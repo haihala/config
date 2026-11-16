@@ -115,6 +115,7 @@ M.setup = function()
 		ts_server,
 		"eslint",
 		"html",
+		"emmet_language_server", -- Emmet abbreviations in html/htmldjango/css/jsx
 		"marksman", -- Markdown
 		"svelte",
 		"ty",
