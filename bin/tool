@@ -332,6 +332,13 @@ function ruff
     command uv tool install ruff@latest
 end
 
+# Formats Django/Jinja/Nunjucks HTML templates. Tera is a Jinja dialect, so
+# conform drives this with --profile jinja for the loco views.
+function djlint
+    require uv
+    command uv tool install djlint@latest
+end
+
 function ty
     require uv
     command uv tool install ty@latest
@@ -500,6 +507,7 @@ function linters
     goimports
     golangci_lint
     ruff
+    djlint
     shellcheck
     shfmt
 end
