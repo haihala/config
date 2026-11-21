@@ -8,41 +8,30 @@
 # for appropriate commands to add to ~/.config/fish/config.fish instead.
 # See also the release notes for fish 4.3.0 (run `help relnotes`).
 
-set --global fish_color_autosuggestion 6272a4
-set --global fish_color_cancel ff5555 --reverse
-set --global fish_color_command 8be9fd
-set --global fish_color_comment 6272a4
-set --global fish_color_cwd 50fa7b
+set --global fish_color_autosuggestion brblack
+set --global fish_color_cancel -r
+set --global fish_color_command blue
+set --global fish_color_comment red
+set --global fish_color_cwd green
 set --global fish_color_cwd_root red
-set --global fish_color_end ffb86c
-set --global fish_color_error ff5555
-set --global fish_color_escape ff79c6
+set --global fish_color_end green
+set --global fish_color_error brred
+set --global fish_color_escape brcyan
 set --global fish_color_history_current --bold
-set --global fish_color_host bd93f9
-set --global fish_color_host_remote bd93f9
-set --global fish_color_keyword ff79c6
-set --global fish_color_match --background=brblue
-set --global fish_color_normal f8f8f2
-set --global fish_color_operator 50fa7b
-set --global fish_color_option ffb86c
-set --global fish_color_param bd93f9
-set --global fish_color_quote f1fa8c
-set --global fish_color_redirection f8f8f2
-set --global fish_color_search_match --background=44475a
-set --global fish_color_selection --background=44475a
-set --global fish_color_status ff5555
-set --global fish_color_user 8be9fd
+set --global fish_color_host normal
+set --global fish_color_host_remote yellow
+set --global fish_color_normal normal
+set --global fish_color_operator brcyan
+set --global fish_color_param cyan
+set --global fish_color_quote yellow
+set --global fish_color_redirection cyan --bold
+set --global fish_color_search_match white --background=brblack
+set --global fish_color_selection white --bold --background=brblack
+set --global fish_color_status red
+set --global fish_color_user brgreen
 set --global fish_color_valid_path --underline
-set --global fish_pager_color_background
-set --global fish_pager_color_completion f8f8f2
-set --global fish_pager_color_description 6272a4
-set --global fish_pager_color_prefix 8be9fd
-set --global fish_pager_color_progress 6272a4
-set --global fish_pager_color_secondary_background
-set --global fish_pager_color_secondary_completion
-set --global fish_pager_color_secondary_description
-set --global fish_pager_color_secondary_prefix
-set --global fish_pager_color_selected_background --background=44475a
-set --global fish_pager_color_selected_completion f8f8f2
-set --global fish_pager_color_selected_description 6272a4
-set --global fish_pager_color_selected_prefix 8be9fd
+set --global fish_pager_color_completion normal
+set --global fish_pager_color_description yellow -i
+set --global fish_pager_color_prefix normal --bold --underline
+set --global fish_pager_color_progress brwhite --background=cyan
+set --global fish_pager_color_selected_background -r
