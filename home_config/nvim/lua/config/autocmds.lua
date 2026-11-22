@@ -79,6 +79,16 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 	end,
 })
 
+-- Automatically wrap long prose in html. formatoptions already carries `t`,
+-- so the only thing missing is a width. Covers htmldjango too, since Neovim
+-- gives Tera templates that filetype. Use `gwip` to reflow a paragraph.
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "html", "htmldjango" },
+	callback = function()
+		vim.opt_local.textwidth = 80
+	end,
+})
+
 -- Use tabs instead of spaces in godot files, since godot defaults to tabs and you can't mix
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 	pattern = { "*.gd" },

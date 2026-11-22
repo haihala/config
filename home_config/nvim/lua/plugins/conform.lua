@@ -109,7 +109,9 @@ require("conform").setup({
 			-- Indent 2 to match prettier, since djlint defaults to 4. It also
 			-- strips every blank line by default (--max-blank-lines 0), so
 			-- allow one, which is what prettier does: keep single spacers,
-			-- collapse longer runs.
+			-- collapse longer runs. --max-line-length decides when djlint
+			-- joins tags back onto one line; its 120 default would undo the
+			-- wrapping done at textwidth=80 on every save.
 			prepend_args = {
 				"--profile",
 				"tera",
@@ -117,6 +119,8 @@ require("conform").setup({
 				"2",
 				"--max-blank-lines",
 				"1",
+				"--max-line-length",
+				"80",
 			},
 		},
 	},

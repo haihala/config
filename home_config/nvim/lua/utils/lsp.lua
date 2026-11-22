@@ -54,6 +54,13 @@ M.setup = function()
 		capabilities = require("blink.cmp").get_lsp_capabilities(nil, true),
 	})
 
+	-- Neovim calls any {% %} template htmldjango, so the html server only sees
+	-- plain .html files by default and the Tera views get no hover, completion
+	-- or embedded-language support at all.
+	vim.lsp.config("html", {
+		filetypes = { "html", "htmldjango" },
+	})
+
 	vim.lsp.config("lua_ls", {
 		settings = {
 			Lua = {
@@ -115,6 +122,7 @@ M.setup = function()
 		ts_server,
 		"eslint",
 		"html",
+		"cssls", -- css/scss/less, from the same vscode-langservers-extracted
 		"emmet_language_server", -- Emmet abbreviations in html/htmldjango/css/jsx
 		"marksman", -- Markdown
 		"svelte",
